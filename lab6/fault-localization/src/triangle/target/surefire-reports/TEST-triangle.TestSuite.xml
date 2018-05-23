@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="triangle.TestSuite" time="0.004" tests="33" errors="0" skipped="0" failures="4">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib"/>
+    <property name="java.vm.version" value="25.131-b11"/>
+    <property name="user.country.format" value="CN"/>
+    <property name="gopherProxySet" value="false"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="maven.multiModuleProjectDirectory" value="/Users/lifesaver/Documents/University/SE/lab6/fault-localization/src/triangle"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/Users/lifesaver/Documents/University/SE/lab6/fault-localization/src/triangle"/>
+    <property name="java.runtime.version" value="1.8.0_131-b11"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/endorsed"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="java.io.tmpdir" value="/var/folders/ct/b5wh4f090lz4qszm65fwvdxr0000gn/T/"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="classworlds.conf" value="/usr/local/Cellar/maven/3.5.3/libexec/bin/m2.conf"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/lifesaver/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="maven.conf" value="/usr/local/Cellar/maven/3.5.3/libexec/conf"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="52.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.13.4"/>
+    <property name="library.jansi.path" value="/usr/local/Cellar/maven/3.5.3/libexec/lib/jansi-native"/>
+    <property name="user.home" value="/Users/lifesaver"/>
+    <property name="user.timezone" value="Asia/Shanghai"/>
+    <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="user.name" value="lifesaver"/>
+    <property name="java.class.path" value="/usr/local/Cellar/maven/3.5.3/libexec/boot/plexus-classworlds-2.5.2.jar"/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean package"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.8.0_131"/>
+    <property name="java.ext.dirs" value="/Users/lifesaver/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java"/>
+    <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="/usr/local/Cellar/maven/3.5.3/libexec"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase name="test10" classname="triangle.TestSuite" time="0.001">
+    <failure message="expected:&lt;EQUILATERAL&gt; but was:&lt;ISOSCELES&gt;" type="junit.framework.AssertionFailedError"><![CDATA[junit.framework.AssertionFailedError: expected:<EQUILATERAL> but was:<ISOSCELES>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:253)
+	at triangle.TestSuite.test10(TestSuite.java:36)
+]]></failure>
+  </testcase>
+  <testcase name="test11" classname="triangle.TestSuite" time="0">
+    <failure message="expected:&lt;EQUILATERAL&gt; but was:&lt;INVALID&gt;" type="junit.framework.AssertionFailedError"><![CDATA[junit.framework.AssertionFailedError: expected:<EQUILATERAL> but was:<INVALID>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:253)
+	at triangle.TestSuite.test11(TestSuite.java:39)
+]]></failure>
+  </testcase>
+  <testcase name="test12" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test13" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test14" classname="triangle.TestSuite" time="0">
+    <failure message="expected:&lt;SCALENE&gt; but was:&lt;ISOSCELES&gt;" type="junit.framework.AssertionFailedError"><![CDATA[junit.framework.AssertionFailedError: expected:<SCALENE> but was:<ISOSCELES>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:253)
+	at triangle.TestSuite.test14(TestSuite.java:48)
+]]></failure>
+  </testcase>
+  <testcase name="test15" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test16" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test17" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test18" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test19" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test20" classname="triangle.TestSuite" time="0">
+    <failure message="expected:&lt;EQUILATERAL&gt; but was:&lt;INVALID&gt;" type="junit.framework.AssertionFailedError"><![CDATA[junit.framework.AssertionFailedError: expected:<EQUILATERAL> but was:<INVALID>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:253)
+	at triangle.TestSuite.test20(TestSuite.java:66)
+]]></failure>
+  </testcase>
+  <testcase name="test21" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test22" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test23" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test24" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test25" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test26" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test27" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test28" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test29" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test30" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test31" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test32" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test33" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test1" classname="triangle.TestSuite" time="0.001"/>
+  <testcase name="test2" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test3" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test4" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test5" classname="triangle.TestSuite" time="0.001"/>
+  <testcase name="test6" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test7" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test8" classname="triangle.TestSuite" time="0"/>
+  <testcase name="test9" classname="triangle.TestSuite" time="0.001"/>
+</testsuite>

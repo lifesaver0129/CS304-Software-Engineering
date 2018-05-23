@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Inferring models of concurrent systems from logs of their behavior with CSight</title>
+</head>
+<body>
+
+<h1>Inferring models of concurrent systems from logs of their behavior with CSight</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/concurrent-models-icse2014.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/concurrent-models-icse2014-slides.pdf">slides (PDF)</a>,
+<a href="https://github.com/ModelInference/synoptic">CSight implementation</a>.
+</p>
+
+<p>
+&#8220;Inferring models of concurrent systems from logs of their behavior
+with CSight&#8221;
+by
+<a href="http://www.cs.ubc.ca/~bestchai/">Ivan Beschastnikh</a>,
+<a href="http://people.cs.umass.edu/~brun/">Yuriy Brun</a>,
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+and
+<a href="http://www.cs.washington.edu/people/faculty/arvind/">Arvind Krishnamurthy</a>.
+In <em>ICSE 2014, Proceedings of the 36th International Conference on
+Software Engineering</em>, (Hyderabad, India), June 2014, pp. 468-479.
+<br />
+A previous version appeared as 
+&#8220;Inferring models of concurrent systems from logs of their behavior
+with CSight&#8221;
+by
+<a href="http://www.cs.ubc.ca/~bestchai/">Ivan Beschastnikh</a>,
+<a href="http://people.cs.umass.edu/~brun/">Yuriy Brun</a>,
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+and
+<a href="http://www.cs.washington.edu/people/faculty/arvind/">Arvind Krishnamurthy</a>,
+University of British Columbia cIRcle: UBC's Digital Repository, (Vancouver, BC, Canada).
+February&nbsp;28, 2014.  <a
+href="http://hdl.handle.net/2429/46122">http://hdl.handle.net/2429/46122</a>.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Concurrent systems are notoriously difficult to debug and understand. A
+common way of gaining insight into system behavior is to inspect execution
+logs and documentation. Unfortunately, manual inspection of logs is an
+arduous process, and documentation is often incomplete and out of sync
+with the implementation. 
+</p>
+
+<p>
+To provide developers with more insight into concurrent systems, we
+developed CSight. CSight mines logs of a system's executions to infer a
+concise and accurate model of that system's behavior, in the form of a
+communicating finite state machine (CFSM). 
+</p>
+
+<p>
+Engineers can use the inferred CFSM model to understand complex behavior,
+detect anomalies, debug, and increase confidence in the correctness of
+their implementations. CSight's only requirement is that the logged events
+have vector timestamps. We provide a tool that automatically adds vector
+timestamps to system logs. Our tool prototypes are available at <a
+href="https://github.com/ModelInference/synoptic">https://github.com/ModelInference/synoptic</a>. </p>
+
+<p>
+This paper presents algorithms for inferring CFSM models from traces of
+concurrent systems, proves them correct, provides an implementation, and
+evaluates the implementation in two ways: by running it on logs from three
+different networked systems and via a user study that focused on bug
+finding. Our evaluation finds that CSight infers accurate models that can
+help developers find bugs.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/concurrent-models-icse2014.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/concurrent-models-icse2014-slides.pdf">slides (PDF)</a>,
+<a href="https://github.com/ModelInference/synoptic">CSight implementation</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{BeschastnikhBEK2014,
+   author = {Ivan Beschastnikh and Yuriy Brun and Michael D. Ernst and
+	Arvind Krishnamurthy},
+   title = {Inferring models of concurrent systems from logs of their
+	behavior with {CSight}},
+   booktitle = {ICSE 2014, Proceedings of the 36th International
+	Conference on Software Engineering},
+   pages = {468--479},
+   address = {Hyderabad, India},
+   month = jun,
+   year = {2014}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#invariant-detection">Publications that describe invariant
+detection techniques in Daikon</a>.
+
+</body>
+</html>

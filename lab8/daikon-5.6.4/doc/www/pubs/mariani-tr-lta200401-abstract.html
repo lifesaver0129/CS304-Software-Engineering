@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Capturing and synthesizing the behavior of component-based systems</title>
+</head>
+<body>
+
+<h1>Capturing and synthesizing the behavior of component-based systems</h1>
+
+<p>
+</p>
+
+<p>
+&#8220;Capturing and synthesizing the behavior of component-based
+systems&#8221;
+by
+<a href="http://www.lta.disco.unimib.it/lta/personalPages/leonardoMariani/leonardoMariani.php">Leonardo Mariani</a>.
+University of Milano -- Bicocca technical report LTA:2004:01, (Milan,
+Italy), February&nbsp;18, 2004.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Component-based system (CBS) technology facilitates flexibility: systems
+can be adapted, modified, and updated by adding, removing, and changing
+their components. Adding or modifying components require testing the
+components added or modified as well as all components that depend from
+them. Modifying components can introduce dangerous side effects that are
+difficult to predict, thus, in principle, we need to retest the whole
+system. Re-testing the whole system may be extremely expensive and
+sometimes not even possible. Testing effort can be reduced by selecting a
+subset of tests using either regression testing techniques (see for
+instance, [RH97, JH03]) or dependence analysis techniques (see for
+instance [SW01, SHR99]). Testing effort can also be reduced with run-time
+verification techniques that can partially substitute traditional testing
+(see for instance [HR02]). 
+</p>
+
+<p>
+This work consists on a technique reducing testing costs for CBSs. The
+approach, called Behavior Capture and Test (BCT), effectively combines
+run-time monitoring, run-time verification, and testing. We use run-time
+monitoring to gather data about single executions. The collected data are
+then used to automatically derive behavioral properties of the components
+and the system. The inferred properties are used for run-time
+verification, while single executions are used as regression test cases.
+BCT can be used to automatically verify the integration of components that
+have been used in the same or in other systems, which is a very frequent
+case in component-based development. 
+</p>
+
+<p>
+In this report we focus on verification of component-based systems, thus
+we will not address testing and automatic derivation of test suites.
+
+</p>
+<p>
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@techreport{Mariani2004:TR200401,
+   author = {Leonardo Mariani},
+   title = {Capturing and synthesizing the behavior of component-based
+	systems},
+   institution = {University of Milano -- Bicocca},
+   number = {LTA:2004:01},
+   address = {Milan, Italy},
+   month = {February~18,},
+   year = {2004}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

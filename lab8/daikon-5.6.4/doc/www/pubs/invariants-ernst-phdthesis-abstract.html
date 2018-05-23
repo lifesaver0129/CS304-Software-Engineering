@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Dynamically Discovering Likely Program Invariants</title>
+</head>
+<body>
+
+<h1>Dynamically Discovering Likely Program Invariants</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-ernst-phdthesis.pdf">PDF</a>,
+<a href="http://plse.cs.washington.edu/daikon/">Daikon implementation</a>.
+</p>
+
+<p>
+&#8220;Dynamically Discovering Likely Program Invariants&#8221;
+by <a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>.
+Ph.D. dissertation, <a href="http://www.cs.washington.edu/">University of
+Washington Department of Computer Science and Engineering</a>, (Seattle,
+Washington), Aug. 2000.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+This dissertation introduces dynamic detection of program invariants,
+presents techniques for detecting such invariants from traces, assesses
+the techniques' efficacy, and points the way for future research. 
+</p>
+
+<p>
+Invariants are valuable in many aspects of program development, including
+design, coding, verification, testing, optimization, and maintenance. They
+also enhance programmers' understanding of data structures, algorithms,
+and program operation. Unfortunately, explicit invariants are usually
+absent from programs, depriving programmers and automated tools of their
+benefits. 
+</p>
+
+<p>
+This dissertation shows how invariants can be dynamically detected from
+program traces that capture variable values at program points of interest.
+The user runs the target program over a test suite to create the traces,
+and an invariant detector determines which properties and relationships
+hold over both explicit variables and other expressions. Properties that
+hold over the traces and also satisfy other tests, such as being
+statistically justified, not being over unrelated variables, and not being
+implied by other reported invariants, are reported as likely invariants.
+Like other dynamic techniques such as testing, the quality of the output
+depends in part on the comprehensiveness of the test suite. If the test
+suite is inadequate, then the output indicates how, permitting its
+improvement. Dynamic analysis complements static techniques, which can be
+made sound but for which certain program constructs remain beyond the
+state of the art. 
+</p>
+
+<p>
+Experiments demonstrate a number of positive qualities of dynamic
+invariant detection and of a prototype implementation, Daikon. Invariant
+detection is accurate  &mdash;	it rediscovers formal specifications 
+&mdash;  and useful  &mdash;  it assists programmers in programming tasks.
+It runs quickly and produces output of modest size. Test suites found in
+practice tend to be adequate for dynamic invariant detection.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-ernst-phdthesis.pdf">PDF</a>,
+<a href="http://plse.cs.washington.edu/daikon/">Daikon implementation</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@phdthesis{Ernst2000:PhD,
+   author = {Michael D. Ernst},
+   title = {Dynamically Discovering Likely Program Invariants},
+   school = {University of Washington Department of Computer Science and
+	Engineering},
+   type = {{Ph.D.}},
+   address = {Seattle, Washington},
+   month = aug,
+   year = {2000}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#invariant-detection">Publications that describe invariant
+detection techniques in Daikon</a>.
+
+</body>
+</html>

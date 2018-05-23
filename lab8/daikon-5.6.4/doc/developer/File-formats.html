@@ -1,0 +1,1661 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector Developer Manual: File formats</title>
+
+<meta name="description" content="The Daikon Invariant Detector Developer Manual: File formats">
+<meta name="keywords" content="The Daikon Invariant Detector Developer Manual: File formats">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="General-Index.html#General-Index" rel="next" title="General Index">
+<link href="Historical.html#Branches" rel="previous" title="Branches">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="File-formats"></a>
+<div class="header">
+<p>
+Next: <a href="General-Index.html#General-Index" accesskey="n" rel="next">General Index</a>, Previous: <a href="Historical.html#Historical" accesskey="p" rel="previous">Historical</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="File-formats-1"></a>
+<h2 class="appendix">Appendix A File formats</h2>
+
+<a name="index-file-formats"></a>
+
+<p>This chapter contains information about the file format of Daikon&rsquo;s
+input files.  It is of most information to those who wish to write a
+front end, also known as an instrumenter
+(see <a href="../daikon/Front-ends-_0028instrumentation_0029.html#Front-ends-_0028instrumentation_0029">Front ends (instrumentation)</a> in <cite>Daikon User Manual</cite>).
+A new front end enables Daikon to detect
+invariants in another programming language.
+</p>
+<p>Daikon&rsquo;s input is conventionally one or more <samp>.dtrace</samp> data trace
+files.  (Another, optional type of input file for Daikon is a <em>splitter</em>
+info file; see <a href="../daikon/Splitter-info-file-format.html#Splitter-info-file-format">Splitter info file format</a> in <cite>Daikon User Manual</cite>.)
+A trace file is a text file that consists of newline-separated
+records.  There are two basic types of records that can appear in Daikon&rsquo;s
+input:  program point declarations, and trace records.
+The declarations describe the structure of the trace records.  The trace
+records contain the data on which Daikon operates &mdash; the run-time
+values of variables in your program.
+</p>
+<p>Each declaration names an instrumented program point and lists the
+variables at that program point.  A program point is a location in the
+program, such as a specific line number, or a specific procedure&rsquo;s entry or exit.
+An instrumented program point is a place where the instrumenter may emit
+a trace record.
+A program point declaration
+may be repeated, so long as the declarations match exactly (any
+declarations after the first one have no effect).
+</p>
+<p>A data trace record (also known as a <em>sample</em>)
+represents one execution of a program point.  The
+record specifies the program point and gives the runtime values of each
+variable.  The list of variables in the data trace record must be
+identical to that in the corresponding declaration.  For a given program point,
+the declaration must precede the first data trace record for the program
+point.  It is not required that all the program point declarations
+appear before any of the data trace records.
+</p>
+<p>There exist some other declaration-related records;
+see <a href="#Declaration_002drelated-records">Declaration-related records</a>.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Declarations-in-a-separate-file" accesskey="1">Declarations in a separate file</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Conventions" accesskey="2">Conventions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Declarations" accesskey="3">Declarations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Data-trace-records" accesskey="4">Data trace records</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Example-files" accesskey="5">Example files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Version-1-Declarations" accesskey="6">Version 1 Declarations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+<hr>
+<a name="Declarations-in-a-separate-file"></a>
+<div class="header">
+<p>
+Next: <a href="#Conventions" accesskey="n" rel="next">Conventions</a>, Up: <a href="#File-formats" accesskey="u" rel="up">File formats</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Declarations-in-a-separate-file-1"></a>
+<h3 class="section">A.1 Declarations in a separate file</h3>
+
+
+<p>Instead of placing both declarations and data trace records in a single
+file, it is permitted to place the declarations in one or more
+<samp>.decls</samp> <em>declaration files</em> while leaving the data trace records
+in the <samp>.dtrace</samp> file.  This can be convenient for tools that
+perform a separate instrumentation step, such as
+<code>dfepl</code> (see <a href="../daikon/dfepl.html#dfepl">dfepl</a> in <cite>Daikon User Manual</cite>).
+Such a tool takes as
+input a target program to be analyzed, and produces two outputs:  a
+<samp>.decls</samp> file and an instrumented program.  Executing the
+instrumented program produces a <samp>.dtrace</samp> file containing data
+trace records for all the program points that appear in the
+<samp>.decls</samp> file.  This approach works fine and is easier to
+implement in certain situations, but has a few disadvantages.  It
+requires the user to perform at least two steps &mdash; instrumentation and
+execution &mdash; and the existence of two versions of the program
+(instrumented and uninstrumented) can lead to confusion or extra work.
+It is also more convenient to have a single file that contains all
+information about a program, rather than multiple <samp>.decls</samp> files
+that must be associated with the <samp>.dtrace</samp> file.
+</p>
+<p>It is also permitted for a declaration to appear more than once in Daikon&rsquo;s
+input.  The declaration must be identical in all occurrences.  This is
+useful when running Daikon with multiple <samp>.dtrace</samp> files, each of
+which contains its own declarations.
+</p>
+
+<hr>
+<a name="Conventions"></a>
+<div class="header">
+<p>
+Next: <a href="#Declarations" accesskey="n" rel="next">Declarations</a>, Previous: <a href="#Declarations-in-a-separate-file" accesskey="p" rel="previous">Declarations in a separate file</a>, Up: <a href="#File-formats" accesskey="u" rel="up">File formats</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="File-format-conventions"></a>
+<h3 class="section">A.2 File format conventions</h3>
+
+
+<p>Daikon files are textual, to permit easier viewing and editing by humans.
+Each record is separated by one or more blank lines.
+To permit easier parsing by programs, each piece of information in a record
+appears on a separate line.
+</p>
+<p>Outside a record, any line starting with a pound sign (#) or double
+slashes (//) is ignored as a comment.  Comments are not permitted
+inside a record.
+</p>
+<hr>
+<a name="Declarations"></a>
+<div class="header">
+<p>
+Next: <a href="#Data-trace-records" accesskey="n" rel="next">Data trace records</a>, Previous: <a href="#Conventions" accesskey="p" rel="previous">Conventions</a>, Up: <a href="#File-formats" accesskey="u" rel="up">File formats</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Declarations-1"></a>
+<h3 class="section">A.3 Declarations</h3>
+
+<a name="index-declaration-format"></a>
+<a name="index-_002edecls-file"></a>
+
+<p>The trace file (or declaration file) first states the declaration file format
+version number (see <a href="#Declaration-version">Declaration version</a>).
+It may also specify some other information about the file
+(see <a href="#Declaration_002drelated-records">Declaration-related records</a>).
+Then, it defines each program point and its variables.
+</p>
+<p>Indentation is ignored, so it may be used to aid readability.
+Fields with defaults can be omitted.
+</p>
+<p>As a rule, each line of the declaration file is of the form
+<code>&lt;field-name&gt; &lt;field-value&gt;</code>.
+</p>
+<p>Some additional details about the declaration file format appear in file
+<code>daikon/doc/decl_format.txt</code> in the Daikon source code.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Declaration_002drelated-records" accesskey="1">Declaration-related records</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Program-point-declarations" accesskey="2">Program point declarations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Variable-declarations" accesskey="3">Variable declarations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+<hr>
+<a name="Declaration_002drelated-records"></a>
+<div class="header">
+<p>
+Next: <a href="#Program-point-declarations" accesskey="n" rel="next">Program point declarations</a>, Up: <a href="#Declarations" accesskey="u" rel="up">Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Declaration_002drelated-records-1"></a>
+<h4 class="subsection">A.3.1 Declaration-related records</h4>
+
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Declaration-version" accesskey="1">Declaration version</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Input_002dlanguage-declaration" accesskey="2">Input-language declaration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Variable-comparability" accesskey="3">Variable comparability</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#ListImplementors-declaration" accesskey="4">ListImplementors declaration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Declaration-version"></a>
+<div class="header">
+<p>
+Next: <a href="#Input_002dlanguage-declaration" accesskey="n" rel="next">Input-language declaration</a>, Up: <a href="#Declaration_002drelated-records" accesskey="u" rel="up">Declaration-related records</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Declaration-version-1"></a>
+<h4 class="subsubsection">A.3.1.1 Declaration version</h4>
+
+<p>The declaration version record must be the first record in the file.
+</p>
+<p>The declaration version record is as follows:
+</p><div class="example">
+<pre class="example">decl-version &lt;version&gt;
+</pre></div>
+
+<p>The current version is 2.0.
+</p>
+<p>Previous versions (see <a href="#Version-1-Declarations">Version 1 Declarations</a>) did not include a
+version field and are identified by the lack of this field.
+</p>
+
+<hr>
+<a name="Input_002dlanguage-declaration"></a>
+<div class="header">
+<p>
+Next: <a href="#Variable-comparability" accesskey="n" rel="next">Variable comparability</a>, Previous: <a href="#Declaration-version" accesskey="p" rel="previous">Declaration version</a>, Up: <a href="#Declaration_002drelated-records" accesskey="u" rel="up">Declaration-related records</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Input_002dlanguage-declaration-1"></a>
+<h4 class="subsubsection">A.3.1.2 Input-language declaration</h4>
+
+<p>You can specify the language in which the program was written with a
+record of the form
+</p>
+<div class="example">
+<pre class="example">input-language &lt;language&gt;
+</pre></div>
+
+<p>The language string is arbitrary and is not used.
+</p>
+
+<hr>
+<a name="Variable-comparability"></a>
+<div class="header">
+<p>
+Next: <a href="#ListImplementors-declaration" accesskey="n" rel="next">ListImplementors declaration</a>, Previous: <a href="#Input_002dlanguage-declaration" accesskey="p" rel="previous">Input-language declaration</a>, Up: <a href="#Declaration_002drelated-records" accesskey="u" rel="up">Declaration-related records</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Variable-comparability-1"></a>
+<h4 class="subsubsection">A.3.1.3 Variable comparability</h4>
+
+<a name="index-comparability_002c-for-variables"></a>
+<a name="index-variable-comparability"></a>
+<a name="index-units-of-measurement_002c-see-variable-comparability"></a>
+
+<p>The Variable comparability record indicates how the comparability field
+of a variable declaration should be interpreted.
+</p>
+<p>Its format is:
+</p><div class="example">
+<pre class="example">var-comparability &lt;comparability-type&gt;
+</pre></div>
+
+<p>The possible values for <var>comparability-type</var> are <code>implicit</code> and
+<code>none</code>.
+</p>
+<p><code>implicit</code> means ordinary comparability as described in
+<a href="#Variable-declarations">Variable declarations</a>.  (The name <code>implicit</code> is retained
+for historical reasons.)
+</p>
+<p>This record is optional.  The <code>implicit</code> type is the default.
+</p>
+
+<hr>
+<a name="ListImplementors-declaration"></a>
+<div class="header">
+<p>
+Previous: <a href="#Variable-comparability" accesskey="p" rel="previous">Variable comparability</a>, Up: <a href="#Declaration_002drelated-records" accesskey="u" rel="up">Declaration-related records</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="ListImplementors-declaration-1"></a>
+<h4 class="subsubsection">A.3.1.4 ListImplementors declaration</h4>
+
+<p>This declaration indicates classes that implement the
+<code>java.util.List</code> interface, and should be treated as sequences
+for the purposes of invariant detection.  The syntax is as follows:
+</p>
+<div class="example">
+<pre class="example">ListImplementors
+&lt;classname1&gt;
+&lt;classname2&gt;
+...
+</pre></div>
+
+<p>Each <code>classname</code> is in Java format (for example, <samp>java.util.LinkedList</samp>).
+</p>
+<p>The <samp>--list_type</samp> command-line option to Daikon can also be used to
+specify classes that implement lists;
+see <a href="../daikon/Options-to-control-invariant-detection.html#Options-to-control-invariant-detection">Options to control invariant detection</a> in <cite>Daikon User Manual</cite>.
+</p>
+
+
+<hr>
+<a name="Program-point-declarations"></a>
+<div class="header">
+<p>
+Next: <a href="#Variable-declarations" accesskey="n" rel="next">Variable declarations</a>, Previous: <a href="#Declaration_002drelated-records" accesskey="p" rel="previous">Declaration-related records</a>, Up: <a href="#Declarations" accesskey="u" rel="up">Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Program-point-declarations-1"></a>
+<h4 class="subsection">A.3.2 Program point declarations</h4>
+
+<p>The format of a program point declaration is:
+</p><div class="example">
+<pre class="example">ppt &lt;ppt-name&gt;
+&lt;ppt-info&gt;
+&lt;ppt-info&gt;
+...
+&lt;variable-declaration&gt;
+&lt;variable-declaration&gt;
+...
+</pre></div>
+
+<p>The program point name can include any character.  In the declaration
+file,
+blanks must be replaced by <code>\_</code>, and backslashes must be escaped as <code>\\</code>.
+Program point names must be distinct.
+</p>
+
+<p>While Daikon does not infer program point relationships from <code>ppt-name</code>s,
+it does require these names to conform to a set syntax.
+The following patterns are for the <code>enter</code>, <code>subexit</code>,
+<code>class</code> and <code>object</code> <code>ppt-type</code>s, respectively.
+</p>
+<div class="example">
+<pre class="example">&lt;fully qualified class name&gt;.&lt;method/function name&gt;(&lt;argument types&gt;):::ENTER
+&lt;fully qualified class name&gt;.&lt;method/function name&gt;(&lt;argument types&gt;):::EXIT&lt;id&gt;
+&lt;fully qualified class name&gt;:::CLASS
+&lt;fully qualified class name&gt;:::OBJECT
+</pre></div>
+
+<p>Since in most languages a method or function may have multiple exit points,
+the <code>ppt-name</code> for a <code>subexit</code> <code>ppt-type</code> must be appended
+with a unique id.  Typically, this is the corresponding source line number.
+</p>
+
+<p>The following information about the program point (<code>ppt-info</code>) can be specified:
+</p><ul>
+<li> <code>ppt-type &lt;type&gt;</code>
+
+<p>Specifies the <var>type</var> of the program point.  Possible program point
+types are <code>point</code>, <code>class</code>, <code>object</code>, <code>enter</code>,
+<code>exit</code>, <code>subexit</code>.  Except for <code>point</code> all of these
+types are related to the program point hierarchy (see <a href="Daikon-internals.html#Dataflow-hierarchy">Dataflow hierarchy</a>).
+</p>
+<p>A <code>point</code> program point is one that is <em>not</em> involved in a
+program point hierarchy.   This is normally used when the input is not
+from a programming language or when is no dataflow hierarchy.
+</p>
+</li><li> <code>flags &lt;flags&gt;</code>
+
+<p>Specifies one or more flags for this <code>ppt</code>.  The possible flags are:
+<code>static</code>, <code>enter</code>, <code>exit</code>, <code>private</code>, <code>return</code>.
+It should be noted that neither Daikon nor Kvasir currently use or
+output this field.
+</p>
+</li><li> <code>parent &lt;relation-type&gt; &lt;parent-ppt-name&gt; &lt;relation-id&gt;</code>
+
+<p>Specifies the program point hierarchy (<a href="Daikon-internals.html#Dataflow-hierarchy">Dataflow hierarchy</a>).
+</p>
+<p>In particular, each <code>parent</code> field names one parent of this program
+point.  A parent program point
+is a point whose samples should include all of the samples at this
+program point.  For example, an object program point is a parent of
+each of the method program points in that object.
+</p>
+<p>The <var>relation-type</var> is the type of parent-child relationship in
+the hierarchy. There are a few relationship types used internally
+by Daikon, but the only one output to the data files is <code>parent</code>.
+A <code>parent</code> relationship is one where the program points themselves
+are explicitly related, such as an enter and an exit point.  All of the
+variables at one of the points exists at the other.  A <code>user</code>
+relation is one where a class is used at another point, such as at an
+enter point.  For example, if a reference to class A were passed to
+routine &lsquo;<samp>r1</samp>&rsquo;, the values found at enter and exit of &lsquo;<samp>r1</samp>&rsquo; could
+be applied to
+the class/object program point for A.  By default <code>user</code> relations
+are not used because they can be recursive.
+</p>
+<p>The <var>relation-id</var> is a unique integer that identifies this parent
+relation.  They are used when defining the the specific parent
+relations for variables.
+</p>
+<p>Multiple parent fields can be specified.
+</p>
+</li></ul>
+
+
+
+<hr>
+<a name="Variable-declarations"></a>
+<div class="header">
+<p>
+Previous: <a href="#Program-point-declarations" accesskey="p" rel="previous">Program point declarations</a>, Up: <a href="#Declarations" accesskey="u" rel="up">Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Variable-declarations-1"></a>
+<h4 class="subsection">A.3.3 Variable declarations</h4>
+<a name="index-declaration-file-format"></a>
+
+<p>The format of a variable declaration is:
+</p><div class="example">
+<pre class="example">variable &lt;name&gt;
+  &lt;variable-info&gt;
+  &lt;variable-info&gt;
+  ...
+</pre></div>
+
+<p>The variable name is arbitrary, but for clarity, it should match what is
+used in the programming language.  All characters are legal in a name,
+but blanks must be represented as <code>\_</code> and backslashes as
+<code>\\</code>.
+</p>
+<p>If the variable is an array, <code>..</code> marks the location of
+array indices within the variable name.  Some examples of names are:
+</p><div class="example">
+<pre class="example">this.theArray
+this.theArray[..]
+this.stack.getClass()
+</pre></div>
+
+<p>The following information about the variable (<code>variable-info</code>)
+can be specified:
+</p><ul>
+<li> <code>var-kind &lt;kind&gt; [&lt;relative-name&gt;]</code>
+
+<p>Specifies the variable kind.  Possible values are: <code>field</code>,
+<code>function</code>,
+<code>array</code>, <code>variable</code>, <code>return</code>.  If <code>field</code> or
+<code>function</code>
+are specified, the relative name of the field or function must be
+specified.  For example, if the variable is <code>this.theArray</code>, the
+relative name is <code>theArray</code>.  Pointers to arrays are of type
+<code>field</code>.  The arrays themselves (a sequence of values) are of
+type <code>array</code>.  A var-kind entry is required in each variable block.
+</p>
+</li><li> <code>enclosing-var &lt;enclosing-var-name&gt;</code>
+
+<p>The variable that contains this variable.  Required for fields and
+arrays.  Required for functions that represent an instance method.
+Forbidden for functions that specify a static method or a function in
+a non-object-oriented language.
+A variable is specified by its name.  The named variable must
+be defined at the same program point.
+If a variable is omitted (e.g., by the omit-var switch),
+any variable for which it is the enclosing variable must be omitted as
+well.
+</p>
+<p>For example, if the variable is <code>this.theArray</code>, the
+enclosing variable is <code>this</code>.
+</p>
+</li><li> <code>reference-type pointer|offset</code>
+
+<p>Specifies the kind of reference for variables which are structures or
+classes.  The possible values are <code>pointer</code> or <code>offset</code>.  In
+C, <code>pointer</code> is used if the variable is a pointer, <code>offset</code>
+is used when the structure is placed inline.  Pointer would be used
+for all references to Java objects.  Defaults to pointer.
+</p>
+</li><li> <code>array &lt;dim&gt;</code>
+
+<p>The number of array dimensions inherited or declared by this variable.
+The valid values are 0 or 1.  This should be specified for any variable
+that has multiple values.  If not specified it defaults to 0.  Future
+versions of Daikon may support more levels of arrays.
+</p>
+</li><li> <code>dec-type &lt;language-declaration&gt;</code>
+
+<p>This is what the programmer used in the declaration of the variable.
+Names for standard types should use Java&rsquo;s names (e.g., <code>int</code>,
+<code>boolean</code>, <code>java.lang.String</code>, etc.),
+but names for user-defined or language-specific
+types can be arbitrary strings.  A <code>dec-type</code> entry is required in each
+variable block.
+</p>
+</li><li> <code>rep-type &lt;daikon-type&gt;</code>
+
+<p>This describes what will appear in the data
+trace file.  For instance, the declared type might be <code>char[..]</code> but
+the representation type might be <code>java.lang.String</code>.  Or, the declared
+type might be <code>Object</code> but the representation type might be
+<code>hashcode</code>, if the address of the object is written to the data trace
+file.  A rep-type entry is required in each
+variable block.
+</p>
+<a name="index-pointer-variables_002c-see-hashcode-type"></a>
+<a name="index-hashcode-type_002c-for-variables"></a>
+
+<p>The representation type should be one of <code>boolean</code>, <code>int</code>,
+<code>hashcode</code>, <code>double</code>, or <code>java.lang.String</code>; or an
+array of one of those (indicated by a <code>[..]</code> suffix).
+</p>
+<p><code>hashcode</code> is intended for unique object identifiers like memory
+addresses (pointers) or the return value of Java&rsquo;s
+<code>Object.hashCode</code> method.  <code>hashcode</code> is treated like
+<code>int</code>, except that the hashcode values are considered uninteresting
+for the purposes of output.  For example, Daikon will print
+&lsquo;<samp><var>var</var> has only one value</samp>&rsquo; instead of &lsquo;<samp><var>var</var> == 0x38E8A</samp>&rsquo;.
+</p>
+
+</li><li> <code>flags &lt;flags&gt;</code>
+
+<p>One or more flags may optionally be specified.  Possible values are:
+</p><ul>
+<li> <code>is_param</code>
+
+<p>Indicates that a given variable is a parameter to a procedure.  Some
+procedures reassign parameters &mdash; essentially using them as local
+variables.  Such uses are not relevant to the procedure&rsquo;s external
+specification.  The <code>is_param</code> flag causes Daikon not to print
+certain invariants, if the variable has been reassigned.
+</p>
+<ol>
+<li> Invariants
+that use the parameter variable <code>p</code> in its post-state form are not
+printed.
+</li><li> Invariants that use fields of <code>p</code> (such as <code>p.x</code>)
+are printed only if <code>p</code> has not changed.
+</li><li> Some immutable
+characteristics, such as the size of arrays and data types, are not
+printed.  (These can change only if <code>p</code> is changed, but then, <code>p</code>
+would no longer be interesting.)
+</li></ol>
+
+</li><li> <code>no_dups</code>
+
+<p>Indicates that a collection can not contain duplicates.
+If it cannot, Daikon does not check for some invariants that only have
+meaning for collections that can contain duplicate elements.
+</p>
+</li><li> <code>not_ordered</code>
+
+<p>Indicates that the order of a collection does not have meaning.  In
+this case, Daikon does not check for element-wise comparisons between
+it and other collections.
+</p>
+</li><li> <code>nomod</code>
+
+<p>Indicates that the variable can never be modified.  For example, a
+variable declared <code>static final</code> in Java.
+</p>
+</li><li> <code>synthetic</code>
+
+<p>Indicates that the variable was added by the front end and is not
+manifest in the input program.
+</p>
+</li><li> <code>classname</code>
+
+<p>Indicates that the variable indicates the <code>classname</code> of its
+enclosing variable.
+</p>
+</li><li> <code>to_string</code>
+
+<p>Indicates that the variable is the string representation of its
+enclosing variable.
+</p>
+</li><li> <code>non_null</code>
+
+<p>Indicates that the variable can&rsquo;t take on a null value.  In this
+case, Daikon will not check for the &lsquo;<samp>NonZero</samp>&rsquo; invariant.
+</p>
+</li><li> <code>is_property</code>
+
+<p>Indicates that the variable is a C# property (set by the Celeriac front
+end).  It is used in output
+formatting to remove the parentheses from a method call.
+</p>
+</li><li> <code>is_enum</code>
+
+<p>Indicates that the variable is an enumerated type (set by the Celeriac
+front end).  Daikon uses this information to suppress obvious invariants.
+</p>
+</li><li> <code>is_readonly</code>
+
+<p>Indicates that the variable is read only (set by the Celeriac front
+end).  Daikon uses this information to suppress obvious invariants.
+</p>
+</li></ul>
+
+</li><li> <code>comparability &lt;comparability-key&gt;</code>
+
+<p>The <var>comparability-key</var> indicates which other variables are
+comparable to this one.  The information specified here might have been
+obtained dynamically, or via
+type-inference-based static analysis, or in some other manner.
+</p>
+<p>A comparability for a non-array type is a signed integer.  Two
+variables at the same program point are considered comparable if both
+integers are the same, or if either integer is negative (that is, a
+negative number means &ldquo;comparable to every other variable&rdquo;).  A
+comparability for an array type contains an integer for each index
+and for the contents; for instance, &lsquo;<samp>8[5]</samp>&rsquo; means that the array
+elements have comparability &lsquo;<samp>8</samp>&rsquo; and the array indices have
+comparability &lsquo;<samp>5</samp>&rsquo;.  Similarly, &lsquo;<samp>5[22][17]</samp>&rsquo; is a comparability for a
+two-dimensional array.  An array comparison succeeds if comparisons over each
+component succeed.
+</p>
+<p>Variables at different program points are never compared to one another.
+Use of the same number at different program points does not indicate any
+relationship between the variables, and a given variable may have a
+different comparability integer at different program points.
+</p>
+<p>As an example, in the following code:
+</p><div class="example">
+<pre class="example">int sum(int len, int[] a) {
+  int sum=0;
+  for (int i=0; i++; i&lt;len)
+    sum += a[i];
+  return sum;
+}
+</pre></div>
+
+<p>variables <code>i</code> and <code>len</code> are comparable to one another (and
+to indices of array <code>a</code>).  Furthermore, the result is comparable
+to the elements of array <code>a</code>.  The comparability keys for these
+variables might look like
+</p><div class="example">
+<pre class="example">len     - comparability 5
+a       - comparability 8[5]
+return  - comparability 8
+</pre></div>
+
+<p>A comparability entry is required in each variable block.
+</p>
+</li><li> <code>parent &lt;parent-ppt&gt; &lt;relation-id&gt; [&lt;parent-variable&gt;]</code>
+
+<p>Optionally specifies the parent variable of this variable in the program
+point/variable hierarchy.  The <var>parent-ppt</var> is the name of the
+parent program point.  The <var>relation-id</var> must be one of the
+relationship ids specified for this program point.  The
+<var>parent-variable</var> is the name of this variable&rsquo;s parent in the
+parent program point.  If the names are the same, it can be omitted.
+</p>
+</li><li> <code>constant &lt;value&gt;</code>
+
+<p>Optionally specifies a constant value for this variable.  If the variable has
+a compile-time constant value that is specified in the declaration, then
+the variable must be omitted from the data trace
+records.
+</p>
+</li><li> <code>function-args &lt;arg1&gt; &lt;arg2&gt; ...</code>
+
+<p>If this variable is computed as a function of some other variable,
+specifies the arguments to the function; otherwise, the
+<code>function-args</code> line must be omitted.
+The arguments are specified by their
+external variable name.  Multiple arguments are
+blank separated.  For example
+</p><div class="example">
+<pre class="example">function-args a.b this.f1
+</pre></div>
+
+<p>specifies that the function takes two arguments which are <code>a.b</code> and
+<code>this.f1</code>.  As with enclosing variables, each of the arguments must
+be defined as variables.
+</p>
+</li><li> <code>min-value &lt;v&gt;</code>
+
+<p>Optionally specifies the minimum possible value for this variable
+(for instance, due to language-specific restrictions on the type). This
+enables Daikon to suppress invariants that would be &ldquo;obvious&rdquo; in that
+case, such as <code>var &gt;= v</code>.
+</p>
+</li><li> <code>max-value &lt;v&gt;</code>
+
+<p>Optionally specifies the maximum possible value for this variable
+(for instance, due to language-specific restrictions on the type). This
+enables Daikon to suppress invariants that would be &ldquo;obvious&rdquo; in that
+case, such as <code>var &lt;= v</code>.
+</p>
+</li><li> <code>min-length &lt;v&gt;</code>
+
+<p>Optionally specifies the minimum possible length for this variable
+(for instance, due to language-specific restrictions on the type). This
+enables Daikon to suppress invariants that would be &ldquo;obvious&rdquo; in that
+case, such as <code>size(var) &gt;= v</code>.
+Note that this item should be added to the <code><em>arrayname</em>[..]</code> entry
+not the <code><em>arrayname</em>[..]</code> entry.
+</p>
+</li><li> <code>max-length &lt;v&gt;</code>
+
+<p>Optionally specifies the maximum possible length for this variable
+(for instance, due to language-specific restrictions on the type). This
+enables Daikon to suppress invariants that would be &ldquo;obvious&rdquo; in that
+case, such as <code>size(var) &lt;= v</code>.
+Note that this item should be added to the <code><em>arrayname</em>[..]</code> entry
+not the <code><em>arrayname</em>[..]</code> entry.
+</p>
+</li><li> <code>valid-values [&lt;v1&gt; &lt;v2&gt; ... &lt;vN&gt;]</code>
+
+<p>Optionally specifies all the possible values for this
+variable (for instance, due to language-specific restrictions on the
+type). This enables Daikon to suppress invariants that would be
+&ldquo;obvious&rdquo; in that case, such as <code>v is one of {v1, v2, ..., vN}</code>.
+</p>
+</li></ul>
+
+
+<hr>
+<a name="Data-trace-records"></a>
+<div class="header">
+<p>
+Next: <a href="#Example-files" accesskey="n" rel="next">Example files</a>, Previous: <a href="#Declarations" accesskey="p" rel="previous">Declarations</a>, Up: <a href="#File-formats" accesskey="u" rel="up">File formats</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Data-trace-records-1"></a>
+<h3 class="section">A.4 Data trace records</h3>
+
+<a name="index-data-trace-format"></a>
+<a name="index-_002edtrace-file"></a>
+
+<p>A data trace record (also known as a <em>sample</em>) contains run-time value
+information.  Its format is:
+</p><div class="example">
+<pre class="example">&lt;program-point-name&gt;
+this_invocation_nonce
+&lt;nonce-string&gt;
+&lt;varname-1&gt;
+&lt;var-value-1&gt;
+&lt;var-modified-1&gt;
+&lt;varname2&gt;
+&lt;var-value-2&gt;
+&lt;var-modified-2&gt;
+...
+</pre></div>
+
+<p>In other words, the sample record contains:
+</p><ul>
+<li> name of the program point
+
+</li><li> optionally, an arbitrary string (a nonce) used to match up procedure
+entries (whose names conventionally end with <code>:::ENTER</code>) with
+procedure exits (whose names conventionally end with <code>:::EXIT</code>).
+This is necessary in concurrent systems because there may
+be several invocations of a procedure active at once and they do not
+necessarily follow a stack discipline, being exited in the reverse order of
+entry.  For non-concurrent systems, this nonce is not necessary, and
+both the line <code>this_invocation_nonce</code> and the nonce value may be
+omitted.
+
+
+
+</li><li> for each variable:
+<ul>
+<li> name
+</li><li> value
+<ul>
+<li> if an integer: sequence of digits, optionally preceded by a minus sign.
+Boolean values are written as the number 0 (for false) or the number 1
+(for true).  For pointers, the value may be <code>null</code>.
+</li><li> if a string: characters surrounded by double-quotes.  Internal
+double-quotes and backslashes are escaped by a backslash.  Newlines and
+carriage returns are represented as &lsquo;<samp>\n</samp>&rsquo; and &lsquo;<samp>\r</samp>&rsquo;,
+respectively.
+
+</li><li> if an array: open bracket (<code>[</code>), elements separated by
+spaces, close bracket (<code>]</code>).  (Also, the array name
+should end in &lsquo;<samp>[..]</samp>&rsquo;; use &lsquo;<samp>a[..]</samp>&rsquo; for array contents,
+but &lsquo;<samp>a</samp>&rsquo; for the identity of the array itself.)
+</li></ul>
+
+<a name="index-nonsensical-values-for-variables"></a>
+<a name="index-missing-values-for-variables_002c-see-nonsensical-values"></a>
+
+<p>The value representation may also be the string <code>nonsensical</code>;
+see <a href="#Nonsensical-values">Nonsensical values</a>.
+A string or array <em>value</em> is never <code>null</code>.  A <em>reference</em> to a
+string or array may be <code>null</code>, in which case the string or array
+value is printed as <code>nonsensical</code>.
+</p>
+</li><li> modified? (0, 1, or 2).
+<a name="index-modified-bit"></a>
+This value is 0 if the variable has not been assigned to since the
+last time this program point was executed, and 1 if the variable has
+been assigned to since then.  It is safe for an implementation to
+always set it to 1.  It is also safe to always set it to 0, because
+Daikon corrects obviously incorrect modification bits (such as 0 for a
+never-before-seen value).
+
+<p>The special value 2 should be used only (and always) when the value
+field is <code>nonsensical</code>.
+</p>
+</li></ul>
+
+<p>The variables should appear in the same order as they did in the
+declaration of the program point, without omissions or additions.
+</p></li></ul>
+
+<a name="index-nonce_002c-invocation"></a>
+<a name="index-this_005finvocation_005fnonce"></a>
+
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Nonsensical-values" accesskey="1">Nonsensical values</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Variables-that-do-not-appear-in-trace-records" accesskey="2">Variables that do not appear in trace records</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Nonsensical-values"></a>
+<div class="header">
+<p>
+Next: <a href="#Variables-that-do-not-appear-in-trace-records" accesskey="n" rel="next">Variables that do not appear in trace records</a>, Up: <a href="#Data-trace-records" accesskey="u" rel="up">Data trace records</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Nonsensical-values-for-variables"></a>
+<h4 class="subsection">A.4.1 Nonsensical values for variables</h4>
+
+<p>Some trace variables and derived variables may not have a value because
+the expression that computes it cannot be evaluated.  In such a
+circumstance, the value is said to be nonsensical, it is written in the
+trace file as <code>nonsensical</code>, and its modified field must be 2.
+Examples include
+</p><ul>
+<li> <code>x</code> when <code>x</code> is uninitialized or deallocated,
+</li><li> <code>x.y</code> when <code>x</code> is null (or uninitialized or deallocated)
+</li><li> <code>a[i]</code> when <code>i</code> is outside the bounds of <code>a</code> (or
+uninitialized or deallocated, or <code>a</code> is null, uninitialized, or
+deallocated)
+</li></ul>
+
+<p>For trace variables, it is the responsibility of the front end to
+perform a check at run time whenever a variable&rsquo;s value is about to be
+output to the trace, and to output the value &lsquo;<samp>nonsensical</samp>&rsquo;
+(see <a href="#Nonsensical-values">Nonsensical values</a>) rather than crashing the program or
+outputting an uninitialized or meaningless value.  (Determining when an
+expression&rsquo;s value is meaningless is the most challenging part of
+writing an instrumenter for a language like C, since it requires
+tracking memory allocation and initialization.)  For derived variables
+created by Daikon, Daikon does the same thing, setting values to
+&lsquo;<samp>nonsensical</samp>&rsquo; when appropriate.  For controlling Daikon&rsquo;s output in
+the presence of nonsensical values, see the
+<samp>daikon.Daikon.guardNulls</samp> configuration option
+(see <a href="../daikon/General-configuration-options.html#General-configuration-options">General configuration options</a> in <cite>Daikon User Manual</cite>).
+</p>
+
+<hr>
+<a name="Variables-that-do-not-appear-in-trace-records"></a>
+<div class="header">
+<p>
+Previous: <a href="#Nonsensical-values" accesskey="p" rel="previous">Nonsensical values</a>, Up: <a href="#Data-trace-records" accesskey="u" rel="up">Data trace records</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Variables-that-do-not-appear-in-trace-records-1"></a>
+<h4 class="subsection">A.4.2 Variables that do not appear in trace records</h4>
+
+<p>A trace record should contain exactly the same variables as in the
+corresponding declaration.  There is one exception:  for efficiency,
+compile-time constants (e.g., static final variables in Java) are
+omitted from the trace record, since they would have the same value
+every time.
+</p>
+<p>Furthermore, neither the declarations nor the trace records contain derived
+variables (see <a href="../daikon/Variable-names.html#Variable-names">Variable names</a> in <cite>Daikon User Manual</cite>).
+</p>
+
+
+<hr>
+<a name="Example-files"></a>
+<div class="header">
+<p>
+Next: <a href="#Version-1-Declarations" accesskey="n" rel="next">Version 1 Declarations</a>, Previous: <a href="#Data-trace-records" accesskey="p" rel="previous">Data trace records</a>, Up: <a href="#File-formats" accesskey="u" rel="up">File formats</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Example-files-1"></a>
+<h3 class="section">A.5 Example files</h3>
+
+<p>Here are portions of two files <samp>StackArTester.decls</samp> and
+<samp>StackArTester.dtrace</samp>, for a Java class that implements a stack of
+integers using an array as the underlying data structure.  You can see
+many more examples by simply running an existing front end on some Java,
+C, or Perl programs and viewing the resulting files.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Example-declaration-file" accesskey="1">Example declaration file</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Example-data-trace-file" accesskey="2">Example data trace file</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+<hr>
+<a name="Example-declaration-file"></a>
+<div class="header">
+<p>
+Next: <a href="#Example-data-trace-file" accesskey="n" rel="next">Example data trace file</a>, Up: <a href="#Example-files" accesskey="u" rel="up">Example files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Example-declaration-file-1"></a>
+<h4 class="subsection">A.5.1 Example declaration file</h4>
+
+<p>This is part of the file <samp>StackArTester.decls</samp>, a declaration file for
+the <samp>StackAr.java</samp> program
+(see <a href="../daikon/StackAr-example.html#StackAr-example">StackAr example</a> in <cite>Daikon User Manual</cite>).
+</p>
+<div class="smallexample">
+<pre class="smallexample">ppt DataStructures.StackAr.push(java.lang.Object):::ENTER
+ppt-type enter
+parent parent DataStructures.StackAr:::OBJECT 1
+variable this
+  var-kind variable
+  dec-type DataStructures.StackAr
+  rep-type hashcode
+  flags is_param nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.theArray
+  var-kind field theArray
+  enclosing-var this
+  dec-type java.lang.Object[]
+  rep-type hashcode
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.theArray.getClass().getName()
+  var-kind function getClass().getName()
+  enclosing-var this.theArray
+  dec-type java.lang.Class
+  rep-type java.lang.String
+  function-args this.theArray
+  flags nomod synthetic classname
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.theArray[..]
+  var-kind array
+  enclosing-var this.theArray
+  array 1
+  dec-type java.lang.Object[]
+  rep-type hashcode[]
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.theArray[..].getClass().getName()
+  var-kind function getClass().getName()
+  enclosing-var this.theArray[..]
+  array 1
+  dec-type java.lang.Class[]
+  rep-type java.lang.String[]
+  function-args this.theArray[]
+  flags nomod synthetic classname
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.topOfStack
+  var-kind field topOfStack
+  enclosing-var this
+  dec-type int
+  rep-type int
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable DataStructures.StackAr.DEFAULT_CAPACITY
+  var-kind variable
+  dec-type int
+  rep-type int
+  constant 10
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable x
+  var-kind variable
+  dec-type java.lang.Object
+  rep-type hashcode
+  flags is_param nomod
+  comparability 22
+variable x.getClass().getName()
+  var-kind function getClass().getName()
+  enclosing-var x
+  dec-type java.lang.Class
+  rep-type java.lang.String
+  function-args x
+  flags nomod synthetic classname
+  comparability 22
+
+ppt DataStructures.StackAr.push(java.lang.Object):::EXIT103
+ppt-type subexit
+parent parent DataStructures.StackAr:::OBJECT 1
+variable this
+  var-kind variable
+  dec-type DataStructures.StackAr
+  rep-type hashcode
+  flags is_param nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.theArray
+  var-kind field theArray
+  enclosing-var this
+  dec-type java.lang.Object[]
+  rep-type hashcode
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.theArray.getClass().getName()
+  var-kind function getClass().getName()
+  enclosing-var this.theArray
+  dec-type java.lang.Class
+  rep-type java.lang.String
+  function-args this.theArray
+  flags nomod synthetic classname
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.theArray[..]
+  var-kind array
+  enclosing-var this.theArray
+  array 1
+  dec-type java.lang.Object[]
+  rep-type hashcode[]
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.theArray[..].getClass().getName()
+  var-kind function getClass().getName()
+  enclosing-var this.theArray[..]
+  array 1
+  dec-type java.lang.Class[]
+  rep-type java.lang.String[]
+  function-args this.theArray[]
+  flags nomod synthetic classname
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable this.topOfStack
+  var-kind field topOfStack
+  enclosing-var this
+  dec-type int
+  rep-type int
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable DataStructures.StackAr.DEFAULT_CAPACITY
+  var-kind variable
+  dec-type int
+  rep-type int
+  constant 10
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::OBJECT 1
+variable x
+  var-kind variable
+  dec-type java.lang.Object
+  rep-type hashcode
+  flags is_param nomod
+  comparability 22
+variable x.getClass().getName()
+  var-kind function getClass().getName()
+  enclosing-var x
+  dec-type java.lang.Class
+  rep-type java.lang.String
+  function-args x
+  flags nomod synthetic classname
+  comparability 22
+
+ppt DataStructures.StackAr:::CLASS
+ppt-type class
+variable DataStructures.StackAr.DEFAULT_CAPACITY
+  var-kind variable
+  dec-type int
+  rep-type int
+  constant 10
+  flags nomod
+  comparability 22
+
+ppt DataStructures.StackAr:::OBJECT
+ppt-type object
+parent parent DataStructures.StackAr:::CLASS 1
+variable this
+  var-kind variable
+  dec-type DataStructures.StackAr
+  rep-type hashcode
+  flags is_param nomod
+  comparability 22
+variable this.theArray
+  var-kind field theArray
+  enclosing-var this
+  dec-type java.lang.Object[]
+  rep-type hashcode
+  flags nomod
+  comparability 22
+variable this.theArray.getClass().getName()
+  var-kind function getClass().getName()
+  enclosing-var this.theArray
+  dec-type java.lang.Class
+  rep-type java.lang.String
+  function-args this.theArray
+  flags nomod synthetic classname
+  comparability 22
+variable this.theArray[..]
+  var-kind array
+  enclosing-var this.theArray
+  array 1
+  dec-type java.lang.Object[]
+  rep-type hashcode[]
+  flags nomod
+  comparability 22
+variable this.theArray[..].getClass().getName()
+  var-kind function getClass().getName()
+  enclosing-var this.theArray[..]
+  array 1
+  dec-type java.lang.Class[]
+  rep-type java.lang.String[]
+  function-args this.theArray[]
+  flags nomod synthetic classname
+  comparability 22
+variable this.topOfStack
+  var-kind field topOfStack
+  enclosing-var this
+  dec-type int
+  rep-type int
+  flags nomod
+  comparability 22
+variable DataStructures.StackAr.DEFAULT_CAPACITY
+  var-kind variable
+  dec-type int
+  rep-type int
+  constant 10
+  flags nomod
+  comparability 22
+  parent DataStructures.StackAr:::CLASS 1
+</pre></div>
+
+
+<hr>
+<a name="Example-data-trace-file"></a>
+<div class="header">
+<p>
+Previous: <a href="#Example-declaration-file" accesskey="p" rel="previous">Example declaration file</a>, Up: <a href="#Example-files" accesskey="u" rel="up">Example files</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Example-data-trace-file-1"></a>
+<h4 class="subsection">A.5.2 Example data trace file</h4>
+
+<p>This is part of file <samp>StackArTester.dtrace</samp>, which you can create by
+running the instrumented <samp>StackAr.java</samp> program
+(see <a href="../daikon/StackAr-example.html#StackAr-example">StackAr example</a> in <cite>Daikon User Manual</cite>).
+This excerpt contains only the
+first two calls to
+<code>push</code> and the first return from <code>push</code>, along with the
+associated object program point records; omitted records are indicated
+by ellipses.
+</p>
+
+<div class="smallexample">
+<pre class="smallexample">
+...
+
+DataStructures.StackAr.push(java.lang.Object):::ENTER
+this_invocation_nonce
+104
+this
+812272602
+1
+this.theArray
+312077835
+1
+this.theArray.getClass().getName()
+&quot;java.lang.Object[]&quot;
+1
+this.theArray[..]
+[null]
+1
+this.theArray[..].getClass().getName()
+[null]
+1
+this.topOfStack
+-1
+1
+x
+1367164551
+1
+x.getClass().getName()
+&quot;DataStructures.MyInteger&quot;
+1
+
+...
+
+DataStructures.StackAr.push(java.lang.Object):::EXIT103
+this_invocation_nonce
+104
+this
+812272602
+1
+this.theArray
+312077835
+1
+this.theArray.getClass().getName()
+&quot;java.lang.Object[]&quot;
+1
+this.theArray[..]
+[1367164551]
+1
+this.theArray[..].getClass().getName()
+[&quot;DataStructures.MyInteger&quot;]
+1
+this.topOfStack
+0
+1
+x
+1367164551
+1
+x.getClass().getName()
+&quot;DataStructures.MyInteger&quot;
+1
+
+...
+
+DataStructures.StackAr.push(java.lang.Object):::ENTER
+this_invocation_nonce
+159
+this
+2007069404
+1
+this.theArray
+142345952
+1
+this.theArray.getClass().getName()
+&quot;java.lang.Object[]&quot;
+1
+this.theArray[..]
+[null]
+1
+this.theArray[..].getClass().getName()
+[null]
+1
+this.topOfStack
+-1
+1
+x
+111632506
+1
+x.getClass().getName()
+&quot;DataStructures.MyInteger&quot;
+1
+
+...
+
+DataStructures.StackAr.push(java.lang.Object):::EXIT103
+this_invocation_nonce
+159
+this
+2007069404
+1
+this.theArray
+142345952
+1
+this.theArray.getClass().getName()
+&quot;java.lang.Object[]&quot;
+1
+this.theArray[..]
+[111632506]
+1
+this.theArray[..].getClass().getName()
+[&quot;DataStructures.MyInteger&quot;]
+1
+this.topOfStack
+0
+1
+x
+111632506
+1
+x.getClass().getName()
+&quot;DataStructures.MyInteger&quot;
+1
+
+...
+
+</pre></div>
+
+
+<hr>
+<a name="Version-1-Declarations"></a>
+<div class="header">
+<p>
+Previous: <a href="#Example-files" accesskey="p" rel="previous">Example files</a>, Up: <a href="#File-formats" accesskey="u" rel="up">File formats</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Version-1-Declarations-1"></a>
+<h3 class="section">A.6 Version 1 Declarations</h3>
+
+<a name="index-_002edecls-file-_0028version-1_0029"></a>
+
+<p>This section describes the original version (1.0) of declaration
+records.  These are now obsolete and should not be used.
+</p>
+<p>A declarations file can contain program point declarations,
+<code>VarComparability</code> declarations, and <code>ListImplementors declarations</code>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#V1-Program-point-declarations" accesskey="1">V1 Program point declarations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#V1-pptname-format" accesskey="2">V1 pptname format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#V1-VarComparability-declaration" accesskey="3">V1 VarComparability declaration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#V1-ListImplementors-declaration" accesskey="4">V1 ListImplementors declaration</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="V1-Program-point-declarations"></a>
+<div class="header">
+<p>
+Next: <a href="#V1-pptname-format" accesskey="n" rel="next">V1 pptname format</a>, Up: <a href="#Version-1-Declarations" accesskey="u" rel="up">Version 1 Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="V1-Program-point-declarations-1"></a>
+<h4 class="subsection">A.6.1 V1 Program point declarations</h4>
+
+<p>The format of a program point declaration is:
+</p><div class="example">
+<pre class="example">DECLARE
+program-point-name
+varname1
+declared-type1 [# auxiliary-information1]
+representation-type1 [= constant-value1]
+comparable1
+varname2
+declared-type2 [# auxiliary-information2]
+representation-type2 [= constant-value2]
+comparable2
+...
+</pre></div>
+
+<p>Program point information includes:
+</p><ul>
+<li> name (<em>tag</em>) of this program point, an arbitrary string containing no
+tab or newline characters.  This name contains information such as the
+class name or method name; what information is contained depends on
+which instrumenter is being used.  See <a href="#V1-pptname-format">V1 pptname format</a>, for a full
+specification of the naming format.
+
+
+</li><li> for each variable:
+<ul>
+<li> name: a string containing no tabs or newlines.
+See <a href="../daikon/Variable-names.html#Variable-names">Variable names</a> in <cite>Daikon User Manual</cite>.
+
+</li><li> declared type: this is what the programmer used in the declaration of
+the variable.  Array types must be suffixed by the proper number of
+&lsquo;<samp>[]</samp>&rsquo; to indicate their dimensionality.  Names for standard types
+should use Java&rsquo;s names (e.g., <code>int</code>, <code>boolean</code>, etc.), but names for
+user-defined or language-specific types can be arbitrary strings.
+
+</li><li> auxiliary information: optionally, Daikon can be given information
+about the meaning of the variable to help it better interpret the
+values it later sees.  Information is provided as a comma-separated
+list of items, with each item in the form of &lsquo;<samp>key = value</samp>&rsquo;.  Unrecognized
+keys are silently ignored.  All values are
+either &lsquo;<samp>true</samp>&rsquo; or &lsquo;<samp>false</samp>&rsquo;.  Mainly, this information is used for
+collections, which are presented to Daikon as arrays.  Valid keys are:
+
+<dl compact="compact">
+<dt><code>hasDuplicates</code></dt>
+<dd><p>Whether a collection can contain duplicates.  If it
+cannot, Daikon does not check for some invariants that only have
+meaning for collections that can contain duplicate elements.
+</p>
+</dd>
+<dt><code>hasOrder</code></dt>
+<dd><p>Whether order has meaning for a collection.  If order does
+not have meaning in a collection, then Daikon does not check for
+element-wise comparisons between it and other collections.
+</p>
+</dd>
+<dt><code>hasNull</code></dt>
+<dd><p>Whether zero has the special meaning null for the variable or
+collection.  If it does, then Daikon checks for whether a value or the
+elements in a collection are null.
+</p>
+</dd>
+<dt><code>nullTerminated</code></dt>
+<dd><p>Whether a collection has a value (usually null) that
+ends its representation.  If it does, then Daikon looks at the
+collection&rsquo;s size and at the collection&rsquo;s size-1 as &ldquo;interesting&rdquo;
+values.  If it does not, then Daikon only looks at the collection&rsquo;s
+size.
+</p>
+</dd>
+<dt><code>isParam</code></dt>
+<dd><p>Whether a given variable is a parameter to a method.  If a
+variable is a parameter, Daikon avoids printing some information that
+would be considered uninteresting for parameters.  First, invariants
+that use the parameter variable <code>p</code> in its post-state form are not
+printed.  Second, invariants that use fields of <code>p</code> (such as <code>p.x</code>)
+are printed only if <code>p</code> has not changed.  Lastly, some immutable
+characteristics, such as the size of arrays and data types are not
+printed (both can be changed if <code>p</code> is changed, but then, <code>p</code>
+would no longer be interesting).
+</p>
+</dd>
+</dl>
+
+</li><li> representation type:  this describes what will appear in the data
+trace file.  For instance, the declared type might be <code>char[]</code> but
+the representation type might be <code>java.lang.String</code>.  Or, the declared
+type might be <code>Object</code> but the representation type might be
+<code>hashcode</code>, if the address of the object is written to the data trace
+file.
+
+<p>The representation type should be one of <code>boolean</code>, <code>int</code>,
+<code>hashcode</code>, <code>double</code>, or <code>java.lang.String</code>; or an
+array of one of those (indicated by a <code>[]</code> suffix, as in Java).
+Hashcodes are treated like integers, except that their actual values
+are considered uninteresting for the purposes of output; they are
+intended for unique object identifiers like memory addresses or the
+return value of Java&rsquo;s <code>Object.hashCode</code> method.
+</p>
+<p>The representation type may optionally be followed by an equals
+sign and a value; in that case, the variable is known to have a
+compile-time constant value and should be omitted from the data
+trace file.
+</p></li></ul>
+</li><li> <a name="index-comparability_002c-for-variables-_0028_002edecls-format-version-1_0029"></a>
+<a name="index-variable-comparability-_0028_002edecls-format-version-1_0029"></a>
+comparable variables.  This information indicates
+which other variables are comparable to this one.
+
+<p>The point of comparability is that Daikon should not compare unrelated
+quantities.  For example, each person&rsquo;s height in centimeters may always
+be less than their birth year, but it is not helpful for Daikon to
+output &lsquo;<samp>height &lt; birthyear</samp>&rsquo;, because the two variables are measuring
+incomparable quantities.  (In this case, the variables use different
+units of measurement.)
+</p>
+<p>Variable comparability information helps Daikon to avoid computing
+information over unrelated variables.  This saves time and (more
+importantly) improves the quality of Daikon&rsquo;s output.  For more details,
+see the paper
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-relevance-icse2000-abstract.html">&ldquo;Quickly detecting relevant program invariants&rdquo;</a>.
+</p>
+<p>Variable comparability information may be obtained dynamically
+(see <a href="../daikon/Dynamic-abstract-type-inference-_0028DynComp_0029.html#Dynamic-abstract-type-inference-_0028DynComp_0029">Dynamic abstract type inference (DynComp)</a> in <cite>Daikon User Manual</cite>), via
+type-inference based analysis, or in some other manner.  In any event,
+Daikon reads it from the variable declarations.
+</p>
+<p>A comparability for a non-array type is a signed integer.  Two variables
+at the same program point
+are considered comparable if both integers are the same, <em>or</em> if either
+integer is negative.
+A comparability for an array type must contain an
+integer for each index and for the contents; for instance, &lsquo;<samp>5[22][17]</samp>&rsquo;
+for a two-dimensional array.  Comparisons succeed if comparisons over
+each component succeed.
+</p>
+<p>Regardless of comparability, variables at different program points are
+never compared to one another.  Use of the same comparability integer at
+different program points does not indicate any
+relationship between the variables, and a given variable may have a
+different comparability integer at different program points.
+</p>
+<p>As an example, in the following code:
+</p><div class="example">
+<pre class="example">int sum(int len, int[] a) {
+  int sum=0;
+  for (int i=0; i++; i&lt;len)
+    sum += a[i];
+  return sum;
+}
+</pre></div>
+<p>variables <code>i</code> and <code>len</code> are comparable to one another (and
+to indices of array <code>a</code>).  Furthermore, the result is comparable
+to the elements of array <code>a</code>.  A declaration file for these
+variables might look like
+</p><div class="example">
+<pre class="example">len
+int
+int
+5
+a
+int[]
+int[]
+8[5]
+return
+int
+int
+8
+</pre></div>
+
+</li></ul>
+
+
+<hr>
+<a name="V1-pptname-format"></a>
+<div class="header">
+<p>
+Next: <a href="#V1-VarComparability-declaration" accesskey="n" rel="next">V1 VarComparability declaration</a>, Previous: <a href="#V1-Program-point-declarations" accesskey="p" rel="previous">V1 Program point declarations</a>, Up: <a href="#Version-1-Declarations" accesskey="u" rel="up">Version 1 Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Program-point-name-format-specification"></a>
+<h4 class="subsection">A.6.2 Program point name format specification</h4>
+
+<p>Instrumenting code creates a <samp>.decls</samp> file that contains program
+point names such as:
+</p>
+<div class="example">
+<pre class="example">DataStructures.StackAr.push(java.lang.Object):::ENTER
+DataStructures.StackAr.push(java.lang.Object):::EXIT99
+PolyCalc.RatNum.RatNum(int, int):::ENTER
+PolyCalc.RatNum.RatNum(int, int):::EXIT55
+PolyCalc.RatNum.RatNum(int, int):::EXIT67
+</pre></div>
+
+<p>This section describes the format of these program point names.  Someone
+writing an instrumenter for a new language must be sure to follow this
+format specification.
+</p>
+<p>A program point name is a string with no tabs or newlines in it.  The basic
+format is &lsquo;<samp><var>topLevel</var>.<var>bottomLevel</var>:::<var>pptInfo</var></samp>&rsquo;.
+For the first example given above, the top level of the hierarchy would
+be <code>DataStructures.StackAr</code>, the bottom level would be
+<code>push(java.lang.Object)</code>, and the
+program point information would be <code>ENTER</code>.
+</p>
+<p><var>topLevel</var> may contain any number of periods (&lsquo;<samp>.</samp>&rsquo;). <var>bottomLevel</var>
+and <var>pptInfo</var> may not contain any periods.  The string &lsquo;<samp>:::</samp>&rsquo; may only
+appear once.
+</p>
+<p><var>topLevel</var> and <var>pptInfo</var> are required (i.e., they must be non-empty),
+as are the period to the right of <var>topLevel</var> and the colons to the
+left of <var>pptInfo</var>.  However, <var>bottomLevel</var> is optional.
+</p>
+<p>By convention, for Java <var>topLevel</var> consists of the class name, and
+<var>bottomLevel</var> consists of the method name and method signature.
+</p>
+<p>For C, <var>topLevel</var> consists of a filename (or a single period for
+global functions), and <var>bottomLevel</var>
+could consist of a function name and signature.
+More precisely, names of C program points follow these conventions:
+</p>
+<ul>
+<li> Names of program points for file-static functions are prefixed with the name
+of the source file, with &lsquo;<samp>.</samp>&rsquo; characters mapped to &lsquo;<samp>_</samp>&rsquo;,
+followed by a &lsquo;<samp>.</samp>&rsquo;.
+
+</li><li> Names of program points for
+file-scope functions with external linkage are prefixed with &lsquo;<samp>..</samp>&rsquo;.
+For example, a global function program point might be named
+&lsquo;<samp>..main():::ENTER</samp>&rsquo;., the first period denoting that it is global in
+scope and the second denoting the separator between the <var>toplevel</var>
+and <var>bottomlevel</var> parts of the name.
+
+</li><li> Names of C++ functions that are class or namespace members are prefixed
+with the name(s) of their classes or namespaces, with the C++ &lsquo;<samp>::</samp>&rsquo;
+syntax mapped onto the Java &lsquo;<samp>.</samp>&rsquo; syntax used by Daikon.
+</li></ul>
+
+<p>For an Input Output Automaton, <var>topLevel</var> consists of an Automaton name and
+<var>bottomLevel</var> consists of information for a transition state.
+</p>
+<p>By convention, the entry and exit points for a function have names of
+a special form so that they can be associated with one another.
+(Currently, those names end with <code>:::ENTER</code> and <code>:::EXIT</code>.)  This
+convention permits Daikon to generate pre-state variables
+(see <a href="../daikon/Variable-names.html#Variable-names">Variable names</a> in <cite>Daikon User Manual</cite>) automatically at
+procedure exit points, so
+front ends need not output them explicitly.  When there
+are multiple exit points, then each one should be suffixed by a number
+(such as a line number, for example, <code>foo::EXIT22</code>).  Daikon produces
+the main (non-numbered) <code>:::EXIT</code> point automatically.  All the
+numbered exits should contain the same set of variables; in general,
+this means that local variables are not included at exit points.
+Daikon requires that declarations for <code>:::ENTER</code> program
+points appear before any declarations for matching <code>:::EXIT</code> program
+points.
+</p>
+<p>Another convention is to have another program point whose
+<var>bottomLevel</var> is empty and whose <var>pptInfo</var> is  <code>OBJECT</code>:
+for example, <code>StackAr:::OBJECT</code>.  This contains the
+representation invariant (sometimes called the object invariant) of a
+class.  This program point is created automatically by Daikon; it need
+not appear in a trace file.
+</p>
+
+
+
+<hr>
+<a name="V1-VarComparability-declaration"></a>
+<div class="header">
+<p>
+Next: <a href="#V1-ListImplementors-declaration" accesskey="n" rel="next">V1 ListImplementors declaration</a>, Previous: <a href="#V1-pptname-format" accesskey="p" rel="previous">V1 pptname format</a>, Up: <a href="#Version-1-Declarations" accesskey="u" rel="up">Version 1 Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="V1-VarComparability-declaration-1"></a>
+<h4 class="subsection">A.6.3 V1 VarComparability declaration</h4>
+
+<p>There is a special <code>VarComparability</code> declaration that controls how
+the comparability field in program point declarations is interpreted.
+The default <code>VarComparability</code> is <code>implicit</code>, which means
+ordinary comparability as described in <a href="#Program-point-declarations">Program point declarations</a>.
+(The name <code>implicit</code> is retained for historical reasons.)
+You can override it as
+follows:
+</p><div class="example">
+<pre class="example">VarComparability
+none
+</pre></div>
+
+<p>As with all records in Daikon input files, a
+blank line is required between this record and the next one.
+</p>
+<hr>
+<a name="V1-ListImplementors-declaration"></a>
+<div class="header">
+<p>
+Previous: <a href="#V1-VarComparability-declaration" accesskey="p" rel="previous">V1 VarComparability declaration</a>, Up: <a href="#Version-1-Declarations" accesskey="u" rel="up">Version 1 Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="V1-ListImplementors-declaration-1"></a>
+<h4 class="subsection">A.6.4 V1 ListImplementors declaration</h4>
+
+<p>This declaration indicates classes that implement the
+<code>java.util.List</code> interface, and should be treated as sequences
+for the purposes of invariant detection.  The syntax is as follows:
+</p>
+<div class="example">
+<pre class="example">ListImplementors
+&lt;classname1&gt;
+&lt;classname2&gt;
+...
+</pre></div>
+
+<p>Each <code>classname</code> is in Java format (for example, <samp>java.util.LinkedList</samp>).
+</p>
+<p>The <samp>--list_type</samp> command-line option to Daikon can also be used to
+specify classes that implement lists; see <a href="../daikon/Options-to-control-invariant-detection.html#Options-to-control-invariant-detection">Options to control invariant
+detection</a> in <cite>Daikon User Manual</cite>.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#V1-VarComparability-declaration" accesskey="p" rel="previous">V1 VarComparability declaration</a>, Up: <a href="#Version-1-Declarations" accesskey="u" rel="up">Version 1 Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

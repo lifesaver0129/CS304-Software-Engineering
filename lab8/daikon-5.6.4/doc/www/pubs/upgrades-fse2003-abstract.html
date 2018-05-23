@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Predicting problems caused by component upgrades</title>
+</head>
+<body>
+
+<h1>Predicting problems caused by component upgrades</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/upgrades-fse2003.pdf">PDF</a>.
+</p>
+
+<p>
+&#8220;Predicting problems caused by component upgrades&#8221;
+by
+<a href="http://people.csail.mit.edu/smcc/">Stephen McCamant</a>
+and
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>.
+In <em><a href="http://esecfse.cs.helsinki.fi/">ESEC/FSE 2003</a>:
+Proceedings of the 9th European Software Engineering Conference and the
+11th ACM SIGSOFT Symposium on the Foundations of Software
+Engineering</em>, (Helsinki, Finland), Sep. 2003, pp. 287-296.
+<br />
+An extended version appeared as <a href="https://www.csail.mit.edu/">MIT
+Laboratory for Computer Science</a> technical report 941, (Cambridge, MA),
+Mar. 2004.  Revision of first author's Master's thesis.<br />
+An extended version appeared as 
+&#8220;Predicting problems caused by component upgrades&#8221;
+by <a href="http://people.csail.mit.edu/smcc/">Stephen McCamant</a>.
+Masters thesis, <a href="http://www.eecs.mit.edu/">MIT Department of
+Electrical Engineering and Computer Science</a>, (Cambridge, MA),
+January&nbsp;15, 2004.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+We present a new, automatic technique to assess whether replacing a
+component of a software system by a purportedly compatible component may
+change the behavior of the system. The technique operates before
+integrating the new component into the system or running system tests,
+permitting quicker and cheaper identification of problems. It takes into
+account the system's use of the component, because a particular component
+upgrade may be desirable in one context but undesirable in another. No
+formal specifications are required, permitting detection of problems due
+either to errors in the component or to errors in the system. Both
+external and internal behaviors can be compared, enabling detection of
+problems that are not immediately reflected in the output. 
+</p>
+
+<p>
+The technique generates an operational abstraction for the old component
+in the context of the system and generates an operational abstraction for
+the new component in the context of its test suite; an operational
+abstraction is a set of program properties that generalizes over observed
+run-time behavior. If automated logical comparison indicates that the new
+component does not make all the guarantees that the old one did, then the
+upgrade may affect system behavior and should not be performed without
+further scrutiny. In case studies, the technique identified several
+incompatibilities among software components.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/upgrades-fse2003.pdf">PDF</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{McCamantE2003,
+   author = {Stephen McCamant and Michael D. Ernst},
+   title = {Predicting problems caused by component upgrades},
+   booktitle = {ESEC/FSE 2003: Proceedings of the 9th European Software
+	Engineering Conference and the 11th {ACM} {SIGSOFT} Symposium on
+	the Foundations of Software Engineering},
+   pages = {287--296},
+   address = {Helsinki, Finland},
+   month = sep,
+   year = {2003}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

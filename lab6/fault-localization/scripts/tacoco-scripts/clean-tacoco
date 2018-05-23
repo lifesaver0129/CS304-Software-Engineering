@@ -1,0 +1,8 @@
+#!/bin/bash
+# This script removes the files that the run-tacoco and clean-tacoco scripts create
+# the user should re-compile the tacoco dir after cleaning; mvn compile or mvn clean package
+
+cd ../../tacoco
+rm cp.txt jacoco.exec *.json
+rm -r target
+rm -r lib

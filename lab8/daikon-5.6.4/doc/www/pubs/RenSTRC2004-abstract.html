@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Chianti: A tool for change impact analysis of Java programs</title>
+</head>
+<body>
+
+<h1>Chianti: A tool for change impact analysis of Java programs</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://prolangs.cs.vt.edu/refs/docs/oopsla04.pdf">PDF</a>.
+</p>
+
+<p>
+&#8220;Chianti: A tool for change impact analysis of Java programs&#8221;
+by Xiaoxia Ren, Fenil Shah,
+<a href="http://www.franktip.org/">Frank Tip</a>,
+<a href="http://people.cs.vt.edu/~ryder/">Barbara Ryder</a>,
+and Ophelia Chesley.
+In <em><a href="http://www.oopsla.org/2004/ShowPage.do?id=Home">OOPSLA
+2004</a>, Object-Oriented Programming Systems, Languages, and
+Applications</em>, (Vancouver, BC, Canada), Oct. 2004, pp. 432-448.
+<br />
+A previous version appeared as Rutgers University Department of Computer
+Science technical report DCS-TR-551, Apr. 2004.<br />
+A previous version appeared as 
+&#8220;Chianti: A prototype change impact analysis tool for Java&#8221;
+by Xiaoxia Ren, Fenil Shah,
+<a href="http://www.franktip.org/">Frank Tip</a>,
+<a href="http://people.cs.vt.edu/~ryder/">Barbara Ryder</a>,
+Ophelia Chesley, and
+<a href="https://researcher.watson.ibm.com/researcher/view.php?person=us-dolby">Julian Dolby</a>.
+Rutgers University Department of Computer Science technical report
+DCS-TR-533, Sep. 2003.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+This paper reports on the design and implementation of Chianti, a change
+impact analysis tool for Java that is implemented in the context of the
+Eclipse environment. Chianti analyzes two versions of an application and
+decomposes their difference into a set of atomic changes. Change impact is
+then reported in terms of affected (regression or unit) tests whose
+execution behavior may have been modified by the applied changes. For each
+affected test, Chianti also determines a set of affecting changes that
+were responsible for the test's modified behavior. This latter step of
+isolating the changes that induce the failure of one specific test from
+those changes that only affect other tests can be used as a debugging
+technique in situations where a test fails unexpectedly after a long
+editing session. We evaluated Chianti on a year (2002) of CVS data from M.
+Ernst's Daikon system, and found that, on average, 52% of Daikon's unit
+tests are affected. Furthermore, each affected unit test, on average, is
+affected by only 3.95% of the atomic changes. These findings suggest that
+our change impact analysis is a promising technique for assisting
+developers with program understanding and debugging.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://prolangs.cs.vt.edu/refs/docs/oopsla04.pdf">PDF</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{RenSTRC2004,
+   author = {Xiaoxia Ren and Fenil Shah and Frank Tip and Barbara Ryder
+	and Ophelia Chesley},
+   title = {Chianti: A tool for change impact analysis of {Java} programs},
+   booktitle = {OOPSLA 2004, Object-Oriented Programming Systems,
+	Languages, and Applications},
+   pages = {432--448},
+   address = {Vancouver, BC, Canada},
+   month = oct,
+   year = {2004}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-testsubject">Publications that use Daikon as a test subject</a>.
+
+</body>
+</html>

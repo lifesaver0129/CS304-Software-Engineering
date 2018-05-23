@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector Developer Manual: Top</title>
+
+<meta name="description" content="The Daikon Invariant Detector Developer Manual: Top">
+<meta name="keywords" content="The Daikon Invariant Detector Developer Manual: Top">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="../index.html" rel="up" title="(dir)">
+<link href="Introduction.html#Introduction" rel="next" title="Introduction">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<h1 class="settitle" align="center">The Daikon Invariant Detector Developer Manual</h1>
+
+
+
+
+
+
+
+
+
+
+
+<img src="images/daikon-logo.png" alt="images/daikon-logo">
+
+<a name="Top"></a>
+<div class="header">
+<p>
+Next: <a href="Introduction.html#Introduction" accesskey="n" rel="next">Introduction</a>, Up: <a href="../index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Daikon-Invariant-Detector-Developer-Manual"></a>
+<h1 class="top">Daikon Invariant Detector Developer Manual</h1>
+
+<p>This is the developer manual for the Daikon invariant detector.
+It describes Daikon version 5.6.4, released April 3, 2018.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="Introduction.html#Introduction" accesskey="1">Introduction</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Extending-Daikon.html#Extending-Daikon" accesskey="2">Extending Daikon</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Debugging-Daikon.html#Debugging-Daikon" accesskey="3">Debugging Daikon</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Daikon-internals.html#Daikon-internals" accesskey="4">Daikon internals</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Testing.html#Testing" accesskey="5">Testing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Editing.html#Editing" accesskey="6">Editing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Distribution.html#Distribution" accesskey="7">Distribution</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="Historical.html#Historical" accesskey="8">Historical</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="File-formats.html#File-formats" accesskey="9">File formats</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="General-Index.html#General-Index">General Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+</pre></th></tr></table>
+
+<a name="SEC_Contents"></a>
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="no-bullet">
+  <li><a name="toc-Introduction-1" href="Introduction.html#Introduction">1 Introduction</a></li>
+  <li><a name="toc-Extending-Daikon-1" href="Extending-Daikon.html#Extending-Daikon">2 Extending Daikon</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Compiling-Daikon-1" href="Extending-Daikon.html#Compiling-Daikon">2.1 Compiling Daikon</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Requirements-for-compiling-Daikon-1" href="Extending-Daikon.html#Requirements-for-compiling-Daikon">2.1.1 Requirements for compiling Daikon</a></li>
+      <li><a name="toc-Requirements-for-compiling-Kvasir-1" href="Extending-Daikon.html#Requirements-for-compiling-Kvasir">2.1.2 Requirements for compiling Kvasir</a></li>
+    </ul></li>
+    <li><a name="toc-Version-control-repository-1" href="Extending-Daikon.html#Version-control-repository">2.2 Version control repository</a></li>
+    <li><a name="toc-Using-Eclipse-1" href="Extending-Daikon.html#Using-Eclipse">2.3 Using Eclipse</a></li>
+    <li><a name="toc-New-invariants-1" href="Extending-Daikon.html#New-invariants">2.4 New invariants</a></li>
+    <li><a name="toc-New-derived-variables-1" href="Extending-Daikon.html#New-derived-variables">2.5 New derived variables</a></li>
+    <li><a name="toc-New-formatting-for-invariants-1" href="Extending-Daikon.html#New-formatting-for-invariants">2.6 New formatting for invariants</a></li>
+    <li><a name="toc-New-front-ends-1" href="Extending-Daikon.html#New-front-ends">2.7 New front ends</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Example-instrumented-Java-program-1" href="Extending-Daikon.html#Example-instrumented-Java-program">2.7.1 Example instrumented Java program</a></li>
+      <li><a name="toc-Instrumenting-C-programs-1" href="Extending-Daikon.html#Instrumenting-C-programs">2.7.2 Instrumenting C programs</a></li>
+    </ul></li>
+    <li><a name="toc-New-suppressors-1" href="Extending-Daikon.html#New-suppressors">2.8 New suppressors</a></li>
+    <li><a name="toc-Reading-dtrace-files-1" href="Extending-Daikon.html#Reading-dtrace-files">2.9 Reading dtrace files</a></li>
+    <li><a name="toc-System_002eexit-1" href="Extending-Daikon.html#System_002eexit">2.10 System.exit</a></li>
+  </ul></li>
+  <li><a name="toc-Debugging-Daikon-1" href="Debugging-Daikon.html#Debugging-Daikon">3 Debugging Daikon</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Track-logging-1" href="Debugging-Daikon.html#Track-logging">3.1 Track logging</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Adding-track-logging-1" href="Debugging-Daikon.html#Adding-track-logging">3.1.1 Adding track logging</a></li>
+      <li><a name="toc-Track-log-output-1" href="Debugging-Daikon.html#Track-log-output">3.1.2 Track log output</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Daikon-internals-1" href="Daikon-internals.html#Daikon-internals">4 Daikon internals</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Avoiding-work-for-redundant-invariants-1" href="Daikon-internals.html#Avoiding-work-for-redundant-invariants">4.1 Avoiding work for redundant invariants</a></li>
+    <li><a name="toc-Dataflow-hierarchy-1" href="Daikon-internals.html#Dataflow-hierarchy">4.2 Dataflow hierarchy</a></li>
+    <li><a name="toc-Equality-optimization-1" href="Daikon-internals.html#Equality-optimization">4.3 Equality optimization</a></li>
+  </ul></li>
+  <li><a name="toc-Testing-1" href="Testing.html#Testing">5 Testing</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Unit-testing-1" href="Testing.html#Unit-testing">5.1 Unit testing</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Invariant-format-testing-1" href="Testing.html#Invariant-format-testing">5.1.1 Invariant format testing</a></li>
+      <li><a name="toc-Sample-Testing-1" href="Testing.html#Sample-Testing">5.1.2 Sample Testing</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Assertions-1" href="Testing.html#Assertions">5.1.2.1 Assertions</a></li>
+        <li><a name="toc-Example-file-1" href="Testing.html#Example-file">5.1.2.2 Example file</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a name="toc-Regression-tests-1" href="Testing.html#Regression-tests">5.2 Regression tests</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Kvasir-regression-tests-1" href="Testing.html#Kvasir-regression-tests">5.2.1 Kvasir regression tests</a></li>
+      <li><a name="toc-Adding-regression-tests-1" href="Testing.html#Adding-regression-tests">5.2.2 Adding regression tests</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Editing-Daikon-source-code" href="Editing.html#Editing">6 Editing Daikon source code</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Emacs-commands-1" href="Editing.html#Emacs-commands">6.1 Emacs commands</a></li>
+    <li><a name="toc-Eclipse-setup-1" href="Editing.html#Eclipse-setup">6.2 Eclipse setup</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Start-up-Eclipse-1" href="Editing.html#Start-up-Eclipse">6.2.1 Start up Eclipse</a></li>
+      <li><a name="toc-Work-on-existing-coding-projects" href="Editing.html#Existing-projects">6.2.2 Work on existing coding projects</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Import-an-existing-project" href="Editing.html#Import-existing-project">6.2.2.1 Import an existing project</a></li>
+        <li><a name="toc-Importing-a-different-existing-project" href="Editing.html#Import-different-project">6.2.2.2 Importing a different existing project</a></li>
+      </ul></li>
+      <li><a name="toc-Interaction-with-external-tools" href="Editing.html#External-tools">6.2.3 Interaction with external tools</a></li>
+      <li><a name="toc-Using-the-Eclipse-debugger" href="Editing.html#Eclipse-debugger">6.2.4 Using the Eclipse debugger</a></li>
+      <li><a name="toc-Using-Git-with-Eclipse-1" href="Editing.html#Using-Git-with-Eclipse">6.2.5 Using Git with Eclipse</a></li>
+    </ul></li>
+    <li><a name="toc-Editing-daikon_002etexinfo-1" href="Editing.html#Editing-daikon_002etexinfo">6.3 Editing daikon.texinfo</a></li>
+  </ul></li>
+  <li><a name="toc-Making-a-distribution" href="Distribution.html#Distribution">7 Making a distribution</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Directory-layout-requirements-1" href="Distribution.html#Directory-layout-requirements">7.1 Directory layout requirements</a></li>
+    <li><a name="toc-Distribution-setup-instructions-1" href="Distribution.html#Distribution-setup-instructions">7.2 Distribution setup instructions</a></li>
+    <li><a name="toc-Getting-the-latest-version-of-dependencies" href="Distribution.html#Updating-dependencies">7.3 Getting the latest version of dependencies</a></li>
+    <li><a name="toc-The-day-before-the-release-1" href="Distribution.html#The-day-before-the-release">7.4 The day before the release</a></li>
+    <li><a name="toc-Steps-for-making-the-distribution" href="Distribution.html#Distribution-steps">7.5 Steps for making the distribution</a></li>
+  </ul></li>
+  <li><a name="toc-Analyzing-historical-versions-of-Daikon" href="Historical.html#Historical">8 Analyzing historical versions of Daikon</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Branches-1" href="Historical.html#Branches">8.1 Branches</a></li>
+  </ul></li>
+  <li><a name="toc-File-formats-1" href="File-formats.html#File-formats">Appendix A File formats</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Declarations-in-a-separate-file-1" href="File-formats.html#Declarations-in-a-separate-file">A.1 Declarations in a separate file</a></li>
+    <li><a name="toc-File-format-conventions" href="File-formats.html#Conventions">A.2 File format conventions</a></li>
+    <li><a name="toc-Declarations-1" href="File-formats.html#Declarations">A.3 Declarations</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Declaration_002drelated-records-1" href="File-formats.html#Declaration_002drelated-records">A.3.1 Declaration-related records</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Declaration-version-1" href="File-formats.html#Declaration-version">A.3.1.1 Declaration version</a></li>
+        <li><a name="toc-Input_002dlanguage-declaration-1" href="File-formats.html#Input_002dlanguage-declaration">A.3.1.2 Input-language declaration</a></li>
+        <li><a name="toc-Variable-comparability-1" href="File-formats.html#Variable-comparability">A.3.1.3 Variable comparability</a></li>
+        <li><a name="toc-ListImplementors-declaration-1" href="File-formats.html#ListImplementors-declaration">A.3.1.4 ListImplementors declaration</a></li>
+      </ul></li>
+      <li><a name="toc-Program-point-declarations-1" href="File-formats.html#Program-point-declarations">A.3.2 Program point declarations</a></li>
+      <li><a name="toc-Variable-declarations-1" href="File-formats.html#Variable-declarations">A.3.3 Variable declarations</a></li>
+    </ul></li>
+    <li><a name="toc-Data-trace-records-1" href="File-formats.html#Data-trace-records">A.4 Data trace records</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Nonsensical-values-for-variables" href="File-formats.html#Nonsensical-values">A.4.1 Nonsensical values for variables</a></li>
+      <li><a name="toc-Variables-that-do-not-appear-in-trace-records-1" href="File-formats.html#Variables-that-do-not-appear-in-trace-records">A.4.2 Variables that do not appear in trace records</a></li>
+    </ul></li>
+    <li><a name="toc-Example-files-1" href="File-formats.html#Example-files">A.5 Example files</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Example-declaration-file-1" href="File-formats.html#Example-declaration-file">A.5.1 Example declaration file</a></li>
+      <li><a name="toc-Example-data-trace-file-1" href="File-formats.html#Example-data-trace-file">A.5.2 Example data trace file</a></li>
+    </ul></li>
+    <li><a name="toc-Version-1-Declarations-1" href="File-formats.html#Version-1-Declarations">A.6 Version 1 Declarations</a>
+    <ul class="no-bullet">
+      <li><a name="toc-V1-Program-point-declarations-1" href="File-formats.html#V1-Program-point-declarations">A.6.1 V1 Program point declarations</a></li>
+      <li><a name="toc-Program-point-name-format-specification" href="File-formats.html#V1-pptname-format">A.6.2 Program point name format specification</a></li>
+      <li><a name="toc-V1-VarComparability-declaration-1" href="File-formats.html#V1-VarComparability-declaration">A.6.3 V1 VarComparability declaration</a></li>
+      <li><a name="toc-V1-ListImplementors-declaration-1" href="File-formats.html#V1-ListImplementors-declaration">A.6.4 V1 ListImplementors declaration</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-General-Index-1" href="General-Index.html#General-Index">General Index</a></li>
+</ul>
+</div>
+
+
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Introduction.html#Introduction" accesskey="n" rel="next">Introduction</a>, Up: <a href="../index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

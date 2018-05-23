@@ -1,0 +1,43 @@
+<project name="tarantula" default="compile" basedir=".">
+
+<!-- patternset to decrease redundancy in the buildfile-->
+   <patternset id="jars" >
+      <include name="**/*.jar"/>
+   </patternset>
+  
+<!-- Path attribute using the patternset-->
+   <path id="jar.files"> 
+      <fileset dir="lib">
+         <patternset refid="jars"/>
+      </fileset>
+   </path>
+   
+<!-- Target to clean up -->
+    <target name="clean" description="Clean">
+        <delete dir="./bin"/>
+    </target>
+
+<!-- Target to initialize build -->
+    <target name="init">
+        <mkdir dir="./bin"/>
+    </target>
+
+<!-- Target to compile the project -->
+    <target name="compile" depends="init" description="Compile">
+        <javac includeantruntime="true" srcdir="src" destdir="bin" debug="yes" fork="no">
+            <classpath refid="jar.files"/>
+        </javac>
+    </target>
+
+<!-- Target to run the main-->
+    <target name="run.tarantula" depends="compile">
+        <java classname="tarantula.Main">
+            <classpath>
+               <path refid="jar.files"/>
+               <pathelement location="bin"/>
+            </classpath>
+            <arg value="${arg0}"/>
+            <arg value="${arg1}"/>
+        </java>
+    </target>
+</project>

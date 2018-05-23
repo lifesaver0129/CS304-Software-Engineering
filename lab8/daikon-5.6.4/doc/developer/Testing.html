@@ -1,0 +1,540 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector Developer Manual: Testing</title>
+
+<meta name="description" content="The Daikon Invariant Detector Developer Manual: Testing">
+<meta name="keywords" content="The Daikon Invariant Detector Developer Manual: Testing">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Editing.html#Editing" rel="next" title="Editing">
+<link href="Daikon-internals.html#Equality-optimization" rel="previous" title="Equality optimization">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Testing"></a>
+<div class="header">
+<p>
+Next: <a href="Editing.html#Editing" accesskey="n" rel="next">Editing</a>, Previous: <a href="Daikon-internals.html#Daikon-internals" accesskey="p" rel="previous">Daikon internals</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Testing-1"></a>
+<h2 class="chapter">5 Testing</h2>
+
+<a name="index-testing-Daikon"></a>
+
+<p>Daikon has two sets of tests: unit tests (see <a href="#Unit-testing">Unit testing</a>) and
+regression tests (see <a href="#Regression-tests">Regression tests</a>).  If there
+are any differences between the expected results and the ones you get,
+don&rsquo;t check in your changes until you understand which is the desired
+behavior and possibly update the goals.
+</p>
+<p>The Daikon distribution contains unit tests, but not regression tests
+(which would make the distribution much larger).  The regression tests
+appear in Daikon&rsquo;s version control repository (see <a href="Extending-Daikon.html#Version-control-repository">Version control repository</a>), within the <samp>tests</samp> subdirectory.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Unit-testing" accesskey="1">Unit testing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Regression-tests" accesskey="2">Regression tests</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Unit-testing"></a>
+<div class="header">
+<p>
+Next: <a href="#Regression-tests" accesskey="n" rel="next">Regression tests</a>, Up: <a href="#Testing" accesskey="u" rel="up">Testing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Unit-testing-1"></a>
+<h3 class="section">5.1 Unit testing</h3>
+
+<a name="index-unit-testing"></a>
+<a name="index-new-unit-tests"></a>
+<a name="index-adding-new-unit-tests"></a>
+
+<p>The unit tests are found in <samp>daikon/java/daikon/test/</samp>; they use
+the &lsquo;<samp>JUnit</samp>&rsquo; unit testing framework.  They take a few seconds to run.  They
+are automatically run each time you compile Daikon (by running
+<code>make</code> in <samp>$DAIKONDIR/java</samp> or any of its subdirectories).  You can
+also run them explicitly via <code>make unit</code>.  When you write new code
+or modify old code, please try to add unit tests.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Invariant-format-testing" accesskey="1">Invariant format testing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Sample-Testing" accesskey="2">Sample Testing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Invariant-format-testing"></a>
+<div class="header">
+<p>
+Next: <a href="#Sample-Testing" accesskey="n" rel="next">Sample Testing</a>, Up: <a href="#Unit-testing" accesskey="u" rel="up">Unit testing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Invariant-format-testing-1"></a>
+<h4 class="subsection">5.1.1 Invariant format testing</h4>
+
+<p>This tests the formatting of invariants with specified input.  The
+tests are configured in the file <samp>InvariantFormatTest.commands</samp> under
+<samp>daikon/test/</samp>.  Make sure the <samp>InvariantFormatTest.commands</samp> file is
+in the classpath when this tester is run or the tester will not work.
+(It will just tell you that the file is not in the classpath.)
+</p>
+<p>The file is formatted as follows:
+</p><div class="example">
+<pre class="example">&lt;fully qualified class name&gt; [&lt;instantiate args&gt;]
+&lt;type string&gt;
+&lt;goal string&gt;+ &lt;- 1 or more goal strings
+&lt;sample&gt;* &lt;- 0 or more samples
+</pre></div>
+
+<p>The file format should be the same regardless of blank or commented
+lines except in the samples area. No blank lines or comments should
+appear after the goal string before the first sample or between parts
+of samples (these lines are used to determine where sample
+lists end). This will be remedied in a future version of the tester.
+</p>
+<dl compact="compact">
+<dt><code>Instantiate args</code></dt>
+<dd><p>These are optional additional arguments to the static
+instantiate method of the class.  Each argument consists of the type (boolean
+or int) followed by the value.  For example:
+</p><div class="example">
+<pre class="example">boolean true
+int 37 boolean false
+</pre></div>
+
+</dd>
+<dt><code>Type string:</code></dt>
+<dd><p>A type string must consist of one or more of the following literals:
+&lsquo;<samp>int</samp>&rsquo;, &lsquo;<samp>double</samp>&rsquo;, &lsquo;<samp>string</samp>&rsquo;, &lsquo;<samp>int_array</samp>&rsquo;,
+&lsquo;<samp>double_array</samp>&rsquo;, or &lsquo;<samp>string_array</samp>&rsquo;, separated by spaces.
+This string represents the
+types that an invariant is supposed to compare For instance, a binary
+integer comparison would have type string &lsquo;<samp>int int</samp>&rsquo;.  A pairwise
+sequence comparison would have type string &lsquo;<samp>int_array int_array</samp>&rsquo;.
+</p>
+</dd>
+<dt><code>Goal string:</code></dt>
+<dd><p>The goal string must start with the prefix &lsquo;<samp>Goal </samp>&rsquo;, and then
+continue with &lsquo;<samp>(&lt;format type&gt;): </samp>&rsquo;,
+where format type is the format in which the invariant will
+print. After this the representation of the invariant must occur. It
+must represent the invariant result exactly as printed, even white
+space is significant (as proper formatting should be correct down to
+the whitespace). The first variable (the one corresponding to the
+first type in the type string) corresponds with &lsquo;<samp>a</samp>&rsquo;, the second with
+&lsquo;<samp>b</samp>&rsquo; and so on. Format the type string accordingly. (In samples, the
+value of &lsquo;<samp>a</samp>&rsquo; is read first, possibly followed by &lsquo;<samp>b</samp>&rsquo;, and then
+possibly &lsquo;<samp>c</samp>&rsquo;, depending on the arity of the invariant.)
+</p>
+<div class="example">
+<pre class="example">Example:
+Type string, Goals
+ |             |
+\|/            |
+int           \|/
+Goal (daikon): a &gt;= -6
+Goal (java): a &gt;= -6
+Goal (esc): a &gt;= -6
+Goal (ioa): a &gt;= -6
+Goal (jml): a &gt;= -6
+Goal (simplify): (&gt;= |a| -6)
+</pre></div>
+
+<p>Note that the spacing on the goal lines is exact, that is, no extra
+spaces are allowed and no spaces are allowed to be missing. So the
+exact format is again:
+</p><div class="example">
+<pre class="example">Goal&lt;1 space&gt;(&lt;format name&gt;):&lt;1 space&gt;&lt;goal text&gt;
+</pre></div>
+
+</dd>
+<dt><code>Samples:</code></dt>
+<dd><p>Values formatted according to the type string, one value per
+line Make sure that the samples provided are actually instances of that
+particular invariant (That is, if the desired invariant is &lsquo;<samp>a &lt; b</samp>&rsquo;, then
+the first number of each sample better be less than the second)
+</p>
+
+<p>Arrays and strings must be formatted according to the Daikon <samp>.dtrace</samp> file
+convention (for a full description, see <a href="File-formats.html#File-formats">File formats</a>).  This
+states that arrays must be surrounded in brackets (start with &lsquo;<samp>[</samp>&rsquo;, end
+with &lsquo;<samp>]</samp>&rsquo;), and entries must be separated by a space.  Strings must be
+enclosed in quotes (&lsquo;<samp>&quot;</samp>&rsquo;). Quotes within a string can be represented by the
+sequence &lsquo;<samp>\&quot;</samp>&rsquo;.
+</p>
+<p>For example:
+</p><div class="example">
+<pre class="example">[1 2 3 4 5] - an array with the elements 1, 2, 3, 4, 5
+&quot;aString&quot; - a string
+&quot;a string&quot; - also legal as a string
+&quot;\&quot;&quot; - the string with the value &quot;
+[&quot;a&quot; &quot;b&quot; &quot;c&quot;] - an array of strings
+
+int int        &lt;- type string
+Goal: a &lt; b    &lt;- goal string, no comment/blank lines after this
+1              &lt;- or before this
+2
+2              &lt;-|__ Pair of values (a = 2 , b = 3)
+3              &lt;-|
+</pre></div>
+
+<p>Other examples are in the existing test file
+(<samp>InvariantFormatTest.commands</samp>).
+</p></dd>
+</dl>
+
+<p>The output of a test run can be converted into goals by using the
+<samp>--generate_goals</samp> switch to the tester as follows:
+</p><div class="example">
+<pre class="example">java daikon.test.InvariantFormatTester --generate_goals
+</pre></div>
+
+<p>Note that this test is included in the set of tests performed by the
+master tester, and so it is not necessary to separately run this test
+except to generate goal files.
+</p>
+<p>Furthermore, this framework cannot parse complex types from files
+unless they contain a <code>public Object valueOf(String s)</code>
+function. Otherwise the program has no was of knowing how to create
+such an object from a string. All primitives and the String type are
+already recognized.
+</p>
+<hr>
+<a name="Sample-Testing"></a>
+<div class="header">
+<p>
+Previous: <a href="#Invariant-format-testing" accesskey="p" rel="previous">Invariant format testing</a>, Up: <a href="#Unit-testing" accesskey="u" rel="up">Unit testing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Sample-Testing-1"></a>
+<h4 class="subsection">5.1.2 Sample Testing</h4>
+
+<p>Sample testing tests various components of Daikon as samples are being
+processed.  A file (normally <samp>daikon/test/SampleTester.commands</samp>)
+specifies a <samp>.decls</samp> file to use, the samples for each &lsquo;<samp>ppt/var</samp>&rsquo;,
+and assertions
+about Daikon&rsquo;s state (such as whether or not a particular invariant exists).
+</p>
+<p>Each line of the file specifies exactly one command.  Blank lines and
+leading blanks are ignored.  Comments begin with the number sign (&lsquo;<samp>#</samp>&rsquo;) and
+extend to the end of the line.  The type of command is specified as the
+first token on the line followed by a colon.  The supported commands
+are:
+</p>
+<dl>
+<dt><a name="index-decl_003a"></a>SampleTester Command: <strong>decl:</strong> <em>decl-file</em></dt>
+<dd><p>This command specifies the declaration file to use.  This is a normal
+<samp>.decls</samp> file that should follow the format defined in the user manual.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ppt_003a"></a>SampleTester Command: <strong>ppt:</strong> <em>ppt</em></dt>
+<dd><p>This command specifies the program point that will be used with following
+vars, data, and assert commands.  The program point should be specified
+exactly as it appears in the <samp>.decls</samp> file.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-vars_003a"></a>SampleTester Command: <strong>vars:</strong> <em>var1 var2...</em></dt>
+<dd><p>Specifies the variables that will be used on following data lines.
+Each variable must match exactly a variable in the <code>ppt</code>.  Other
+variables will be treated as missing.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-data_003a"></a>SampleTester Command: <strong>data:</strong> <em>val1 val2...</em></dt>
+<dd><p>Specifies the values for each of the previously specified variables.  The
+values must match the type of the variables.  A single dash (-) indicates
+that a variable is missing.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-assert_003a"></a>SampleTester Command: <strong>assert:</strong> <em>assertion</em></dt>
+<dd><p>Specifies an assertion that should be true at this point (see <a href="#Assertions">Assertions</a>).
+The negation of an assertion can be specified by adding an exclamation
+point before the assertion (for example: <code>!inv(&quot;x &gt; y&quot;, x, y</code>)).
+</p></dd></dl>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Assertions" accesskey="1">Assertions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Example-file" accesskey="2">Example file</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Assertions"></a>
+<div class="header">
+<p>
+Next: <a href="#Example-file" accesskey="n" rel="next">Example file</a>, Up: <a href="#Sample-Testing" accesskey="u" rel="up">Sample Testing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Assertions-1"></a>
+<h4 class="subsubsection">5.1.2.1 Assertions</h4>
+
+<p>Assertions are formatted like function calls: <code>&lt;name&gt;(arg1, arg2, ...)</code>.
+The valid assertions for the assert: command are:
+</p>
+<dl>
+<dt><a name="index-inv"></a>Assertion: <strong>inv</strong> <em>format var1 ...</em></dt>
+<dd>
+<p>The <code>inv</code> assertion asserts that the specified invariant exists in the
+current <code>ppt</code>.  The <var>format</var> argument is the result of calling
+<code>format()</code> on
+the invariant.  This is how the invariant is recognized.  The remaining
+arguments are the variables that make up the invariants slice.  These
+must match exactly variables in the <code>ppt</code>.  The <code>inv</code> assertion
+returns true if and only if the slice exists and an invariant is found
+within that slice that
+matches <var>format</var>.
+</p>
+<p>Optionally, <var>format</var> can be replaced by the fully qualified class name of
+the invariant.  In this case, it is only necessary for the class to match.
+</p></dd></dl>
+
+<p>More assertions can easily be added to <samp>SampleTester.java</samp> as required.
+</p>
+<hr>
+<a name="Example-file"></a>
+<div class="header">
+<p>
+Previous: <a href="#Assertions" accesskey="p" rel="previous">Assertions</a>, Up: <a href="#Sample-Testing" accesskey="u" rel="up">Sample Testing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Example-file-1"></a>
+<h4 class="subsubsection">5.1.2.2 Example file</h4>
+
+<p>The following is an simple example of sample testing.
+</p><div class="example">
+<pre class="example">decl: daikon/test/SampleTesters.decls
+
+ppt: foo.f():::EXIT35
+  vars: x y z
+  data: 1 1 0
+  data: 2 1 0
+  assert: inv(&quot;x &gt;= y&quot;, x, y)
+  assert: inv(daikon.inv.binary.twoScalar.IntGreaterEqual,x,y)
+  assert: !inv(&quot;x &lt;= y&quot;, x, y)
+</pre></div>
+
+<hr>
+<a name="Regression-tests"></a>
+<div class="header">
+<p>
+Previous: <a href="#Unit-testing" accesskey="p" rel="previous">Unit testing</a>, Up: <a href="#Testing" accesskey="u" rel="up">Testing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Regression-tests-1"></a>
+<h3 class="section">5.2 Regression tests</h3>
+
+<a name="index-regression-tests"></a>
+
+<p>The regression tests run Daikon on many different inputs and compare
+Daikon&rsquo;s output to expected output.  They take about an hour to run.
+</p>
+<p>The regression tests appear in the <samp>$DAIKONDIR/tests/</samp> directory.  Type
+<code>make</code> in that directory to see a list of Makefile targets.  The
+most common target is <code>make diffs</code>; if any output file has
+non-zero size, the tests fail.  You do not generally need to do
+<code>make clean</code>, which forces re-instrumentation (a possibly slow
+process) the next time you run the tests.
+</p>
+<p>As when you install or compile Daikon, when you run the tests
+environment variable <code>DAIKONDIR</code>
+should be set.  Additionally, environment variable
+<code>JAVA_HOME</code> should be the directory containing the Java JDK.
+</p>
+<p>You should generally run the regression tests before checking it a
+change (especially any non-trivial change).  If any of the regression
+test diffs has a non-zero size, then your edits have changed Daikon&rsquo;s
+output and you should not check in without carefully determining that
+the changes are intentional and desirable (in which case you should update the
+goal output files, so that the diffs are again zero).
+</p>
+<p>There are several subdirectories under <samp>$DAIKONDIR/tests/</samp>, testing
+different components of the Daikon distribution (such as Kvasir,
+see <a href="../daikon/Kvasir.html#Kvasir">Kvasir</a> in <cite>Daikon User Manual</cite>).  Tests of the
+invariant detection engine itself appear in
+<samp>$DAIKONDIR/tests/daikon-tests/</samp>.
+</p>
+<p>Each Makefile under <samp>$DAIKONDIR/tests</samp> includes
+<samp>$DAIKONDIR/tests/Makefile.common</samp>, which contains the logic for all of
+the tests.  <samp>Makefile.common</samp> is somewhat complicated, if only
+because it controls so many types of tests.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Kvasir-regression-tests" accesskey="1">Kvasir regression tests</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Adding-regression-tests" accesskey="2">Adding regression tests</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+<hr>
+<a name="Kvasir-regression-tests"></a>
+<div class="header">
+<p>
+Next: <a href="#Adding-regression-tests" accesskey="n" rel="next">Adding regression tests</a>, Up: <a href="#Regression-tests" accesskey="u" rel="up">Regression tests</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Kvasir-regression-tests-1"></a>
+<h4 class="subsection">5.2.1 Kvasir regression tests</h4>
+
+
+<p>The Kvasir (Daikon C front-end) tests appear in the
+<samp>$DAIKONDIR/tests/kvasir-tests</samp> directory. These tests run Daikon to ensure
+that the Kvasir output is valid Daikon input. To run them, go to
+<samp>$DAIKONDIR/tests/kvasir-tests</samp> or of its sub-directories and run
+<code>make summary-w-daikon</code>. If any tests return &lsquo;<samp>FAILED</samp>&rsquo;, then
+you should look at the appropriate <samp>.diff</samp> file. If you feel that the
+failure was actually a result of your Daikon changes and should be in fact
+correct output, then run <code>make update-inv-goals</code> to update the Daikon
+<samp>invs.goal</samp> file.
+</p>
+
+
+<hr>
+<a name="Adding-regression-tests"></a>
+<div class="header">
+<p>
+Previous: <a href="#Kvasir-regression-tests" accesskey="p" rel="previous">Kvasir regression tests</a>, Up: <a href="#Regression-tests" accesskey="u" rel="up">Regression tests</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Adding-regression-tests-1"></a>
+<h4 class="subsection">5.2.2 Adding regression tests</h4>
+
+<a name="index-adding-new-regression-tests"></a>
+<a name="index-new-regression-tests"></a>
+
+<p>Most Daikon regression tests are in subdirectories of
+<samp>$DAIKONDIR/tests/daikon-tests/</samp>.
+(There is also a <samp>$DAIKONDIR/tests/chicory-tests/</samp> directory,
+but it is usually better to put tests in
+<samp>$DAIKONDIR/tests/daikon-tests/</samp>, even if they are exercising
+Chicory-specific behavior.)
+</p>
+<p>To create a new test, perform the following steps.
+</p>
+<ol>
+<li> Create a new subdirectory of
+<samp>$DAIKONDIR/tests/daikon-tests/</samp>.
+
+</li><li> Put the source files for the test under <samp>$DAIKONDIR/tests/sources/</samp>,
+not in the test directory itself.  Your test may be able to re-use existing
+Java source code that appears in that directory.
+
+</li><li> It is expedient to copy a Makefile from another subdirectory, such as
+<samp>$DAIKONDIR/tests/daikon-tests/StackAr/</samp>, then modify it.
+
+<p>The <samp>Makefile</samp> must contain at least the following entries.
+</p>
+<dl compact="compact">
+<dt>&lsquo;<samp>MAIN_CLASS</samp>&rsquo;</dt>
+<dd><p>Dot separated fully qualified name of the class that contains the main
+entry point for the test.  For example,
+</p><div class="example">
+<pre class="example">MAIN_CLASS := DataStructures.StackArTester.
+</pre></div>
+
+</dd>
+<dt>&lsquo;<samp>include ../../Makefile.common</samp>&rsquo;</dt>
+<dd><p>This includes the common portion of the test Makefiles that does most
+of the work.  See it for more information on the details of regression
+testing.
+</p>
+</dd>
+<dt>&lsquo;<samp>instrument-files-revise:</samp>&rsquo;</dt>
+<dd><p>A target that writes the list of files to instrument.  For example,
+</p><div class="example">
+<pre class="example">instrument-files-revise:
+    echo &quot;DataStructures/StackAr.java&quot; &gt;| ${INST_LIST_FILE}
+</pre></div>
+
+</dd>
+</dl>
+
+<p>If you run <code>make</code> (without a target), you will see a description of
+all of the Makefile&rsquo;s functionality.  Most of that is inherited from
+<samp>$DAIKONDIR/tests/Makefile.common</samp>.
+</p>
+</li><li> The <samp>.goal</samp> files are the expected results of running Daikon and its
+associated tools.
+
+<p>For example, the <samp>StackAr</samp>
+directory contains the following <samp>.goal</samp> files, among others:
+</p><div class="example">
+<pre class="example">Makefile
+Stackar.spinfo-static.goal
+StackAr.txt-daikon.goal
+StackAr.txt-esc.goal
+StackAr.txt-jml.goal
+StackAr.txt-merge-esc.goal
+StackAr.txt-merge-jml.goal
+</pre></div>
+
+<p>If you omit some <samp>.goal</samp> files, then the related tests will not be run.
+(If you can&rsquo;t figure out how to ensure the tests are not run, it may be
+easier to just add the additional <samp>.goal</samp> files.)
+</p>
+<p>You can start out with the <samp>.goal</samp> files empty.
+Execute <code>make diffs</code>, to produce output; the tests will fail
+because the output is not identical to the empty <samp>.goal</samp> files.
+When the test output is satisfactory, execute
+<code>make update-goals</code> to copy the actual results to the <samp>.goal</samp> files.
+Then, commit the goal files, Makefile, and source files
+to the repository.
+</p>
+</li><li> Make the new test be run by adding to the appropriate list (usually
+&lsquo;<samp>everything</samp>&rsquo; or &lsquo;<samp>quick</samp>&rsquo;) in
+<samp>$DAIKONDIR/tests/daikon-tests/Makefile</samp>.
+
+</li></ol>
+
+<p>For more information, see the comments in file
+<samp>$DAIKONDIR/tests/Makefile.common</samp>.
+</p>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Kvasir-regression-tests" accesskey="p" rel="previous">Kvasir regression tests</a>, Up: <a href="#Regression-tests" accesskey="u" rel="up">Regression tests</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

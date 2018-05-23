@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Extending dynamic constraint detection with polymorphic analysis</title>
+</head>
+<body>
+
+<h1>Extending dynamic constraint detection with polymorphic analysis</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://ieeexplore.ieee.org:80/document/4273458/">IEEE Xplore</a>.
+</p>
+
+<p>
+&#8220;Extending dynamic constraint detection with polymorphic analysis&#8221;
+by Nadya Kuzmina and Ruben Gamboa.
+In <em>WODA 2007: Workshop on Dynamic Analysis</em>, (Minneapolis, MN,
+USA), May 2007, pp. 57-63.
+<br />
+A previous version appeared as University of Wyoming technical report
+UWCS-07-01, (Laramie, WY), Jan. 2007.<br />
+A previous version appeared as 
+&#8220;Dynamic constraint detection for polymorphic behavior&#8221;
+by Nadya Kuzmina and Ruben Gamboa.
+In <em>OOPSLA Companion: Object-Oriented Programming Systems, Languages,
+and Applications</em>, (Portland, OR, USA), Oct. 2006, pp. 657-658. 
+Poster.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+The general technique for dynamically detecting likely invariants, as
+implemented by Daikon, lacks specific object-oriented support for
+polymorphism. Daikon examines only the declared type of a variable which
+prohibits it from examination of the runtime variables in the presence of
+polymorphism. The approach presented in this paper extends the technique
+to consider the runtime type of a polymorphic variable, which may have
+different declared and runtime types. The runtime behavior of a
+polymorphic variable is captured by <var>polymorphic constraints</var>
+which have the form of an implication with the name of the runtime class
+in the antecedent. We demonstrate the improved accuracy of the dynamically
+detected specification on the <code>Money</code> example from the JUnit
+testing framework tutorial. Polymorphic constraints are shown to reveal
+the specification of the runtime behavior of the example.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://ieeexplore.ieee.org:80/document/4273458/">IEEE Xplore</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{KuzminaG2007:WODA,
+   author = {Nadya Kuzmina and Ruben Gamboa},
+   title = {Extending dynamic constraint detection with polymorphic analysis},
+   booktitle = {WODA 2007: Workshop on Dynamic Analysis},
+   pages = {57--63},
+   address = {Minneapolis, MN, USA},
+   month = may,
+   year = {2007}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

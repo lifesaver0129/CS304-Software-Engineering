@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Detecting kernel-level rootkits using data structure invariants</title>
+</head>
+<body>
+
+<h1>Detecting kernel-level rootkits using data structure invariants</h1>
+
+<p>
+<b>Download:</b>
+<a href="https://www.cs.rutgers.edu/~vinodg/papers/tdsc2011/tdsc2011.pdf">PDF</a>.
+</p>
+
+<p>
+&#8220;Detecting kernel-level rootkits using data structure invariants&#8221;
+by Arati Baliga, Vinod Ganapathy, and Liviu Iftode.
+<em>IEEE Transactions on Dependable and Secure Computing</em>, vol. 8, no. 5, September/October 2011, pp. 670-684.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Rootkits affect system security by modifying kernel data structures to
+achieve a variety of malicious goals. While early rootkits modified
+control data structures, such as the system call table and values of
+function pointers, recent work has demonstrated rootkits that maliciously
+modify noncontrol data. Most prior techniques for rootkit detection have
+focused solely on detecting control data modifications and, therefore,
+fail to detect such rootkits. This paper presents a novel technique to
+detect rootkits that modify both control and noncontrol data. The main
+idea is to externally observe the execution of the kernel during an
+inference phase and hypothesize invariants on kernel data structures. A
+rootkit detection phase uses these invariants as specifications of data
+structure integrity. During this phase, violation of invariants indicates
+an infection. We have implemented Gibraltar, a prototype tool that infers
+kernel data structure invariants and uses them to detect rootkits.
+Experiments show that Gibraltar can effectively detect previously known
+rootkits, including those that modify noncontrol data structures.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="https://www.cs.rutgers.edu/~vinodg/papers/tdsc2011/tdsc2011.pdf">PDF</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@article{BaligaGI2011,
+   author = {Arati Baliga and Vinod Ganapathy and Liviu Iftode},
+   title = {Detecting kernel-level rootkits using data structure invariants},
+   journal = {IEEE Transactions on Dependable and Secure Computing},
+   volume = {8},
+   number = {5},
+   pages = {670--684},
+   month = {September/October},
+   year = {2011}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

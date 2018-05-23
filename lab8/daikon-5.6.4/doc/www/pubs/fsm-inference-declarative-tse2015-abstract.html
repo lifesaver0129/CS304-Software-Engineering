@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Using declarative specification to improve the understanding, extensibility, and comparison of model-inference algorithms</title>
+</head>
+<body>
+
+<h1>Using declarative specification to improve the understanding, extensibility, and comparison of model-inference algorithms</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/fsm-inference-declarative-tse2015.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/fsm-inference-declarative-icse2013-slides.pdf">ICSE 2013 slides (PDF)</a>,
+<a href="https://github.com/ModelInference/synoptic">InvariMint implementation</a>.
+</p>
+
+<p>
+&#8220;Using declarative specification to improve the understanding,
+extensibility, and comparison of model-inference algorithms&#8221;
+by
+<a href="http://www.cs.ubc.ca/~bestchai/">Ivan Beschastnikh</a>,
+<a href="http://people.cs.umass.edu/~brun/">Yuriy Brun</a>,
+Jenny Abrahamson,
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+and
+<a href="http://www.cs.washington.edu/people/faculty/arvind/">Arvind Krishnamurthy</a>.
+<em><a href="http://www.computer.org/web/tse">IEEE Transactions on Software Engineering</a></em>, vol. 41, no. 4, Apr. 2015, pp. 408-428.
+<br />
+A previous version appeared as 
+&#8220;Unifying FSM-inference algorithms through declarative
+specification&#8221;
+by
+<a href="http://www.cs.ubc.ca/~bestchai/">Ivan Beschastnikh</a>,
+<a href="http://people.cs.umass.edu/~brun/">Yuriy Brun</a>,
+Jenny Abrahamson,
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+and
+<a href="http://www.cs.washington.edu/people/faculty/arvind/">Arvind Krishnamurthy</a>.
+In <em>ICSE 2013, Proceedings of the 35th International Conference on
+Software Engineering</em>, (San Francisco, CA, USA), May 2013, pp.
+252-261.<br />
+An extended version with proofs appeared as 
+&#8220;Unifying FSM-inference algorithms through declarative
+specification&#8221;
+by
+<a href="http://www.cs.ubc.ca/~bestchai/">Ivan Beschastnikh</a>,
+<a href="http://people.cs.umass.edu/~brun/">Yuriy Brun</a>,
+Jenny Abrahamson,
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+and
+<a href="http://www.cs.washington.edu/people/faculty/arvind/">Arvind Krishnamurthy</a>.
+<a href="http://www.cs.washington.edu/">University of Washington Department of Computer Science and Engineering</a> technical report UW-CSE-13-03-01, (Seattle, WA, USA), Mar. 2013.<br />
+A previous version appeared as 
+&#8220;Unifying FSM-inference algorithms through declarative
+specification&#8221;
+by
+<a href="http://www.cs.ubc.ca/~bestchai/">Ivan Beschastnikh</a>,
+<a href="http://people.cs.umass.edu/~brun/">Yuriy Brun</a>,
+Jenny Abrahamson,
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+and
+<a href="http://www.cs.washington.edu/people/faculty/arvind/">Arvind Krishnamurthy</a>.
+<a href="http://www.cs.washington.edu/">University of Washington Department of Computer Science and Engineering</a> technical report UW-CSE-12-08-02, (Seattle, WA, USA), Aug. 2012.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+It is a staple development practice to log system behavior. Numerous
+powerful model-inference algorithms have been proposed to aid developers
+in log analysis and system understanding. Unfortunately, existing
+algorithms are typically declared <var>procedurally</var>, making them
+difficult to understand, extend, and compare. This paper presents
+InvariMint, an approach to specify model-inference algorithms
+<var>declaratively</var>. 
+</p>
+
+<p>
+We applied the InvariMint declarative approach to two model-inference
+algorithms. The evaluation results illustrate that InvariMint
+(1)&nbsp;leads to new fundamental insights and better understanding of
+existing algorithms, (2)&nbsp;simplifies creation of new algorithms,
+including hybrids that combine or extend existing algorithms, and
+(3)&nbsp;makes it easy to compare and contrast previously published
+algorithms. 
+</p>
+
+<p>
+InvariMint's declarative approach can outperform procedural
+implementations. For example, on a log of 50,000 events, InvariMint's
+declarative implementation of the kTails algorithm completes in 12
+seconds, while a procedural implementation completes in 18 minutes. We
+also found that InvariMint's declarative version of the Synoptic algorithm
+can be over 170 times faster than the procedural implementation.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/fsm-inference-declarative-tse2015.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/fsm-inference-declarative-icse2013-slides.pdf">ICSE 2013 slides (PDF)</a>,
+<a href="https://github.com/ModelInference/synoptic">InvariMint implementation</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@article{BeschastnikhBAEK2015,
+   author = {Ivan Beschastnikh and Yuriy Brun and Jenny Abrahamson and
+	Michael D. Ernst and Arvind Krishnamurthy},
+   title = {Using declarative specification to improve the understanding,
+	extensibility, and comparison of model-inference algorithms},
+   journal = {IEEE Transactions on Software Engineering},
+   volume = {41},
+   number = {4},
+   pages = {408--428},
+   month = apr,
+   year = {2015},
+   issn = {0098-5589}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#invariant-detection">Publications that describe invariant
+detection techniques in Daikon</a>.
+
+</body>
+</html>

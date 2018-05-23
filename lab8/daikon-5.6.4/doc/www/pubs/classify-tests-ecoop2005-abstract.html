@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Eclat: Automatic generation and classification of test inputs</title>
+</head>
+<body>
+
+<h1>Eclat: Automatic generation and classification of test inputs</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/classify-tests-ecoop2005.pdf">PDF</a>,
+<a href="http://pag.csail.mit.edu/eclat/">Eclat implementation</a>,
+<a href="https://randoop.github.io/randoop/">Randoop implementation</a>.
+</p>
+
+<p>
+&#8220;Eclat: Automatic generation and classification of test inputs&#8221;
+by
+<a href="http://people.csail.mit.edu/cpacheco/">Carlos Pacheco</a>
+and
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>.
+In <em>ECOOP 2005  &mdash;  Object-Oriented Programming, 19th European
+Conference</em>, (Glasgow, Scotland), July 2005, pp. 504-527.
+<br />
+A previous version appeared as <a href="https://www.csail.mit.edu/">MIT
+Laboratory for Computer Science</a> technical report 968, (Cambridge, MA),
+Oct. 2004.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+This paper describes a technique that selects, from a large set of test
+inputs, a small subset likely to reveal faults in the software under test.
+The technique takes a program or software component, plus a set of correct
+executions &mdash; say, from observations of the software running
+properly, or from an existing test suite that a user wishes to enhance.
+The technique first infers an operational model of the software's
+operation. Then, inputs whose operational pattern of execution differs
+from the model in specific ways are suggestive of faults. These inputs are
+further reduced by selecting only one input per operational pattern. The
+result is a small portion of the original inputs, deemed by the technique
+as most likely to reveal faults. Thus, the technique can also be seen as
+an error-detection technique. 
+</p>
+
+<p>
+The paper describes two additional techniques that complement test input
+selection. One is a technique for automatically producing an oracle (a set
+of assertions) for a test input from the operational model, thus
+transforming the test input into a test case. The other is a
+classification-guided test input generation technique that also makes use
+of operational models and patterns. When generating inputs, it filters out
+code sequences that are unlikely to contribute to legal inputs, improving
+the efficiency of its search for fault-revealing inputs. 
+</p>
+
+<p>
+We have implemented these techniques in the Eclat tool, which generates
+unit tests for Java classes. Eclat's input is a set of classes to test and
+an example program execution &mdash; say, a passing test suite. Eclat's
+output is a set of JUnit test cases, each containing a potentially
+fault-revealing input and a set of assertions at least one of which fails.
+In our experiments, Eclat successfully generated inputs that exposed
+fault-revealing behavior; we have used Eclat to reveal real errors in
+programs. The inputs it selects as fault-revealing are an order of
+magnitude as likely to reveal a fault as all generated inputs.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/classify-tests-ecoop2005.pdf">PDF</a>,
+<a href="http://pag.csail.mit.edu/eclat/">Eclat implementation</a>,
+<a href="https://randoop.github.io/randoop/">Randoop implementation</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{PachecoE2005,
+   author = {Carlos Pacheco and Michael D. Ernst},
+   title = {Eclat: Automatic generation and classification of test inputs},
+   booktitle = {ECOOP 2005 --- Object-Oriented Programming, 19th European
+	Conference},
+   pages = {504--527},
+   address = {Glasgow, Scotland},
+   month = jul,
+   year = {2005}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Quickly detecting relevant program invariants</title>
+</head>
+<body>
+
+<h1>Quickly detecting relevant program invariants</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-relevance-icse2000.pdf">PDF</a>,
+<a href="http://plse.cs.washington.edu/daikon/">Daikon implementation</a>.
+</p>
+
+<p>
+&#8220;Quickly detecting relevant program invariants&#8221;
+by
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+Adam Czeisler,
+<a href="http://cseweb.ucsd.edu/~wgg/">William G. Griswold</a>,
+and David Notkin.
+In <em><a
+href="http://web.archive.org/web/20160405001534/http://www3.ul.ie/~icse2000/">ICSE
+2000</a>, Proceedings of the 22nd International Conference on Software
+Engineering</em>, (Limerick, Ireland), June 2000, pp. 449-458.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Explicitly stated program invariants can help programmers by
+characterizing certain aspects of program execution and identifying
+program properties that must be preserved when modifying code.
+Unfortunately, these invariants are usually absent from code. Previous
+work showed how to dynamically detect invariants from program traces by
+looking for patterns in and relationships among variable values. A
+prototype implementation, Daikon, accurately recovered invariants from
+formally-specified programs, and the invariants it detected in other
+programs assisted programmers in a software evolution task. However,
+Daikon suffered from reporting too many invariants, many of which were not
+useful, and also failed to report some desired invariants. 
+</p>
+
+<p>
+This paper presents, and gives experimental evidence of the efficacy of,
+four approaches for increasing the relevance of invariants reported by a
+dynamic invariant detector. One of them  &mdash;  exploiting unused
+polymorphism  &mdash;  adds desired invariants to the output. The other
+three  &mdash;	suppressing implied invariants, limiting which variables
+are compared to one another, and ignoring unchanged values  &mdash; 
+eliminate undesired invariants from the output and also improve runtime by
+reducing the work done by the invariant detector.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-relevance-icse2000.pdf">PDF</a>,
+<a href="http://plse.cs.washington.edu/daikon/">Daikon implementation</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{ErnstCGN2000:Relevance,
+   author = {Michael D. Ernst and Adam Czeisler and William G. Griswold
+	and David Notkin},
+   title = {Quickly detecting relevant program invariants},
+   booktitle = {ICSE 2000, Proceedings of the 22nd International
+	Conference on Software Engineering},
+   pages = {449--458},
+   address = {Limerick, Ireland},
+   month = jun,
+   year = {2000}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#invariant-detection">Publications that describe invariant
+detection techniques in Daikon</a>.
+
+</body>
+</html>

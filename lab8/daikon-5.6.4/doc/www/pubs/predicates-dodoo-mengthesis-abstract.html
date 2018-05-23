@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Selecting Predicates for Conditional Invariant Detection Using Cluster Analysis</title>
+</head>
+<body>
+
+<h1>Selecting Predicates for Conditional Invariant Detection Using Cluster Analysis</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://pag.csail.mit.edu/pubs/predicates-dodoo-mengthesis.ps">PostScript</a>.
+</p>
+
+<p>
+&#8220;Selecting Predicates for Conditional Invariant Detection Using
+Cluster Analysis&#8221;
+by Nii Dodoo.
+Masters thesis, <a href="http://www.eecs.mit.edu/">MIT Department of
+Electrical Engineering and Computer Science</a>, (Cambridge, MA), Sep.
+2002.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+This thesis proposes a new technique for selecting predicates for
+conditional program invariants	&mdash;  that is, implications of the form
+&#8220;p &rArr; q&#8221; whose consequent is true only when the predicate
+is true. Conditional invariants are prevalent in recursive data
+structures, which behave differently in the base and recursive cases, and
+in many other situations. 
+</p>
+
+<p>
+We argue that inferring conditional invariants in programs can be reduced
+to the task of selecting suitable predicates from which to infer these
+conditional invariants. It is computationally infeasible to try every
+possible predicate for conditional properties, and therefore it is
+necessary to limit possible predicates to only those likely to give good
+results. This thesis describes the use of cluster analysis to select
+suitable predicates for conditional invariant detection from program
+execution traces. The primary thesis is: <var>if &#8220;natural&#8221;
+clusters exist in the values of program execution traces, then invariants
+over these clusters should serve as good predicates for conditional
+invariant detection.</var> 
+</p>
+
+<p>
+The conditional invariants inferred by cluster analysis can be useful to
+programmers for a variety of tasks. In two experiments, we show that they
+are useful in a static verification task and can help programmers identify
+bugs in software programs, and we compare the results with other methods
+for finding conditional invariants.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://pag.csail.mit.edu/pubs/predicates-dodoo-mengthesis.ps">PostScript</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@mastersthesis{Dodoo02:thesis,
+   author = {Nii Dodoo},
+   title = {Selecting Predicates for Conditional Invariant Detection Using
+	Cluster Analysis},
+   school = {MIT Department of Electrical Engineering and Computer Science},
+   address = {Cambridge, MA},
+   month = sep,
+   year = {2002}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

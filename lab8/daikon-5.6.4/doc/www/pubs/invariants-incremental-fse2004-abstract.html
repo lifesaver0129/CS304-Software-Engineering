@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Efficient incremental algorithms for dynamic detection of likely invariants</title>
+</head>
+<body>
+
+<h1>Efficient incremental algorithms for dynamic detection of likely invariants</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-incremental-fse2004.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-incremental-fse2004-slides.pdf">slides (PDF)</a>,
+<a href="http://plse.cs.washington.edu/daikon/">Daikon implementation</a>.
+</p>
+
+<p>
+&#8220;Efficient incremental algorithms for dynamic detection of likely
+invariants&#8221;
+by Jeff H. Perkins and
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>.
+In <em><a href="http://isr.uci.edu/FSE-12/">FSE 2004</a>: Proceedings of
+the ACM SIGSOFT 12th Symposium on the Foundations of Software
+Engineering</em>, (Newport Beach, CA, USA), Nov. 2004, pp. 23-32.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Dynamic detection of likely invariants is a program analysis that
+generalizes over observed values to hypothesize program properties. The
+reported program properties are a set of likely invariants over the
+program, also known as an operational abstraction. Operational
+abstractions are useful in testing, verification, bug detection,
+refactoring, comparing behavior, and many other tasks. 
+</p>
+
+<p>
+Previous techniques for dynamic invariant detection scale poorly or report
+too few properties. Incremental algorithms are attractive because they
+process each observed value only once and thus scale well with data sizes.
+Previous incremental algorithms only checked and reported a small number
+of properties. This paper takes steps toward correcting this problem. The
+paper presents two new incremental algorithms for invariant detection and
+compares them analytically and experimentally to two existing algorithms.
+Furthermore, the paper presents four optimizations and shows how to
+implement them in the context of incremental algorithms. The result is
+more scalable invariant detection that does not sacrifice functionality.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-incremental-fse2004.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/invariants-incremental-fse2004-slides.pdf">slides (PDF)</a>,
+<a href="http://plse.cs.washington.edu/daikon/">Daikon implementation</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{PerkinsE2004,
+   author = {Jeff H. Perkins and Michael D. Ernst},
+   title = {Efficient incremental algorithms for dynamic detection of
+	likely invariants},
+   booktitle = {FSE 2004: Proceedings of the {ACM} {SIGSOFT} 12th
+	Symposium on the Foundations of Software Engineering},
+   pages = {23--32},
+   address = {Newport Beach, CA, USA},
+   month = nov,
+   year = {2004}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#invariant-detection">Publications that describe invariant
+detection techniques in Daikon</a>.
+
+</body>
+</html>

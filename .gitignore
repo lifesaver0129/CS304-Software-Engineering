@@ -1,0 +1,8 @@
+*.doc
+*.pdf
+*.png
+*.jpg
+.DS_Store
+*.docx
+.idea
+*.jpeg

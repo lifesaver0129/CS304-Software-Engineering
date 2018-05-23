@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Building and using pluggable type-checkers</title>
+</head>
+<body>
+
+<h1>Building and using pluggable type-checkers</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/pluggable-checkers-icse2011.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/pluggable-checkers-icse2011-slides.pdf">slides (PDF)</a>,
+<a href="https://checkerframework.org/">implementation</a>.
+</p>
+
+<p>
+&#8220;Building and using pluggable type-checkers&#8221;
+by
+<a href="http://ece.uwaterloo.ca/~wdietl/">Werner Dietl</a>,
+Stephanie Dietzel,
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+<a href="http://www.kivancmuslu.com/">K&#305;van&ccedil; Mu&#351;lu</a>,
+and
+<a href="https://toddschiller.com/">Todd Schiller</a>.
+In <em>ICSE 2011, Proceedings of the 33rd International Conference on
+Software Engineering</em>, (Waikiki, Hawaii, USA), May 2011, pp. 681-690.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+This paper describes practical experience building and using pluggable
+type-checkers. A pluggable type-checker refines (strengthens) the built-in
+type system of a programming language. This permits programmers to detect
+and prevent, at compile time, defects that would otherwise have been
+manifested as run-time errors. The prevented defects may be generally
+applicable to all programs, such as null pointer dereferences. Or, an
+application-specific pluggable type system may be designed for a single
+application. 
+</p>
+
+<p>
+We built a series of pluggable type checkers using the Checker Framework,
+and evaluated them on 2 million lines of code, finding hundreds of bugs in
+the process. We also observed 28 first-year computer science students use
+a checker to eliminate null pointer errors in their course projects. 
+</p>
+
+<p>
+Along with describing the checkers and characterizing the bugs we found,
+we report the insights we had throughout the process. Overall, we found
+that the type checkers were easy to write, easy for novices to
+productively use, and effective in finding real bugs and verifying program
+properties, even for widely tested and used open source projects.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/pluggable-checkers-icse2011.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/pluggable-checkers-icse2011-slides.pdf">slides (PDF)</a>,
+<a href="https://checkerframework.org/">implementation</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{DietlDEMS2011,
+   author = {Werner Dietl and Stephanie Dietzel and Michael D. Ernst and
+	K{\i}van{\c{c}} Mu{\c{s}}lu and Todd Schiller},
+   title = {Building and using pluggable type-checkers},
+   booktitle = {ICSE 2011, Proceedings of the 33rd International
+	Conference on Software Engineering},
+   pages = {681--690},
+   address = {Waikiki, Hawaii, USA},
+   month = may,
+   year = {2011}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-testsubject">Publications that use Daikon as a test subject</a>.
+
+</body>
+</html>

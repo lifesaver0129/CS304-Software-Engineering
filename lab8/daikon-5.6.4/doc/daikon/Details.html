@@ -1,0 +1,531 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector User Manual: Details</title>
+
+<meta name="description" content="The Daikon Invariant Detector User Manual: Details">
+<meta name="keywords" content="The Daikon Invariant Detector User Manual: Details">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="General-Index.html#General-Index" rel="next" title="General Index">
+<link href="Troubleshooting.html#Further-reading" rel="previous" title="Further reading">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Details"></a>
+<div class="header">
+<p>
+Next: <a href="General-Index.html#General-Index" accesskey="n" rel="next">General Index</a>, Previous: <a href="Troubleshooting.html#Troubleshooting" accesskey="p" rel="previous">Troubleshooting</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Details-1"></a>
+<h2 class="chapter">10 Details</h2>
+
+<p>The Daikon invariant detector is named after an Asian radish.
+&ldquo;Daikon&rdquo; is pronounced like the combination of the two one-syllable
+English words &ldquo;die-con&rdquo;.
+</p>
+<p>More information on Daikon can be found in the <cite>Daikon Developer Manual</cite>
+(see <a href="../developer/index.html#Top">Introduction</a> in <cite>Daikon Developer Manual</cite>).
+For instance, the <cite>Daikon Developer Manual</cite> indicates how to extend
+Daikon with new invariants, new derived variables, and front ends for
+new languages.  It also contains information about the implementation
+and about debugging flags.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#History" accesskey="1">History</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#License" accesskey="2">License</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Mailing-lists-reminder" accesskey="3">Mailing lists reminder</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Credits" accesskey="4">Credits</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Citing-Daikon" accesskey="5">Citing Daikon</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="History"></a>
+<div class="header">
+<p>
+Next: <a href="#License" accesskey="n" rel="next">License</a>, Up: <a href="#Details" accesskey="u" rel="up">Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="History-1"></a>
+<h3 class="section">10.1 History</h3>
+<a name="index-history-of-Daikon"></a>
+
+<p>This manual describes Daikon version 5.6.4, released April 3, 2018.
+A more detailed list of revisions since mid-2001 can be found in file
+<a href="../CHANGES"><samp>doc/CHANGES</samp></a>
+in the distribution; this section gives a
+high-level view of the package&rsquo;s history.
+</p>
+<p>There have been four major releases of Daikon, with different features
+and capabilities.  User experiences and technical papers should be
+judged based on the version of Daikon current at the time of use.
+</p>
+<a name="index-Lisp-front-end-1"></a>
+<a name="index-front-end-for-Lisp-1"></a>
+<a name="index-Python-implementation-of-Daikon"></a>
+<a name="index-Daikon-version-5_002e6_002e4"></a>
+
+<p>Daikon 1 was written in the Python programming language in 1998.  It included
+front ends for C, Java, and Lisp.  The C front end was extremely limited
+and failed to operate correctly on all C programs:  sometimes it
+suffered a segmentation fault while instrumenting a target program, and even
+when that did not happen, sometimes the instrumented program
+segmentation-faulted while running.  The Lisp front end operated
+correctly on all Lisp programs, but only instrumented certain common
+constructs, leaving other language features uninstrumented.  The Java front
+end was reasonably reliable.  The Lisp front end instrumented procedure
+entries, exits, and loop heads; the C front ends instrumented only
+procedure entries and exits; and the Java front end instrumented program
+points for object invariants as well as procedure entries and exits.
+Daikon 1 and its Lisp front end were only removed from Daikon version
+control repository in November 2010, though they had long been obsolete.
+</p>
+<p>Daikon 2 was a complete rewrite in the Java programming language and was
+the first version to contain a substantive manual.  Daikon 2 uses the
+same source-based Java front end as did Daikon 1, though with certain
+enhancements.  Its C front end was rewritten from scratch; it
+instruments only procedure entries and exits.  A front end also exists
+for the Input Output Automaton programming language, but is not included in the Daikon
+distribution.
+</p>
+<p>Daikon 3 is a redesign of the invariant detection engine to work
+incrementally &mdash; that is, to examine each sample (execution of a
+program point) once, then discard it.  By contrast, Daikon 1 and
+Daikon 2 made multiple passes over the data.  This simplified their
+algorithms but required storing all the data in memory at once, which
+was prohibitive, particularly since data trace files may be gigabytes
+in size.  Daikon 3 also introduces the idea of a <em>dataflow
+hierarchy</em>, a way to relate and connect program points based on their
+variables.
+</p>
+<p>Daikon 4 includes new binary front ends for Java and for C.  These front
+ends make Daikon much easier to use.  Daikon 4 makes <samp>.decls</samp> files
+optional; program point declarations are permitted to appear in
+<samp>.dtrace</samp> files.  Daikon 4 is released under more liberal licensing
+conditions that place no restrictions on use.
+</p>
+<p>Daikon 5 adds a new front end (Celeriac) for .NET languages (C#, F#,
+and Visual Basic).  The underlying Valgrind was updated and much work done
+to ensure Daikon works properly on the latest versions of Linux.  The
+Chicory front end for Java was modified to support Java 7.  Daikon
+releases were moved from MIT to the University of Washington.
+The bug tracker was moved to Google Code, and mailing lists moved to Google
+Groups.
+</p>
+
+<hr>
+<a name="License"></a>
+<div class="header">
+<p>
+Next: <a href="#Mailing-lists-reminder" accesskey="n" rel="next">Mailing lists reminder</a>, Previous: <a href="#History" accesskey="p" rel="previous">History</a>, Up: <a href="#Details" accesskey="u" rel="up">Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="License-1"></a>
+<h3 class="section">10.2 License</h3>
+
+<a name="index-license"></a>
+
+<p>Copyright &copy; 1998-2008 Massachusetts Institute of Technology
+</p>
+<p>Copyright &copy; 2008-2014 University of Washington
+</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+&ldquo;Software&rdquo;), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+</p>
+<p>The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+</p>
+<p>The names and trademarks of copyright holders may not be used in
+advertising or publicity pertaining to the software without specific prior
+permission. Title to copyright in this software and any associated
+documentation will at all times remain with the copyright holders.
+</p>
+<p>THE SOFTWARE IS PROVIDED &ldquo;AS IS&rdquo;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON INFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Library-licenses" accesskey="1">Library licenses</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Front-end-licenses" accesskey="2">Front end licenses</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+<hr>
+<a name="Library-licenses"></a>
+<div class="header">
+<p>
+Next: <a href="#Front-end-licenses" accesskey="n" rel="next">Front end licenses</a>, Up: <a href="#License" accesskey="u" rel="up">License</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Library-licenses-1"></a>
+<h4 class="subsection">10.2.1 Library licenses</h4>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#getopt-license" accesskey="1">getopt license</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#JUnit-license" accesskey="2">JUnit license</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+
+
+<hr>
+<a name="getopt-license"></a>
+<div class="header">
+<p>
+Next: <a href="#JUnit-license" accesskey="n" rel="next">JUnit license</a>, Up: <a href="#Library-licenses" accesskey="u" rel="up">Library licenses</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="getopt-license-1"></a>
+<h4 class="subsubsection">10.2.1.1 getopt license</h4>
+
+<p>Daikon uses the Java port of the GNU <samp>getopt</samp> library, which is
+copyright 1998 Aaron M. Renn.
+The <samp>getopt</samp> library is free software, and
+may be redistributed or modified under the terms of the GNU Library
+General Public License version 2.  A copy of this license is included
+with the Daikon distribution as the file
+<samp>doc/gnu-gpl-2.txt</samp>.
+</p>
+
+<hr>
+<a name="JUnit-license"></a>
+<div class="header">
+<p>
+Previous: <a href="#getopt-license" accesskey="p" rel="previous">getopt license</a>, Up: <a href="#Library-licenses" accesskey="u" rel="up">Library licenses</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="JUnit-license-1"></a>
+<h4 class="subsubsection">10.2.1.2 JUnit license</h4>
+
+<p>Daikon&rsquo;s unit tests use the <code>JUnit</code> testing framework, which is governed
+by the Common Public License, version 1.0.  <code>JUnit</code> is provided on an
+&ldquo;as is&rdquo; basis, without warranties or conditions of any kind, either
+express or implied including, without limitation, any warranties or
+conditions of title, non-infringement, merchantability or fitness for
+a particular purpose.  Neither the Daikon developers nor the authors of
+the <code>JUnit</code> framework shall have any liability for any direct, indirect,
+incidental, special, exemplary, or consequential damages (including
+without limitation lost profits), however caused and on any theory of
+liability, whether in contract, strict liability, or tort (including
+negligence or otherwise) arising in any way out of the use or
+distribution of <code>JUnit</code> or the exercise of any rights granted in
+the Common Public License, even if advised of the possibility of such
+damages.  Those portions of <code>JUnit</code> that appear in the Daikon
+distribution may be redistributed under the same terms as Daikon
+itself; this offer is made by the Daikon developers exclusively and
+not by any other party.  The Common Public License is included with the
+Daikon distribution as the file <samp>java/junit/cpl-v10.html</samp>.
+</p>
+
+
+<hr>
+<a name="Front-end-licenses"></a>
+<div class="header">
+<p>
+Previous: <a href="#Library-licenses" accesskey="p" rel="previous">Library licenses</a>, Up: <a href="#License" accesskey="u" rel="up">License</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Front-end-licenses-1"></a>
+<h4 class="subsection">10.2.2 Front end licenses</h4>
+
+<p>Note that the front ends discussed in this manual are separate
+programs, and some are made available under different licenses.
+Because the front ends are separate
+programs not derived from the Daikon invariant detection tool, you are
+neither required nor entitled to use the Daikon invariant detector
+itself under these other licenses.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#dfepl-license" accesskey="1">dfepl license</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Kvasir-license" accesskey="2">Kvasir license</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Celeriac-license" accesskey="3">Celeriac license</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+<hr>
+<a name="dfepl-license"></a>
+<div class="header">
+<p>
+Next: <a href="#Kvasir-license" accesskey="n" rel="next">Kvasir license</a>, Up: <a href="#Front-end-licenses" accesskey="u" rel="up">Front end licenses</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="dfepl-license-1"></a>
+<h4 class="subsubsection">10.2.2.1 dfepl license</h4>
+
+<p>The Daikon Perl front end <code>dfepl</code> may be used and distributed under the
+regular Daikon license or, at your option, either the GNU General
+Public License or the Perl Artistic License (that is, under the same
+terms as Perl itself).
+</p>
+
+<hr>
+<a name="Kvasir-license"></a>
+<div class="header">
+<p>
+Next: <a href="#Celeriac-license" accesskey="n" rel="next">Celeriac license</a>, Previous: <a href="#dfepl-license" accesskey="p" rel="previous">dfepl license</a>, Up: <a href="#Front-end-licenses" accesskey="u" rel="up">Front end licenses</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Kvasir-license-1"></a>
+<h4 class="subsubsection">10.2.2.2 Kvasir license</h4>
+
+<p>The Daikon C/C++ front end Kvasir is based in part on the Valgrind
+dynamic program supervision framework, copyright 2000-2004
+Julian Seward, the Sparrow Valgrind tool, copyright 2002
+Nicholas Nethercote, the <code>MemCheck</code> Valgrind tool,
+copyright 2000-2004 Julian Seward, the
+<code>readelf</code> program of the GNU Binutils, copyright 1998-2003 the Free
+Software Foundation, Inc., the GNU C Library, copyright 1995, 1996,
+1997, 2000  the Free Software Foundation, Inc., and the Diet <samp>libc</samp>,
+copyright Felix von Leitner et al.  Kvasir is free software; you can
+redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+Kvasir is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.  You should have received a copy of the GNU General
+Public License along with Kvasir, in the file <samp>kvasir/COPYING</samp>;
+if not, write to the
+Free Software Foundation, Inc., 51 Franklin St., Fifth Floor, Boston, MA
+02110-1301, USA.
+</p>
+
+<hr>
+<a name="Celeriac-license"></a>
+<div class="header">
+<p>
+Previous: <a href="#Kvasir-license" accesskey="p" rel="previous">Kvasir license</a>, Up: <a href="#Front-end-licenses" accesskey="u" rel="up">Front end licenses</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Celeriac-license-1"></a>
+<h4 class="subsubsection">10.2.2.3 Celeriac license</h4>
+
+<p>The Daikon .NET front end Celeriac is Copyright (c) 2012 by
+Kellen Donohue.
+Portions of Celeriac are covered by the Microsoft Public License,
+this is at the top of every such file. Otherwise the following license
+is in effect:
+</p>
+<blockquote>
+<p>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the &quot;Software&quot;),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+</p>
+<p>The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+</p>
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+</p></blockquote>
+
+
+<hr>
+<a name="Mailing-lists-reminder"></a>
+<div class="header">
+<p>
+Next: <a href="#Credits" accesskey="n" rel="next">Credits</a>, Previous: <a href="#License" accesskey="p" rel="previous">License</a>, Up: <a href="#Details" accesskey="u" rel="up">Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Mailing-lists-reminder-1"></a>
+<h3 class="section">10.3 Mailing lists reminder</h3>
+
+<p>If you use Daikon, please subscribe to the &lsquo;<samp>daikon-announce</samp>&rsquo; and
+&lsquo;<samp>daikon-discuss</samp>&rsquo; mailing lists (see <a href="Introduction.html#Mailing-lists">Mailing lists</a>).  The
+&lsquo;<samp>daikon-announce</samp>&rsquo; list will inform you of new versions, enhancements,
+and bug fixes.  On the &lsquo;<samp>daikon-discuss</samp>&rsquo; mailing list, you can obtain
+help from, and offer help to, other users.  We would also appreciate a
+brief description of how you are using Daikon, sent to
+<a href="mailto:daikon-developers@googlegroups.com">daikon-developers@googlegroups.com</a>.  We are curious about how
+users exploit Daikon, and we are eager for anecdotes about its
+successes and failures, so that we can make Daikon more effective for
+its users.
+</p>
+
+<hr>
+<a name="Credits"></a>
+<div class="header">
+<p>
+Next: <a href="#Citing-Daikon" accesskey="n" rel="next">Citing Daikon</a>, Previous: <a href="#Mailing-lists-reminder" accesskey="p" rel="previous">Mailing lists reminder</a>, Up: <a href="#Details" accesskey="u" rel="up">Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Credits-1"></a>
+<h3 class="section">10.4 Credits</h3>
+
+<a name="index-contributors-to-Daikon"></a>
+
+<p>The following individuals have contributed to Daikon:
+Yuriy Brun,
+Jake Cockrell,
+David Cok,
+Forrest Coward,
+Adam Czeisler,
+Brian Demsky,
+Alan Donovan,
+Nii Dodoo,
+Kellen Donohue,
+Alan Dunn,
+Michael Ernst,
+Eric Fellheimer,
+Antonio Garcia-Dominguez,
+William Griswold,
+Florian Gross,
+Philip Guo,
+Melissa Hao,
+Michael Harder,
+Dieter von Holten,
+Greg Jay,
+Josh Kataoka,
+Lee Lin,
+Allen Liu,
+Sandra Loosemore,
+Vikash Mansinghka,
+Stephen McCamant,
+Samir Meghani,
+Benjamin Morse,
+Jelani Nelson,
+Ryan Newton,
+Jeremy Nimmer,
+Toh Ne Win,
+David Notkin,
+Carlos Pacheco,
+Jeff Perkins,
+Jaime Quinonez,
+Mark Roberts,
+Robert Rudd,
+Alexandru Salcianu,
+Todd Schiller,
+Kathryn Shih,
+Eric Spishak,
+Laure Thompson,
+Matthew Tschantz,
+Iuliu Vasilescu,
+Chen Xiao,
+Tao Xie,
+Jeff Yuan.
+</p>
+
+<p>Craig Kaplan carved the Daikon logo.
+</p>
+<p>The feedback of Daikon users has been very valuable.  We are
+particularly grateful to
+B. Thomas Adler,
+Rich Angros,
+Tadashi Araragi,
+Seung Mo Cho,
+Christoph Csallner,
+Dorothy Curtis,
+Juan Pablo Galeotti,
+Diego Garbervetsky,
+Mangala Gowri,
+Madeline Hardojo,
+Engelbert Hubbers,
+Nadya Kuzmina,
+Scott McMaster,
+Charles O&rsquo;Donnell,
+Alex Orso,
+Rodric Rabbah,
+Manos Renieris,
+Rosie Wacha.
+</p>
+<p>Many others have also been generous with their feedback, for which we
+are also grateful.
+</p>
+<p>If your name has been inadvertently omitted from this section, please
+let us know so we can correct the oversight.
+</p>
+<p>Financial support has been provided by:
+National Science Foundation (NSF),
+Defense Advanced Research Projects Agency (DARPA),
+ABB,
+Edison Design Group,
+IBM,
+NTT,
+MIT Oxygen Project,
+Raytheon,
+Toshiba.
+</p>
+
+<hr>
+<a name="Citing-Daikon"></a>
+<div class="header">
+<p>
+Previous: <a href="#Credits" accesskey="p" rel="previous">Credits</a>, Up: <a href="#Details" accesskey="u" rel="up">Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Citing-Daikon-1"></a>
+<h3 class="section">10.5 Citing Daikon</h3>
+
+<p>If you wish to cite Daikon in a publication, we recommend that you
+reference one of the scholarly papers listed at
+<a href="http://plse.cs.washington.edu/daikon/pubs/#invariant-detection">http://plse.cs.washington.edu/daikon/pubs/#invariant-detection</a> in lieu
+of, or in addition to, referencing this manual and the Daikon website
+(<a href="http://plse.cs.washington.edu/daikon/">http://plse.cs.washington.edu/daikon/</a>).
+</p>
+
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Credits" accesskey="p" rel="previous">Credits</a>, Up: <a href="#Details" accesskey="u" rel="up">Details</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

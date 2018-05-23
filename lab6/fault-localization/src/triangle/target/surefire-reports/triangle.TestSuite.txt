@@ -1,0 +1,40 @@
+-------------------------------------------------------------------------------
+Test set: triangle.TestSuite
+-------------------------------------------------------------------------------
+Tests run: 33, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.01 sec <<< FAILURE! - in triangle.TestSuite
+test10(triangle.TestSuite)  Time elapsed: 0.001 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<EQUILATERAL> but was:<ISOSCELES>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:253)
+	at triangle.TestSuite.test10(TestSuite.java:36)
+
+test11(triangle.TestSuite)  Time elapsed: 0 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<EQUILATERAL> but was:<INVALID>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:253)
+	at triangle.TestSuite.test11(TestSuite.java:39)
+
+test14(triangle.TestSuite)  Time elapsed: 0 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<SCALENE> but was:<ISOSCELES>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:253)
+	at triangle.TestSuite.test14(TestSuite.java:48)
+
+test20(triangle.TestSuite)  Time elapsed: 0 sec  <<< FAILURE!
+junit.framework.AssertionFailedError: expected:<EQUILATERAL> but was:<INVALID>
+	at junit.framework.Assert.fail(Assert.java:57)
+	at junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit.framework.Assert.assertEquals(Assert.java:78)
+	at junit.framework.Assert.assertEquals(Assert.java:86)
+	at junit.framework.TestCase.assertEquals(TestCase.java:253)
+	at triangle.TestSuite.test20(TestSuite.java:66)
+

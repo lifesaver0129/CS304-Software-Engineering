@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector Developer Manual: Historical</title>
+
+<meta name="description" content="The Daikon Invariant Detector Developer Manual: Historical">
+<meta name="keywords" content="The Daikon Invariant Detector Developer Manual: Historical">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="File-formats.html#File-formats" rel="next" title="File formats">
+<link href="Distribution.html#Distribution-steps" rel="previous" title="Distribution steps">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Historical"></a>
+<div class="header">
+<p>
+Next: <a href="File-formats.html#File-formats" accesskey="n" rel="next">File formats</a>, Previous: <a href="Distribution.html#Distribution" accesskey="p" rel="previous">Distribution</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Analyzing-historical-versions-of-Daikon"></a>
+<h2 class="chapter">8 Analyzing historical versions of Daikon</h2>
+
+<a name="index-repository-1"></a>
+<a name="index-Git-repository-1"></a>
+<a name="index-Version-control-repository"></a>
+
+
+<p>Daikon&rsquo;s version control repository, available at
+<a href="https://github.com/codespecs/daikon">https://github.com/codespecs/daikon</a>, contains complete development
+history starting from October 1, 2010, and partial development history
+before that time.  The reason for this is that converting the full CVS
+repository would create a repository that would be too
+large for convenient use, and that would also be too large to upload to
+Google Code or GitHub.  The original CVS repository is available for download from
+<a href="http://plse.cs.washington.edu/daikon/download/inv-cvs/">http://plse.cs.washington.edu/daikon/download/inv-cvs/</a>, as files
+<samp>inv-cvsaa</samp> through <samp>inv-cvsai</samp>.  Download
+all 9 files, and then run the following commands to re-create the CVS
+repository, which will be named <samp>invariants/</samp>:
+</p>
+<div class="example">
+<pre class="example">cat inv-cvsa? &gt; inv-cvs-full.zip
+unzip inv-cvs-full.zip
+</pre></div>
+
+
+<p>Developers can usually make do with the Git repository, which has
+complete history for the Java source code.
+</p>
+<p>The CVS repository is most often used by researchers &mdash; for example, in
+the testing community &mdash; because it contains both a CVS repository and
+a set of tests that is more extensive than those in the Daikon
+distribution.  If you are a researcher who uses the Daikon version
+control history, please let us know of any publications so that we can
+publicize them at
+<a href="http://plse.cs.washington.edu/daikon/pubs/#daikon-testsubject">http://plse.cs.washington.edu/daikon/pubs/#daikon-testsubject</a>.
+</p>
+<p>The layout of the Daikon CVS repository differs slightly from that of
+the distribution.  For example, the top-level directory is named
+<samp>invariants/</samp> instead of <samp>daikon/</samp>.
+</p>
+<p>The remainder of this section points out some pitfalls for such
+researchers.  Although
+these problems are easy to avoid, some previous published work has made
+these mistakes; don&rsquo;t let that happen to you!
+</p>
+<p>Recall that Daikon contains two sets of tests (see <a href="Testing.html#Testing">Testing</a>); you
+should include both in any analysis of Daikon&rsquo;s tests.
+(Or, if you can analyze only one of the two sets of tests, then clearly
+explain that the regression tests are the main tests.)
+The regression tests use Makefiles to avoid re-doing unnecessary work,
+so any description of the time taken to run Daikon&rsquo;s tests should be a
+measurement of re-running the tests after they have been run once, not
+running them from a clean checkout or after a <code>make clean</code> command.
+</p>
+<p>Daikon intentionally does not contain tests for third-party libraries
+that are included (sometimes in source form) in the Daikon distribution.
+As one example, the <samp>java/jtb/</samp> directory
+contains an external library.  Therefore, any measurement of Daikon&rsquo;s code
+coverage should not include such libraries, whether distributed in
+source or as <samp>.jar</samp> files.
+</p>
+<p>Historically, the file <samp>doc/www/mit/index.html</samp> in the CVS repository
+contains information about how Daikon&rsquo;s developers use Daikon.
+This file changes from
+time to time &mdash; for instance, it changed when a CVS branch was created
+and later when development on it ceased (see <a href="#Branches">Branches</a>).
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Branches" accesskey="1">Branches</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Branches"></a>
+<div class="header">
+<p>
+Up: <a href="#Historical" accesskey="u" rel="up">Historical</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Branches-1"></a>
+<h3 class="section">8.1 Branches</h3>
+
+<a name="index-branches_002c-in-CVS-repository"></a>
+
+<p>The Daikon CVS repository contains two branches:  a main trunk and a
+branch (named &lsquo;<samp>ENGINE_V2_PATCHES</samp>&rsquo;) for version 2 of Daikon.
+</p>
+<p>The CVS manual
+(see section
+<a href="https://web.archive.org/web/20140619100950/http://ximbiot.com/cvs/manual/cvs-1.11.23/cvs_5.html">&ldquo;Branching and merging&rdquo;</a> of the manual <em>CVS &mdash; Concurrent Versions System</em>)
+describes CVS branches:
+</p>
+<blockquote>
+<p>CVS allows you to isolate changes onto a separate line of development,
+known as a <em>branch</em>.  When you change files on a branch, those changes
+do not appear on the main trunk or other branches.
+</p>
+<p>Later you can move changes from one branch to another branch (or the
+main trunk) by <em>merging</em>.  Merging involves first running
+<code>cvs update -j</code>, to merge the changes into the working directory.
+You can then commit that revision, and thus effectively copy the
+changes onto another branch.
+</p></blockquote>
+
+<p>In early January 2002 (or perhaps in late 2001), we created the
+&lsquo;<samp>ENGINE_V2_PATCHES</samp>&rsquo; branch at the <samp>invariants/java/daikon level</samp> of
+the Daikon CVS repository.  Primary development continued along the CVS
+branch &lsquo;<samp>ENGINE_V2_PATCHES</samp>&rsquo;, which we called
+&ldquo;Daikon version 2&rdquo;  We
+called the CVS trunk &ldquo;Daikon version 3&rdquo; it was experimental, and very
+few people ran its code or performed development on it.  Periodically,
+all changes made to the branch would be merged into the trunk, as one
+large checkin on the trunk.  Later, development on version 3 became more
+common, some changes were merged from the trunk to the branch, and
+version 2 was finally retired (and no more changes were made to the
+branch) in December 2003.
+</p>
+<p>A regular <code>cvs checkout</code> gets the trunk.  The <samp>-r</samp> flag specifies a
+branch.  For example, to get the branch as of June 9, 2002, one could do
+</p>
+<div class="example">
+<pre class="example">cvs -d $pag/projects/invariants/.CVS co -r ENGINE_V2_PATCHES \
+    -D 2003/06/09 invariants/java/daikon
+</pre></div>
+
+<p>Some warnings about analyzing historical versions of Daikon:
+</p><ol>
+<li> When analyzing 2002 (and at least parts of 2003) you should be careful
+to use the branch, not the trunk.  Or, you could analyze both (but as a
+single development effort, not as separate efforts).
+</li><li> When a programmer periodically merged changes from the branch to the
+trunk (or vice versa), that operation resulted in very large checkins.
+The times at which these merges occurred is indicated in file
+<samp>invariants/java/daikon/merging.txt</samp> in the repository; for
+example, this happened 34 times during calendar year 2002.  CVS checkins
+for the branch properly attribute and time-stamp the work that appears
+as a single large checkin on the trunk.
+</li><li> There may be long periods of time in the branch (respectively, the
+trunk) with no checkins, but that does not necessarily indicate a lacuna
+in development, as checkins might have occurred in the meanwhile in the
+trunk (respectively, the branch).
+</li></ol>
+
+
+
+<hr>
+<div class="header">
+<p>
+Up: <a href="#Historical" accesskey="u" rel="up">Historical</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

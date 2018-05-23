@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Automatic extraction of abstract-object-state machines based on branch coverage</title>
+</head>
+<body>
+
+<h1>Automatic extraction of abstract-object-state machines based on branch coverage</h1>
+
+<p>
+<b>Download:</b>
+<a href="https://people.engr.ncsu.edu/txie/publications/retr05.pdf">PDF</a>.
+</p>
+
+<p>
+&#8220;Automatic extraction of abstract-object-state machines based on
+branch coverage&#8221;
+by Hai Yuan and <a href="http://taoxie.cs.illinois.edu/">Tao Xie</a>.
+In <em>1st International Workshop on Reverse Engineering To Requirements
+(RETR 2005)</em>, (Pittsburgh, PA, USA), Nov. 2005, pp. 5-11.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Some requirement modelling languages such as UML's statechart diagrams
+allow developers to specify requirements of state-transition behavior in a
+visual way. These requirement specifications are useful in many ways,
+including helping program understanding and specification-based testing.
+However, there are a large number of legacy systems that are not equipped
+with these requirement specifications. This paper proposes a new approach,
+called Brastra, for extracting object state machines (OSM) from unit-test
+executions. An OSM describes how a method call transits an object from one
+state to another. When the state of an object is represented with
+concrete-state information (the values of fields transitively reachable
+from the object), the extracted OSMs are simply too complex to be useful.
+Our Brastra approach abstracts an object's concrete state to an abstract
+state based on the branch coverage information exercised by methods
+invoked on the object. We have prototyped our Brastra approach and shown
+the utility of the approach with an illustrating example. Our initial
+experience shows that Brastra can extract compact OSMs that provide useful
+information for understanding state-transition behavior.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="https://people.engr.ncsu.edu/txie/publications/retr05.pdf">PDF</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{YuanX2005,
+   author = {Hai Yuan and Tao Xie},
+   title = {Automatic extraction of abstract-object-state machines based
+	on branch coverage},
+   booktitle = {1st International Workshop on Reverse Engineering To
+	Requirements (RETR 2005)},
+   pages = {5--11},
+   address = {Pittsburgh, PA, USA},
+   month = nov,
+   year = {2005}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

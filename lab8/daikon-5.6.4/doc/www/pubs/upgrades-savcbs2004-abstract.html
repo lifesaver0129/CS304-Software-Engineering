@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Formalizing lightweight verification of software component composition</title>
+</head>
+<body>
+
+<h1>Formalizing lightweight verification of software component composition</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/upgrades-savcbs2004.pdf">PDF</a>.
+</p>
+
+<p>
+&#8220;Formalizing lightweight verification of software component
+composition&#8221;
+by
+<a href="http://people.csail.mit.edu/smcc/">Stephen McCamant</a>
+and
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>.
+In <em><a href="http://www.eecs.ucf.edu/~leavens/SAVCBS/2004/">SAVCBS
+2004</a>: Specification and Verification of Component-Based Systems</em>,
+(Newport Beach, CA, USA), Oct. 2004, pp. 47-54.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Software errors often occur at the interfaces between separately developed
+components. Incompatibilities are an especially acute problem when
+upgrading software components, as new versions may be accidentally
+incompatible with old ones. As an inexpensive mechanism to detect many
+such problems, previous work proposed a technique that adapts methods from
+formal verification to use component abstractions that can be
+automatically generated from implementations. The technique reports,
+before performing the replacement or integrating the new component into a
+system, whether the upgrade might be problematic for that particular
+system. The technique is based on a rich model of components that support
+internal state, callbacks, and simultaneous upgrades of multiple
+components, and component abstractions may contain arbitrary logical
+properties including unbounded-state ones. 
+</p>
+
+<p>
+This paper motivates this (somewhat non-standard) approach to component
+verification. The paper also refines the formal model of components,
+provides a formal model of software system safety, gives an algorithm for
+constructing a consistency condition, proves that the algorithm's result
+guarantees system safety in the case of a single-component upgrade, and
+gives a proof outline of the algorithm's correctness in the case of an
+arbitrary upgrade.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/upgrades-savcbs2004.pdf">PDF</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{McCamantE2004:formalizing-upgrades,
+   author = {Stephen McCamant and Michael D. Ernst},
+   title = {Formalizing lightweight verification of software component
+	composition},
+   booktitle = {SAVCBS 2004: Specification and Verification of
+	Component-Based Systems},
+   pages = {47--54},
+   address = {Newport Beach, CA, USA},
+   month = oct,
+   year = {2004}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

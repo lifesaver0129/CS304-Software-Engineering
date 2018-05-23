@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector User Manual: Introduction</title>
+
+<meta name="description" content="The Daikon Invariant Detector User Manual: Introduction">
+<meta name="keywords" content="The Daikon Invariant Detector User Manual: Introduction">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Installing-Daikon.html#Installing-Daikon" rel="next" title="Installing Daikon">
+<link href="index.html#Top" rel="previous" title="Top">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Introduction"></a>
+<div class="header">
+<p>
+Next: <a href="Installing-Daikon.html#Installing-Daikon" accesskey="n" rel="next">Installing Daikon</a>, Previous: <a href="index.html#Top" accesskey="p" rel="previous">Top</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Introduction-1"></a>
+<h2 class="chapter">1 Introduction</h2>
+
+
+<p><a href="http://plse.cs.washington.edu/daikon/">Daikon</a> is an implementation of
+dynamic detection of likely invariants; that is, the Daikon invariant
+detector reports likely program invariants.  An invariant is a property
+that holds at a certain point or points in a program; these are often
+seen in assert statements, documentation, and formal specifications.
+Invariants can be useful in program understanding and a host of other
+applications.  Examples include &lsquo;<samp>x.field &gt; abs(y)</samp>&rsquo;; &lsquo;<samp>y = 2*x+3</samp>&rsquo;;
+&lsquo;<samp>array a is sorted</samp>&rsquo;; &lsquo;<samp>for all list objects lst, lst.next.prev =
+lst</samp>&rsquo;; &lsquo;<samp>for all treenode objects n, n.left.value &lt; n.right.value</samp>&rsquo;; &lsquo;<samp>p
+!= null =&gt; p.content in myArray</samp>&rsquo;; and many more.  You can extend Daikon
+to add new properties (see <a href="Enhancing-Daikon-output.html#Enhancing-Daikon-output">Enhancing Daikon output</a>, or
+see <a href="../developer/New-invariants.html#New-invariants">New invariants</a> in <cite>Daikon Developer Manual</cite>).
+</p>
+<p>Dynamic invariant detection runs a program, observes the values that the
+program computes, and then reports properties that were true over the
+observed executions.
+Daikon can detect properties in C, C++, C#, Eiffel, F#, Java, Perl, and
+Visual Basic programs;
+in spreadsheet files; and in other data sources.  (Dynamic invariant
+detection is a machine learning technique that can be applied to
+arbitrary data.)  It is easy to extend Daikon to other applications.
+</p>
+<p>Daikon is freely available for download from
+<a href="http://plse.cs.washington.edu/daikon/download/">download-site</a>.  The distribution
+includes both source code and
+<a href="http://plse.cs.washington.edu/daikon/download/doc/">documentation</a>,
+and Daikon&rsquo;s license permits unrestricted use (see <a href="Details.html#License">License</a>).  Many
+researchers and practitioners have used Daikon; those uses, and Daikon
+itself, are described in various
+<a href="http://plse.cs.washington.edu/daikon/pubs/">publications</a>.
+</p>
+<p>For more information on Daikon,
+see <a href="../developer/index.html#Top">Introduction</a> in <cite>Daikon Developer Manual</cite>.
+For instance, the <cite>Daikon Developer Manual</cite> indicates how to
+extend Daikon with new invariants, new derived variables, and front
+ends for new languages.  It also contains information about the
+implementation and about debugging flags.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Mailing-lists" accesskey="1">Mailing lists</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Mailing-lists"></a>
+<div class="header">
+<p>
+Up: <a href="#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Mailing-lists-1"></a>
+<h3 class="section">1.1 Mailing lists</h3>
+<a name="index-mailing-lists"></a>
+<a name="index-daikon_002dannounce-mailing-list"></a>
+<a name="index-daikon_002ddiscuss-mailing-list"></a>
+<a name="index-daikon_002ddevelopers-mailing-list"></a>
+
+<p>The following mailing lists (and their archives) are available:
+</p><dl compact="compact">
+<dt>&lsquo;<samp>daikon-announce@googlegroups.com</samp>&rsquo;</dt>
+<dd><p>A low-volume, announcement-only list.  For example,
+announcements of new releases are sent to this list.
+To subscribe, visit
+<a href="https://groups.google.com/forum/#!forum/daikon-announce">https://groups.google.com/forum/#!forum/daikon-announce</a>.
+</p></dd>
+<dt>&lsquo;<samp>daikon-discuss@googlegroups.com</samp>&rsquo;</dt>
+<dd><p>A moderated list for the community of Daikon users.  Use it to share
+tips and successes, and to get help with questions or problems (after
+checking the documentation).  To subscribe, visit
+<a href="https://groups.google.com/forum/#!forum/daikon-discuss">https://groups.google.com/forum/#!forum/daikon-discuss</a>.
+</p></dd>
+<dt>&lsquo;<samp>daikon-developers@googlegroups.com</samp>&rsquo;</dt>
+<dd><p>This list goes to the Daikon maintainers.  Use it for bug reports,
+suggestions, and the like.  If you are an active contributor to Daikon,
+you may send mail to the list asking to be added.
+</p></dd>
+</dl>
+
+<p>Do <em>not</em> send the same message to multiple mailing lists.  Doing so is
+antisocial:  it causes confusion and extra work.  If you do so, your
+question will not be answered.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Up: <a href="#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+This readme is intended for plume-lib developers.
+The main plume-lib documentation is in file README.html .
+
+
+--Making a release--
+
+To make a plume-lib release and upload it to GitHub:
+
+1. Commit or stash any changes in your copy of the plume-lib repository.
+
+2. Visit URLs in ../java/lib/README to determine if more recent .jar files
+for ../java/lib/ are available.  Here is Emacs code to do so:
+ (progn
+  (find-file "../java/lib/README")
+  (while (re-search-forward "http[^ \n]*" nil t) (browse-url (match-string 0))))
+When you replace any out-of-date ones,
+update file names in files java/.classpath and (in 2 places) java/Makefile .
+
+3. Ensure that file index.html documents any new files.
+To find new files, do
+
+    git diff --name-status v`cat VERSION` | grep '^A'
+
+4. Update file changelog.txt
+To help writing the changelog text, see the log and/or diffs, using one of:
+
+    git log --name-status v`cat VERSION`..HEAD
+    git diff v`cat VERSION`...HEAD
+
+5. Update the VERSION file.
+
+6. Commit and push the changes in your copy of the plume-lib repository.
+
+    git push
+
+7. Wait about 2.5 hours and ensure that Travis jobs pass:
+at least plume-lib, plume-lib-typecheck, daikon, and daikon-typecheck.
+The following commands will open the URLs in your browser.
+
+    xdg-open https://travis-ci.org/mernst/plume-lib
+    sleep 1
+    xdg-open https://travis-ci.org/codespecs/daikon
+    sleep 1
+    xdg-open https://travis-ci.org/typetests/plume-lib-typecheck
+    sleep 1
+    xdg-open https://travis-ci.org/typetests/daikon-typecheck
+
+8. Run the make-plume-release script located in bin:
+
+    cd ..
+    export JAVAC=$CHECKERFRAMEWORK/checker/bin-devel/javac
+    bin/make-plume-release `cat docs/VERSION`
+
+The script requires that $JAVAC or 'javac' point to the JSR 308 compiler.
+If this is the case, then the release is built and the test cases are run.
+The release will be compatible with Java 7, but don't try to use a Java 7
+JDK when making the release.
+
+9. Push the new Git tag created by the script to the repository:
+
+    git push --tags
+
+10. Make a new release on GitHub.
+The exact steps are displayed at the end of the make-plume-release script. They
+are repeated below, but you must replace x.y.z with the correct version number.
+ * browse to https://github.com/mernst/plume-lib/releases/new
+ * set tag to vx.y.z
+ * Release title is: plume-lib version x.y.z
+ * description from docs/changelog.txt, with hard line breaks removed
+ * attach plume-lib-x.y.z.tar.gz
+
+11. Update the web version of the Javadoc.  On a machine connected to the UW
+CSE file system, let $CL be a clone of https://github.com/plume-lib/checklink.
+
+    cd plume-lib/java
+    git pull
+    make javadoc-publish
+    $CL/checklink -q -r `grep -v '^#' $CL/checklink-args.txt` https://types.cs.washington.edu/plume-lib/
+
+This step can be done even without making a new release.

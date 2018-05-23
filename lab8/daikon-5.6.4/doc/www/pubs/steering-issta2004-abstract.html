@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Improving adaptability via program steering</title>
+</head>
+<body>
+
+<h1>Improving adaptability via program steering</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/steering-issta2004.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/steering-issta2004.ppt">slides (PowerPoint)</a>.
+</p>
+
+<p>
+&#8220;Improving adaptability via program steering&#8221;
+by
+<a href="http://www.leelin.com/">Lee Lin</a>
+and
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>.
+In <em><a href="http://cse.unl.edu/~grother/issta2004/">ISSTA 2004</a>,
+Proceedings of the 2004 International Symposium on Software Testing and
+Analysis</em>, (Boston, MA, USA), July 2004, pp. 206-216.
+<br />
+A previous version appeared as 
+&#8220;Improving adaptability via program steering&#8221;
+by <a href="http://www.leelin.com/">Lee Lin</a>.
+Masters thesis, <a href="http://www.eecs.mit.edu/">MIT Department of
+Electrical Engineering and Computer Science</a>, (Cambridge, MA),
+August&nbsp;12, 2004.<br />
+A previous version appeared as 
+&#8220;Improving reliability and adaptability via program steering&#8221;
+by
+<a href="http://www.leelin.com/">Lee Lin</a>
+and
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>.
+In <em>ISSRE Supplementary: Fourteenth International Symposium on Software
+Reliability Engineering, Supplementary Proceeding</em>, (Denver, CO), Nov.
+2003, pp. 313-314.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+A multi-mode software system contains several distinct modes of operation
+and a controller for deciding when to switch between modes. Even when
+developers rigorously test a multi-mode system before deployment, they
+cannot foresee and test for every possible usage scenario. As a result,
+unexpected situations in which the program fails or underperforms (for
+example, by choosing a non-optimal mode) may arise. This research aims to
+mitigate such problems by creating a new mode selector that examines the
+current situation, then chooses a mode that has been successful in the
+past, in situations like the current one. The technique, called program
+steering, creates a new mode selector via machine learning from good
+behavior in testing or in successful operation. Such a strategy, which
+generalizes the knowledge that a programmer has built into the system, may
+select an appropriate mode even when the original controller cannot. We
+have performed experiments on robot control programs written in a
+month-long programming competition. Augmenting these programs via our
+program steering technique had a substantial positive effect on their
+performance in new environments.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/steering-issta2004.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/steering-issta2004.ppt">slides (PowerPoint)</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{LinE2004,
+   author = {Lee Lin and Michael D. Ernst},
+   title = {Improving adaptability via program steering},
+   booktitle = {ISSTA 2004, Proceedings of the 2004 International
+	Symposium on Software Testing and Analysis},
+   pages = {206--216},
+   address = {Boston, MA, USA},
+   month = jul,
+   year = {2004}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

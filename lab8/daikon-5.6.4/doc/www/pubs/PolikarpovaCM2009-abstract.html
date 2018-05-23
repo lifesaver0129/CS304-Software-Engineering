@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>A comparative study of programmer-written and automatically inferred contracts</title>
+</head>
+<body>
+
+<h1>A comparative study of programmer-written and automatically inferred contracts</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://se.ethz.ch/~meyer/publications/testing/citadel-issta.pdf">PDF</a>.
+</p>
+
+<p>
+&#8220;A comparative study of programmer-written and automatically
+inferred contracts&#8221;
+by Nadia Polikarpova, Ilinca Ciupa, and Bertrand Meyer.
+In <em>ISSTA 2009, Proceedings of the 2009 International Symposium on
+Software Testing and Analysis</em>, (Chicago, IL, USA), July 2009, pp.
+93-104.
+<br />
+A previous version appeared as ETH Z&uuml;rich technical report 608,
+(Z&uuml;rich, Switzerland), Sep. 2008.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Where do contracts  &mdash;  specification elements embedded in executable
+code  &mdash;  come from? To produce them, should we rely on the
+programmers, on automatic tools, or some combination? 
+</p>
+
+<p>
+Recent work, in particular the Daikon system, has shown that it is
+possible to infer some contracts automatically from program executions.
+The main incentive has been an assumption that most programmers are
+reluctant to invent the contracts themselves. The experience of
+contract-supporting languages, notably Eiffel, disproves that assumption:
+programmers will include contracts if given the right tools. That
+experience also shows, however, that the resulting contracts are generally
+partial and occasionally incorrect. 
+</p>
+
+<p>
+Contract inference tools provide the opportunity for studying objectively
+the quality of programmer-written contracts, and for assessing the
+respective roles of humans and tools. Working on 25 classes taken from
+different sources such as widely-used standard libraries and code written
+by students, we applied Daikon to infer contracts and compared the results
+(totaling more than 19500 inferred assertion clauses) with the already
+present contracts. 
+</p>
+
+<p>
+We found that a contract inference tool can be used to strengthen
+programmer-written contracts, but cannot infer all contracts that humans
+write. The tool generates around five times as many relevant assertion
+clauses as written by programmers; but it only finds around 60% of those
+originally written by programmers. Around a third of the generated
+assertions clauses are either incorrect or irrelevant. The study also
+uncovered interesting correlations between the quality of inferred
+contracts and some code metrics.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://se.ethz.ch/~meyer/publications/testing/citadel-issta.pdf">PDF</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{PolikarpovaCM2009,
+   author = {Nadia Polikarpova and Ilinca Ciupa and Bertrand Meyer},
+   title = {A comparative study of programmer-written and automatically
+	inferred contracts},
+   booktitle = {ISSTA 2009, Proceedings of the 2009 International
+	Symposium on Software Testing and Analysis},
+   pages = {93--104},
+   address = {Chicago, IL, USA},
+   month = jul,
+   year = {2009}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-methodology">Publications whose methodology
+uses invariant detection</a>.
+
+</body>
+</html>

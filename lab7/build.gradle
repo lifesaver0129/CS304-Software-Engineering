@@ -1,0 +1,34 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName = 'tarantula.Main'
+
+// tag::repositories[]
+repositories {
+    mavenCentral()
+}
+// end::repositories[]
+
+// tag::jar[]
+jar {
+    baseName = 'fault-localization'
+    version =  '0.1.0'
+}
+// end::jar[]
+
+// tag::dependencies[]
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile files('libs/com.gzoltar-0.0.11-jar-with-dependencies.jar')
+    compile files('libs/json-simple-1.1.1.jar')
+    compile files('libs/junit-4.11.jar')
+    compile "joda-time:joda-time:2.2"
+    testCompile "junit:junit:4.+"
+}
+// end::dependencies[]
+
+// tag::wrapper[]
+// end::wrapper[]

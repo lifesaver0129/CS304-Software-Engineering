@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector Developer Manual: Debugging Daikon</title>
+
+<meta name="description" content="The Daikon Invariant Detector Developer Manual: Debugging Daikon">
+<meta name="keywords" content="The Daikon Invariant Detector Developer Manual: Debugging Daikon">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Daikon-internals.html#Daikon-internals" rel="next" title="Daikon internals">
+<link href="Extending-Daikon.html#System_002eexit" rel="previous" title="System.exit">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Debugging-Daikon"></a>
+<div class="header">
+<p>
+Next: <a href="Daikon-internals.html#Daikon-internals" accesskey="n" rel="next">Daikon internals</a>, Previous: <a href="Extending-Daikon.html#Extending-Daikon" accesskey="p" rel="previous">Extending Daikon</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Debugging-Daikon-1"></a>
+<h2 class="chapter">3 Debugging Daikon</h2>
+
+<a name="index-debugging-Daikon"></a>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Track-logging" accesskey="1">Track logging</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<p><a href="../daikon/Daikon-debugging-options.html#Daikon-debugging-options">Daikon debugging options</a> in <cite>Daikon User Manual</cite> describes
+several command-line options that enable logging, which can be a useful
+alternative to using a debugger when debugging Daikon.  Because Daikon
+processes large amounts of data, using a debugger can be difficult.
+</p>
+<p>This chapter describes some of the command-line options in more detail.
+</p>
+
+<hr>
+<a name="Track-logging"></a>
+<div class="header">
+<p>
+Up: <a href="#Debugging-Daikon" accesskey="u" rel="up">Debugging Daikon</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Track-logging-1"></a>
+<h3 class="section">3.1 Track logging</h3>
+
+<a name="index-logging"></a>
+<a name="index-track-logging"></a>
+
+<p>Often it is desirable to print information only about one or more specific
+invariants.  This is distinct from general logging because it concentrates
+on specific invariant objects rather than a particular class or portion of Daikon.
+This is referred to as <em>Track</em> logging because it tracks particular
+values across Daikon.
+</p>
+<p>The <samp>--track <var>class|class|...&lt;var</var><i>,</i><var>var</var><i>,</i><var>var&gt;@ppt</var></samp>
+option to Daikon
+(see <a href="../daikon/Daikon-debugging-options.html#Daikon-debugging-options">Daikon debugging options</a> in <cite>Daikon User Manual</cite>)
+enables track logging.
+The argument to the <samp>--track</samp> option supplies three pieces of information:
+</p>
+<ol>
+<li> The class name of the invariant (e.g., <code>IntEqual</code>).
+Multiple class arguments can be specified separated by pipe symbols
+(&lsquo;<samp>|</samp>&rsquo;).
+
+</li><li> The variables that are used in the invariant (e.g., <code>return</code>,
+<code>size(this.s[])</code>).  The variables are specified in angle brackets
+(&lsquo;<samp>&lt;&gt;</samp>&rsquo;).
+
+</li><li> The program point of interest (e.g.,
+<code>DataStructures.StackAr.findMin()V:::ENTER</code>).
+The program point is preceded by an at sign (&lsquo;<samp>@</samp>&rsquo;).
+
+</li></ol>
+
+<p>Each item is optional.
+For example:
+</p><div class="example">
+<pre class="example">IntEqual&lt;x,y&gt;@makeEmpty()
+LessThan|GreaterThan&lt;return,orig(y)&gt;@EXIT99
+</pre></div>
+
+<p>Multiple <samp>--track</samp> switches can be specified. The class, program point,
+and each of the variables must match one of the specifications in order
+for information concerning the invariant to be printed.
+</p>
+<p>Matching is a simple substring comparison.  The specified item must be
+a substring of the actual item.  For instance, <code>LessThan</code> matches
+both <code>IntLessThan</code> and <code>FloatLessThan</code>.
+</p>
+<p>Program points and variables are specified exactly as they are seen in
+normal Daikon invariant output.  Specifically, <code>Ppt.name</code> and
+<code>VarInfo.name.name()</code> are used to generate the names for comparisons.
+</p>
+<p>Invariants are not the only classes that can be tracked.  Any class name
+is a valid entry.  Thus, for example, to print information about derived
+sequence variables from sequence <code>this.theArray[]</code> and scalar
+<code>x</code> at program point <code>DisjSets.find(int):::EXIT</code>, the tracking
+argument would be:
+</p>
+<div class="smallexample">
+<pre class="smallexample">SequenceScalarSubscriptFactory&lt;x,this.theArray[]&gt;@DisjSets.find(int):::EXIT
+</pre></div>
+
+<p>There are two configuration options that can customize the output.  The
+option <samp>daikon.Debug.showTraceback</samp> will output a stack trace on
+each log statement.  The option <samp>daikon.Debug.logDetail</samp> will cause
+more detailed (and often voluminous) output to be printed.  For more
+information, see <a href="../daikon/Configuration-options.html#Configuration-options">Configuration options</a> in <cite>Daikon User Manual</cite>.
+</p>
+<p>Note that all interesting information is not necessarily logged.
+It will often be necessary to add new logging statements for the specific
+information of interest (see <a href="#Adding-track-logging">Adding track logging</a>).
+This is covered in the next section.
+</p>
+<p>More detailed information can be found in the Javadoc for
+<code><a href="http://plse.cs.washington.edu/daikon/download/api/daikon/Debug.html">daikon.Debug</a></code>
+and
+<a href="http://plse.cs.washington.edu/daikon/download/api/daikon/inv/Invariant.html"><code>daikon.inv.Invariant</code></a>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Adding-track-logging" accesskey="1">Adding track logging</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Track-log-output" accesskey="2">Track log output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Adding-track-logging"></a>
+<div class="header">
+<p>
+Next: <a href="#Track-log-output" accesskey="n" rel="next">Track log output</a>, Up: <a href="#Track-logging" accesskey="u" rel="up">Track logging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Adding-track-logging-1"></a>
+<h4 class="subsection">3.1.1 Adding track logging</h4>
+
+<a name="index-adding-track-logging"></a>
+
+<p>When you add a new invariant, derived variable, or other component to
+Daikon, you should ensure that it supports track logging in the same way
+that existing components do.  This section describes how to do so.
+</p>
+<p>Track logging is based
+around the class name, program point name, and variables of interest.
+Track logging methods accept these parameters and a string to be printed.
+<samp>Debug.java</samp> implements the following basic log methods:
+</p>
+<div class="example">
+<pre class="example">log (String)
+log (Class, Ppt, String)
+log (Class, Ppt, VarInfo[], String)
+</pre></div>
+
+<p>The first uses the cached version of the <code>Class</code>, <code>Ppt</code>,
+and <code>VarInfo</code> that
+was provided in the constructor.  The second uses the specified
+variables and the <code>VarInfo</code> information from <code>Ppt</code>.
+The third specifies each variable explicitly.
+</p>
+<p>When logging is not enabled, calling the logging functions can take a
+significant amount of time (because the parameters need to be evaluated and
+passed).  To minimize this, a function <code>logOn()</code> is provided to see
+if logging is enabled.  It is recommended that code of the following form
+be used for efficiency:
+</p>
+<div class="example">
+<pre class="example">if (Debug.logOn()) {
+  Debug.log (getClass(), ppt, &quot;Entering routine foo&quot;);
+}
+</pre></div>
+
+<p>Track logging also can work with other loggers.  Each of the logging
+methods has an alternative version that also accepts a logger as the
+first argument.  In this case, normal track logging is performed if
+the class, <code>ppt</code>, and vars match.  If they don&rsquo;t match, the same
+information is logged via the specified logger.  For example:
+</p>
+<div class="example">
+<pre class="example">if (Debug.logOn || logger.isLoggable (Level.FINE)) {
+  Debug.log (logger, getClass(), ppt, &quot;Entering routine foo&quot;);
+}
+</pre></div>
+
+<p>The above will print if either the tracking information matches or if the
+specified logger is enabled.
+</p>
+<p>Convenience methods are available for track logging invariants.  In this
+case the class name, <code>ppt</code>, and variable information are all taken from the
+invariant.  The available methods are:
+</p>
+<div class="example">
+<pre class="example">logOn()
+logDetail()
+log (String)
+log (Logger, String)
+</pre></div>
+
+<p>These correspond to the <code>Debug</code> methods described above.  They are
+the recommended way to log information concerning invariants.
+</p>
+<p>Track logging also provides one additional level of detail.  The function
+<code>logDetail()</code> returns whether or not more detailed information
+should be printed.  This should be used for information which is not
+normally interesting or especially voluminous output.  Often statements
+using <code>logDetail()</code> should be commented out when not in active use.
+</p>
+
+<hr>
+<a name="Track-log-output"></a>
+<div class="header">
+<p>
+Previous: <a href="#Adding-track-logging" accesskey="p" rel="previous">Adding track logging</a>, Up: <a href="#Track-logging" accesskey="u" rel="up">Track logging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Track-log-output-1"></a>
+<h4 class="subsection">3.1.2 Track log output</h4>
+
+<a name="index-track-log-output"></a>
+
+<p>Each call to a track log method will produce output in the same basic
+format. Space for three variables is always maintained for consistency:
+</p>
+<div class="example">
+<pre class="example">&nbsp;daikon.Debug: &lt;class&gt;: &lt;ppt&gt;: &lt;var1&gt;: &lt;var2&gt;: &lt;var3&gt;: &lt;msg&gt;
+</pre></div>
+
+<p>If <code>showTrackback</code> is enabled, the &lsquo;<samp>traceback</samp>&rsquo; will follow each
+line of debug output.
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#Adding-track-logging" accesskey="p" rel="previous">Adding track logging</a>, Up: <a href="#Track-logging" accesskey="u" rel="up">Track logging</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

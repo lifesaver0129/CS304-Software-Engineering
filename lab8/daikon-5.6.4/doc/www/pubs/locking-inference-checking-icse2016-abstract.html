@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Locking discipline inference and checking</title>
+</head>
+<body>
+
+<h1>Locking discipline inference and checking</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/locking-inference-checking-icse2016.pdf">PDF</a>,
+<a href="https://checkerframework.org/">checking implementation</a>.
+</p>
+
+<p>
+&#8220;Locking discipline inference and checking&#8221;
+by
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>,
+Alberto Lovato, Damiano Macedonio,
+<a href="http://profs.sci.univr.it/~spoto/">Fausto Spoto</a>,
+and Javier Thaine.
+In <em>ICSE 2016, Proceedings of the 38th International Conference on
+Software Engineering</em>, (Austin, TX, USA), May 2016, pp. 1133-1144.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+Concurrency is a requirement for much modern software, but the
+implementation of multithreaded algorithms comes at the risk of errors
+such as data races. Programmers can prevent data races by documenting and
+obeying a locking discipline, which indicates which locks must be held in
+order to access which data. 
+</p>
+
+<p>
+This paper introduces a formal semantics for locking specifications that
+gives a guarantee of race freedom. A notable difference from most other
+semantics is that it is in terms of values (which is what the runtime
+system locks) rather than variables. The paper also shows how to express
+the formal semantics in two different styles of analysis: abstract
+interpretation and type theory. We have implemented both analyses, in
+tools that operate on Java. To the best of our knowledge, these are the
+first tools that can soundly infer and check a locking discipline for
+Java. Our experiments compare the implementations with one another and
+with annotations written by programmers, showing that the ambiguities and
+unsoundness of previous formulations are a problem in practice.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/locking-inference-checking-icse2016.pdf">PDF</a>,
+<a href="https://checkerframework.org/">checking implementation</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{ErnstLMST2016,
+   author = {Michael D. Ernst and Alberto Lovato and Damiano Macedonio and
+	Fausto Spoto and Javier Thaine},
+   title = {Locking discipline inference and checking},
+   booktitle = {ICSE 2016, Proceedings of the 38th International
+	Conference on Software Engineering},
+   pages = {1133-1144},
+   address = {Austin, TX, USA},
+   month = may,
+   year = {2016}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-testsubject">Publications that use Daikon as a test subject</a>.
+
+</body>
+</html>

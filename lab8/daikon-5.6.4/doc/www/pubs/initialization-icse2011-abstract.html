@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+  <title>Inference of field initialization</title>
+</head>
+<body>
+
+<h1>Inference of field initialization</h1>
+
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/initialization-icse2011.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/initialization-icse2011-slides.pdf">slides (PDF)</a>,
+<a href="ftp://ftp.cs.washington.edu/tr/2010/02/UW-CSE-10-02-01.PDF">earlier TR with additional details</a>.
+</p>
+
+<p>
+&#8220;Inference of field initialization&#8221;
+by
+<a href="http://profs.sci.univr.it/~spoto/">Fausto Spoto</a>
+and
+<a href="http://homes.cs.washington.edu/~mernst/">Michael D. Ernst</a>.
+In <em>ICSE 2011, Proceedings of the 33rd International Conference on
+Software Engineering</em>, (Waikiki, Hawaii, USA), May 2011, pp. 231-240.
+</p>
+
+<h2>Abstract</h2>
+
+<p>
+A <var>raw</var> object is partially initialized, with only some fields
+set to legal values. It may violate its object invariants, such as that a
+given field is non-<code>null</code>. Programs often manipulate
+partially-initialized objects, but they must do so with care. Furthermore,
+analyses must be aware of field initialization. For instance, proving the
+absence of null pointer dereferences or of division by zero, or proving
+that object invariants are satisfied, requires information about
+initialization. 
+</p>
+
+<p>
+We present a static analysis that infers a safe over-approximation of the
+program variables, fields, and array elements that, at run time, might
+hold raw objects. Our formalization is flow-sensitive and interprocedural,
+and it considers the exception flow in the analyzed program. We have
+proved the analysis sound and implemented it in a tool called Julia that
+computes initialization and nullness information. We have evaluated Julia
+on over 160K lines of code. We have compared its output to
+manually-written initialization and nullness information, and to an
+independently-written type-checking tool that checks initialization and
+nullness. Julia's output is accurate and useful both to programmers and to
+static analyses.
+
+</p>
+<p>
+<b>Download:</b>
+<a href="http://homes.cs.washington.edu/~mernst/pubs/initialization-icse2011.pdf">PDF</a>,
+<a href="http://homes.cs.washington.edu/~mernst/pubs/initialization-icse2011-slides.pdf">slides (PDF)</a>,
+<a href="ftp://ftp.cs.washington.edu/tr/2010/02/UW-CSE-10-02-01.PDF">earlier TR with additional details</a>.
+</p>
+
+<p>
+<b>BibTeX entry:</b>
+</p>
+<pre>
+@inproceedings{SpotoE2011,
+   author = {Fausto Spoto and Michael D. Ernst},
+   title = {Inference of field initialization},
+   booktitle = {ICSE 2011, Proceedings of the 33rd International
+	Conference on Software Engineering},
+   pages = {231--240},
+   address = {Waikiki, Hawaii, USA},
+   month = may,
+   year = {2011}
+}
+</pre>
+
+
+
+<hr />
+Back to <a href="./#daikon-testsubject">Publications that use Daikon as a test subject</a>.
+
+</body>
+</html>

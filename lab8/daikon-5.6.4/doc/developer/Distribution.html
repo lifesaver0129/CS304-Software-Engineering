@@ -1,0 +1,714 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector Developer Manual: Distribution</title>
+
+<meta name="description" content="The Daikon Invariant Detector Developer Manual: Distribution">
+<meta name="keywords" content="The Daikon Invariant Detector Developer Manual: Distribution">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Historical.html#Historical" rel="next" title="Historical">
+<link href="Editing.html#Editing-daikon_002etexinfo" rel="previous" title="Editing daikon.texinfo">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Distribution"></a>
+<div class="header">
+<p>
+Next: <a href="Historical.html#Historical" accesskey="n" rel="next">Historical</a>, Previous: <a href="Editing.html#Editing" accesskey="p" rel="previous">Editing</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Making-a-distribution"></a>
+<h2 class="chapter">7 Making a distribution</h2>
+
+<p>This section provides the instructions for publishing a Daikon distribution,
+a.k.a.&nbsp;making a release.
+If you only want to
+create the <samp>daikon.tar</samp> or <samp>daikon.tar.gz</samp> file in your own
+directory, then simply run <code>make daikon.tar</code> or <code>make daikon.tar.gz</code>.
+</p>
+<p>Official releases have even version numbers (e.g., 4.6.4) and
+intermediate work has odd version numbers (e.g., 4.7.3).  This means
+as you prepare for a release the current version number is probably odd.  It will
+be updated as one of the steps in the release process.  After making the
+distribution, one of the final steps is to increment the version number again to
+prepare for subsequent development.  This system has the useful side effect
+of allowing the build and test process to be repeated to fix a problem
+without having to worry about updating or resetting the version number.
+Another advantage is to reinforce, to people who are working from the
+version control repository, that they are not using the released version,
+because the version numbers differ.
+</p>
+<p>The Daikon distribution site is located at
+<a href="http://plse.cs.washington.edu/daikon/">http://plse.cs.washington.edu/daikon/</a> and is served from the UW CSE
+file system at
+<samp>/cse/web/research/plse/daikon</samp>.
+In order to be able to write to the distribution site, your CSE user id must be
+a member of the &lsquo;<samp>plse_www</samp>&rsquo; Unix group.
+</p>
+<p>For each of the major steps below, an
+approximate elapsed time is listed.  These timings are up to date as of December 2015.
+They were measured on a quad x86-64 based
+machine at 3.4GHz with 16GB of memory
+(buffalo.cs.washington.edu).
+Barring any difficulties,
+the entire process
+will take at least two hours &mdash; but could be much more depending on the number of
+different platforms on which you test the release.
+</p>
+<p>Each of the steps below assumes that you are using the Bash shell.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Directory-layout-requirements" accesskey="1">Directory layout requirements</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Distribution-setup-instructions" accesskey="2">Distribution setup instructions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Updating-dependencies" accesskey="3">Updating dependencies</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#The-day-before-the-release" accesskey="4">The day before the release</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Distribution-steps" accesskey="5">Distribution steps</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+
+<hr>
+<a name="Directory-layout-requirements"></a>
+<div class="header">
+<p>
+Next: <a href="#Distribution-setup-instructions" accesskey="n" rel="next">Distribution setup instructions</a>, Up: <a href="#Distribution" accesskey="u" rel="up">Distribution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Directory-layout-requirements-1"></a>
+<h3 class="section">7.1 Directory layout requirements</h3>
+
+<ul>
+<li> Environment variable <code>DAIKONDIR</code> must be set to a clone of
+<a href="https://github.com/codespecs/daikon">https://github.com/codespecs/daikon</a>.
+
+</li><li> A clone of
+<a href="https://github.com/codespecs/fjalar">https://github.com/codespecs/fjalar</a> must be a sibling of
+<samp>$DAIKONDIR</samp>.
+
+
+
+</li><li> Environment variable <code>JAVA_HOME</code> must be set to the appropriate JDK installation.
+
+</li><li> File <samp>~/private/.travis-access-token</samp> must contain the text after
+&ldquo;Your access token is&nbsp;<!-- /@w -->&rdquo; in the output of
+<code>travis login &amp;&amp; travis token</code>.  You might need to install the
+<code>travis</code> program first by running either <code>gem install travis</code>
+or <code>sudo apt-get install ruby-dev &amp;&amp; sudo gem install travis</code>.
+Make sure this file is not readable by others, for example by running
+<code>chmod og-rwx ~/private</code>.
+
+</li><li> Optionally, set environment variable <code>BIBDIR</code> to a clone of
+<a href="https://github.com/mernst/plume-bib">https://github.com/mernst/plume-bib</a>.
+
+
+</li></ul>
+
+
+<hr>
+<a name="Distribution-setup-instructions"></a>
+<div class="header">
+<p>
+Next: <a href="#Updating-dependencies" accesskey="n" rel="next">Updating dependencies</a>, Previous: <a href="#Directory-layout-requirements" accesskey="p" rel="previous">Directory layout requirements</a>, Up: <a href="#Distribution" accesskey="u" rel="up">Distribution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Distribution-setup-instructions-1"></a>
+<h3 class="section">7.2 Distribution setup instructions</h3>
+
+<p>The default version of the Java JDK on the majority of the CSE
+machines is now JDK 8.  However, for the time being, we wish to continue
+to distribute JDK 7 <samp>.class</samp> files as part of our distribution process;
+the intention is to maximize compatibility with our existing code base.
+Thus, all of our Makefiles invoke &lsquo;<samp>javac</samp>&rsquo; with &lsquo;<samp>-source 7 -target 7</samp>&rsquo;
+to ensure this is the case.  In addition, we wish to release Checker
+Framework enabled <samp>.class</samp> files.  You should install the latest version
+of the Checker Framework tools from <a href="https://checkerframework.org">https://checkerframework.org</a> and
+set the <code>CHECKERFRAMEWORK</code> environment variable as described in the
+<a href="https://checkerframework.org/manual/#installation">Installation</a>
+section of the manual.
+</p>
+<p>The recommended setup for the distribution process:
+</p><ul>
+<li> get a fresh copy of your Bash shell (e.g., log out and log back in)
+</li><li> set <code>CHECKERFRAMEWORK</code> as described above
+</li><li> set <code>DAIKONDIR</code> as you would normally
+</li><li> set <code>JAVA_HOME</code> to point to JDK 8
+</li><li> <code>source $DAIKONDIR/scripts/daikon.bashrc</code>
+</li></ul>
+<p>This should fulfill most of the directory layout requirements noted above.
+</p>
+
+<hr>
+<a name="Updating-dependencies"></a>
+<div class="header">
+<p>
+Next: <a href="#The-day-before-the-release" accesskey="n" rel="next">The day before the release</a>, Previous: <a href="#Distribution-setup-instructions" accesskey="p" rel="previous">Distribution setup instructions</a>, Up: <a href="#Distribution" accesskey="u" rel="up">Distribution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Getting-the-latest-version-of-dependencies"></a>
+<h3 class="section">7.3 Getting the latest version of dependencies</h3>
+
+<p>Update the Daikon source files to their most recent version.
+</p>
+<div class="smallexample">
+<pre class="smallexample">set -o pipefail
+(cd $DAIKONDIR &amp;&amp; git pull &amp;&amp; git log --branches --not --remotes &amp;&amp; git status)
+(cd $DAIKONDIR/../fjalar &amp;&amp; git pull &amp;&amp; git log --branches --not --remotes &amp;&amp; git status)
+</pre></div>
+
+<p>Each of the two commands should print exactly 4 lines:
+</p>
+<div class="example">
+<pre class="example">Already up-to-date.
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+</pre></div>
+
+<p>[Time: moments]
+</p>
+<p>The Fjalar tool set (primarily, Kvasir) is built upon, or uses pieces
+from, two open source projects.
+The home page for the Valgrind instrumentation framework is
+<a href="http://www.valgrind.org">http://www.valgrind.org</a>.
+The home page for the GNU Binutils
+(a collection of binary tools, of which Kvasir uses only readelf) is
+<a href="http://www.gnu.org/software/binutils/">http://www.gnu.org/software/binutils/</a>.
+</p>
+<p>File
+<a href="https://raw.githubusercontent.com/codespecs/fjalar/master/valgrind/REVISION"><samp>$DAIKONDIR/fjalar/valgrind/REVISION</samp></a> indicates the version of
+these tools that Kvasir uses.
+You can determine whether a newer version of these tools is available
+by comparing the <samp>REVISION</samp> file to
+<a href="http://valgrind.org/downloads/current.html">http://valgrind.org/downloads/current.html</a> and
+<a href="http://ftp.gnu.org/gnu/binutils/?C=M;O=D">http://ftp.gnu.org/gnu/binutils/?C=M;O=D</a>.
+If so, you should update the Fjalar source tree as soon as practical.
+For details, see the separate document &ldquo;Merging
+newer versions of Valgrind into Fjalar&rdquo;, which appears in the <samp>fjalar</samp>
+repository.
+</p>
+
+<hr>
+<a name="The-day-before-the-release"></a>
+<div class="header">
+<p>
+Next: <a href="#Distribution-steps" accesskey="n" rel="next">Distribution steps</a>, Previous: <a href="#Updating-dependencies" accesskey="p" rel="previous">Updating dependencies</a>, Up: <a href="#Distribution" accesskey="u" rel="up">Distribution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="The-day-before-the-release-1"></a>
+<h3 class="section">7.4 The day before the release</h3>
+
+<p>Do these steps the day before the release, so that tests have time to
+complete overnight.
+</p>
+<ul>
+<li> Edit the <samp>doc/CHANGES</samp> file to indicate what has changed
+in this version.  A good way to determine what has changed is to diff
+the Texinfo source files in the <samp>doc/</samp> directory against the previous
+versions:
+
+<div class="smallexample">
+<pre class="smallexample">cd $DAIKONDIR/doc
+diff -b -u -s --from-file /cse/web/research/plse/daikon/download/doc *.texinfo
+</pre></div>
+
+<p>Another good source of information are the repository logs since the
+last release:
+</p>
+<div class="smallexample">
+<pre class="smallexample">cd $DAIKONDIR
+DAIKONVERSION=`wget -q http://plse.cs.washington.edu/daikon/download/doc/VERSION \
+    -O - | xargs echo -n`
+git log v$DAIKONVERSION..HEAD
+</pre></div>
+
+
+<p>In addition, you should run the same command in your Fjalar clone:
+</p>
+<div class="smallexample">
+<pre class="smallexample">cd $DAIKONDIR/fjalar
+DAIKONVERSION=`wget -q http://plse.cs.washington.edu/daikon/download/doc/VERSION \
+    -O - | xargs echo -n`
+git log v$DAIKONVERSION..HEAD
+</pre></div>
+
+<p>When you have competed your updates, commit and push the changes.
+</p>
+<p>[Time: a few minutes]
+</p>
+
+</li><li> Check the release documents for spelling errors.
+
+<div class="example">
+<pre class="example">cd $DAIKONDIR/doc
+make spell-check
+</pre></div>
+
+<p>Any words that may be spelled incorrectly are output to standard out.
+</p>
+<ul>
+<li> If the word is misspelled, correct it in the source (<samp>.texinfo</samp>) file.
+
+</li><li> If the word is spelled correctly and is a normal English word, add it to
+<samp>daikon.dict</samp>, keeping the list in alphabetical order.
+
+</li><li> If the word is spelled correctly and is a proper name, such as a person&rsquo;s
+or company&rsquo;s name, then either add it to <samp>daikon.dict</samp> or
+write <code>@nospellcheck</code> around it.
+
+</li><li> If the word is technical information, such as part
+of a computer command or filename, then mark it with a Texinfo command;
+see &ldquo;Chapter 9: Marking Text,
+Words and Phrases&rdquo; of the
+GNU Texinfo Manual (<a href="http://www.gnu.org/software/texinfo/manual/texinfo/texinfo.pdf">PDF</a>,
+<a href="https://www.gnu.org/software/texinfo/manual/texinfo/texinfo.html#Marking-Text">HTML</a>).
+
+</li></ul>
+
+<p>[Time: moments]
+</p>
+</li></ul>
+
+<p>TODO: it would be good to build the staging release the day before, too, so
+that links can be fixed the day before the release or at least very early
+in the process.
+</p>
+
+<hr>
+<a name="Distribution-steps"></a>
+<div class="header">
+<p>
+Previous: <a href="#The-day-before-the-release" accesskey="p" rel="previous">The day before the release</a>, Up: <a href="#Distribution" accesskey="u" rel="up">Distribution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Steps-for-making-the-distribution"></a>
+<h3 class="section">7.5 Steps for making the distribution</h3>
+
+<p>Use the Checker Framework Java compiler for the release process. Make sure the <code>CHECKERFRAMEWORK</code> environment
+variable is properly set.
+</p>
+<ol>
+<li> Verify that Daikon passes its tests, under both JDK 7 and JDK 8.
+
+
+<p>For Travis CI,
+all of the following jobs should be green:
+</p><div class="example">
+<pre class="example">
+ <a href="https://travis-ci.org/codespecs/daikon">https://travis-ci.org/codespecs/daikon</a>
+<img src="https://api.travis-ci.org/codespecs/daikon.svg?branch=master" alt="Travis codespecs/daikon status"/>
+ <a href="https://travis-ci.org/codespecs/fjalar">https://travis-ci.org/codespecs/fjalar</a>
+<img src="https://api.travis-ci.org/codespecs/fjalar.svg?branch=master" alt="Travis codespecs/fjalar status"/>
+ <a href="https://travis-ci.org/typetests/daikon-typecheck">https://travis-ci.org/typetests/daikon-typecheck</a>
+<img src="https://api.travis-ci.org/typetests/daikon-typecheck.svg?branch=master" alt="Travis typetests/daikon-typecheck status"/>
+ <a href="https://travis-ci.org/typetests/daikon-typecheck-formatter">https://travis-ci.org/typetests/daikon-typecheck-formatter</a>
+<img src="https://api.travis-ci.org/typetests/daikon-typecheck-formatter.svg?branch=master" alt="Travis typetests/daikon-typecheck-formatter status"/>
+ <a href="https://travis-ci.org/typetests/daikon-typecheck-interning">https://travis-ci.org/typetests/daikon-typecheck-interning</a>
+<img src="https://api.travis-ci.org/typetests/daikon-typecheck-interning.svg?branch=master" alt="Travis typetests/daikon-typecheck-interning status"/>
+ <a href="https://travis-ci.org/typetests/daikon-typecheck-nullness">https://travis-ci.org/typetests/daikon-typecheck-nullness</a>
+<img src="https://api.travis-ci.org/typetests/daikon-typecheck-nullness.svg?branch=master" alt="Travis typetests/daikon-typecheck-nullness status"/>
+ <a href="https://travis-ci.org/typetests/daikon-typecheck-regex">https://travis-ci.org/typetests/daikon-typecheck-regex</a>
+<img src="https://api.travis-ci.org/typetests/daikon-typecheck-regex.svg?branch=master" alt="Travis typetests/daikon-typecheck-regex status"/>
+ <a href="https://travis-ci.org/typetests/daikon-typecheck-signature">https://travis-ci.org/typetests/daikon-typecheck-signature</a>
+<img src="https://api.travis-ci.org/typetests/daikon-typecheck-signature.svg?branch=master" alt="Travis typetests/daikon-typecheck-signature status"/></pre></div>
+
+<p>If any of the jobs is not passing, then correct the problem and wait for
+the jobs to complete and pass.
+The delay to wait for this to happen is a reason that you should avoid
+making changes to Daikon on the release day.  Instead, you should make
+changes the day before to permit the continuous integration jobs to run
+overnight.
+</p>
+
+</li><li> Do a very clean rebuild of everything.
+
+<div class="example">
+<pre class="example">cd $DAIKONDIR
+make very-clean
+make rebuild-everything
+</pre></div>
+
+<p>[Time: 20 min]
+</p>
+
+</li><li> Once you have successfully reached this point, you are ready to make a release
+candidate and begin testing it.
+The following command will verify that <samp>doc/CHANGES</samp> is up-to-date and then list
+any uncommitted files.
+
+<div class="example">
+<pre class="example">make check-repo
+</pre></div>
+
+<p>The result of the command above should be:
+</p>
+<div class="example">
+<pre class="example">On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit (use -u to show untracked files)
+</pre></div>
+
+<p>If the command output lists any files, they need to be
+committed to the repository and pushed now.
+In that case, you will need to return to step 1 and wait for the
+Travis jobs to complete.
+</p>
+<p>[Time: moments]
+</p>
+
+</li><li> Set the version number in file <samp>$DAIKONDIR/doc/VERSION</samp>
+to an even number.
+You may do this manually, or if the revision number just needs to be incremented
+by 1 (to go from odd to even) you may use:
+
+<div class="example">
+<pre class="example">make update-dist-version-file
+</pre></div>
+
+<p>Note that if a new feature has been added, or if some change has made
+the current version incompatible from the previous release (such a
+change in the dtrace file format or revised names for tool options),
+then you should manually edit the VERSION file to increment the minor
+version number and reset the revision number to zero.
+</p>
+<p>Optionally, override the distribution date (default: today) by
+redefining the environment variable <code>TODAY</code>:
+</p>
+<div class="example">
+<pre class="example">export TODAY='November 1, 2013'
+</pre></div>
+
+<p>Now, update the appropriate files with the date and version number
+of the release and commit these changes back to the repository:
+</p>
+<div class="example">
+<pre class="example">make update-and-commit-version
+</pre></div>
+
+<p>[Time: moments]
+</p>
+
+</li><li> It is important to build the release candidate from a clean enlistment.
+This is to ensure we are testing only the files intended for release and
+that those files are the same as a user would receive with a clone of
+the repository. This needs to be done in a separate, new Bash command
+shell.
+The following commands get a fresh clone of Daikon, set some
+environment variables and then
+build everything to be distributed and copy it to the temporary staging area
+(http://plse.cs.washington.edu/staging-daikon/).
+
+
+<div class="example">
+<pre class="example">mkdir -p /tmp/$USER
+rm -rf /tmp/$USER/stage-daikon
+git clone --depth 3 https://github.com/codespecs/daikon /tmp/$USER/stage-daikon
+cd /tmp/$USER/stage-daikon
+export DAIKONDIR=`pwd`
+export JAVA_HOME=/homes/gws/markro/jdk8
+export CHECKERFRAMEWORK=&lt;path to lastest version of Checker Framework tools&gt;
+source scripts/daikon.bashrc
+make staging
+</pre></div>
+
+<p>The final output of this command
+will be a list of files that were added/removed since the
+last release.
+If any of these differences is unexpected, then investigate.
+If any corrections are required, do so back in the main
+repository, commit the changes and
+then repeat this step.
+</p>
+<p>[Time: 23 min]
+</p>
+
+</li><li> Next, check the staging website to see if it has any broken document links.
+
+<div class="example">
+<pre class="example">make check-for-broken-doc-links
+</pre></div>
+
+<p>Review <samp>check.log</samp> and make corrections as appropriate.
+</p>
+<p>In some cases a &quot;403 Forbidden&quot; error is transient, due to the website
+being down.  You can check such links by hand.
+</p>
+<p>If the URL is correct but cannot be checked (for example, because the website
+prohibits spiders or because the URL  redirects to another URL but you prefer
+to keep the first URL in your document), then you may need to add lines to
+an appropriate part of file <samp>checklink-args.txt</samp> in
+<a href="https://github.com/plume-lib/checklink">https://github.com/plume-lib/checklink</a>.
+</p>
+<p>In most cases (and for most 404 errors), you should fix the document with
+the incorrect link.
+Here is a workflow that may be used to deal with broken links:
+</p><ul>
+<li> Use the &lsquo;<samp>Wayback Machine</samp>&rsquo;, http://archive.org/web/, to see what the old content was.
+</li><li> Do a web search to see if the page has relocated elsewhere.
+</li><li> If the web search is not successful, email the maintainer of the old content.
+</li></ul>
+
+<p>Note that you must fix problems in the original repository,
+not in the drop directories. This means:
+</p><ul>
+<li> Switch back to your original Bash shell.
+</li><li> Correct the file. (Most likely located beneath either
+<samp>$DAIKONDIR/doc</samp> or
+<samp>$BIBDIR</samp> (<samp>~/bib/</samp> if <samp>$BIBDIR</samp> is not set).)
+</li><li> Commit the changes.
+</li><li> Repeat the previous step to rebuild the release candidate.
+</li><li> Repeat this step to verify your corrections.
+</li></ul>
+
+<p>If <samp>check.log</samp> contains an error message of the form:
+</p><div class="smallexample">
+<pre class="smallexample">List of broken links and other issues:
+http://plse.cs.washington.edu/daikon/download/doc/developer/Requirements-for-compiling-Kvasir.html
+  Line: 185
+  Code: 200 OK
+ To do: Some of the links to this resource point to broken URI fragments
+        (such as index.html#fragment).
+The following fragments need to be fixed:
+        Requirements-for-compiling-Kvasir       Line: 185
+</pre></div>
+<p>This is probably caused by the way <code>makeinfo</code> deals with chapter splits via
+indirect references through stub files.  Two <code>suppress-fragment</code> entries in
+<samp>checklink-args.txt</samp> in <a href="https://github.com/plume-lib/checklink">https://github.com/plume-lib/checklink</a>
+are required.  For the example above, these
+would be:
+</p><div class="smallexample">
+<pre class="smallexample">--suppress-fragment http://plse.cs.washington.edu/daikon/download/doc/developer/Requirements-for-compiling-Kvasir.html#Requirements-for-compiling-Kvasir
+--suppress-fragment http://plse.cs.washington.edu/staging-daikon/download/doc/developer/Requirements-for-compiling-Kvasir.html#Requirements-for-compiling-Kvasir
+</pre></div>
+
+<p>[Time: 8 min]
+</p>
+
+</li><li> Test the staged distribution on a 64-bit Fedora machine.
+Since the machine you are using to build the release is probably
+such a machine, you may simply run the command below.  Success is indicated
+by invariant output being written to the screen.
+
+<div class="example">
+<pre class="example">make test-staged-dist
+</pre></div>
+
+<p>[Time: 1 min]
+</p>
+
+</li><li> Test the distribution on Ubuntu and MacOSX machines.
+Run the following commands:
+
+<div class="smallexample">
+<pre class="smallexample">NEW_VERSION=`cat doc/VERSION`
+$PLUMEBIN/trigger-travis.sh codespecs test-daikon-staging `cat ~/private/.travis-access-token` \
+  &quot;Test staging distribution for release ${NEW_VERSION}&quot;
+$PLUMEBIN/trigger-travis.sh codespecs test-daikon-staging-macosx `cat ~/private/.travis-access-token` \
+  &quot;Test staging distribution for release ${NEW_VERSION}&quot;
+</pre></div>
+
+<p>and then wait until the following
+two URLs indicate success:
+<br> <a href="https://travis-ci.org/codespecs/test-daikon-staging">https://travis-ci.org/codespecs/test-daikon-staging</a>
+<br> <a href="https://travis-ci.org/codespecs/test-daikon-staging-macosx">https://travis-ci.org/codespecs/test-daikon-staging-macosx</a>
+</p>
+<p>If there is a problem, fix it and start over.
+</p>
+<p>[Time: 15 min]
+</p>
+<p>Note that sometimes Travis has trouble starting MacOSX jobs.  You may wish to log on to a
+MacOSX machine (with the development tools installed) and run the tests manually.
+The example below shows the commands required to do this.  The output
+should show a number of lines beginning with
+&quot;Processed&quot; as <samp>dcomp_rt.jar</samp> is being built.  Next it should indicate that
+Kvasir was not built because this is not a Linux platform.  Then execution will
+continue with a test that runs Chicory/Daikon on the <samp>StackAr</samp> example.
+Success is indicated by invariant output being written to the screen.
+</p>
+<div class="smallexample">
+<pre class="smallexample">export JAVA_HOME=$(/usr/libexec/java_home)
+mkdir -p ~/tmp
+cd ~/tmp
+curl --fail -O https://raw.githubusercontent.com/codespecs/daikon/master/scripts/test-distribution.sh
+export DAIKONBASEURL=http://plse.cs.washington.edu/staging-daikon
+sh test-distribution.sh
+</pre></div>
+
+<p>[Time: 4 min]
+</p>
+
+</li><li> Test the distribution on a Windows machine
+with Cygwin installed, as a guest user (or at least one without
+environment variables such as <code>$DAIKONDIR</code> defined!).
+
+<p>The output from the the commands below should show
+that <samp>dcomp_rt.jar</samp> is being built.  Next it should indicate that
+Kvasir was not built because this is not a Linux platform.  Then execution will
+continue with a test that runs Chicory/Daikon on the <samp>StackAr</samp> example.
+Success is indicated by invariant output being written to the screen.
+</p>
+<div class="smallexample">
+<pre class="smallexample">export JAVA_HOME=&quot;/cygdrive/c/Program\\\ Files/Java/jdk1.7.0_45&quot;
+export DAIKONBASEURL=http://plse.cs.washington.edu/staging-daikon
+mkdir -p ~/tmp
+cd ~/tmp
+curl --fail -O https://raw.githubusercontent.com/codespecs/daikon/master/scripts/test-distribution.sh
+sh test-distribution.sh
+</pre></div>
+
+<p>[Time: 10 min]
+</p>
+
+</li><li> Once you have successfully reached this point, you have a valid release candidate
+and are ready to make the actual release.
+<strong>Caution:</strong> If somewhere above you made a change to correct a problem you should have
+restarted the release process.
+
+<p>At this point we are done building and testing the release candidate and you
+should exit the Bash command shell created in step 5 and return to your
+original Bash shell.
+</p>
+
+</li><li> Update the website by deleting the current release
+and then making the staged version the (new) current release.
+
+<div class="example">
+<pre class="example">cd $DAIKONDIR
+make staging-to-www
+</pre></div>
+
+<p>[Time: 1 min]
+</p>
+
+</li><li> Add a version label to the repository:
+
+<div class="example">
+<pre class="example">cd $DAIKONDIR
+DAIKONVERSION=`cat $DAIKONDIR/doc/VERSION | xargs echo -n`
+git tag -a v$DAIKONVERSION -m $DAIKONVERSION
+git push --tags
+cd fjalar
+git tag -a v$DAIKONVERSION -m $DAIKONVERSION
+git push --tags
+</pre></div>
+
+<p>[Time: moments]
+</p>
+
+</li><li> At this point the distribution has been completed.
+Bump the version number to an odd value for continuing development.
+
+<div class="example">
+<pre class="example">cd $DAIKONDIR
+export -n TODAY
+make update-dist-version-file
+make update-doc-dist-date-and-version
+</pre></div>
+
+<p>[Time: moments]
+</p>
+
+</li><li> Verify these changes by doing product builds (no need to clean first) and
+running a short verification test.
+
+<div class="example">
+<pre class="example">cd $DAIKONDIR
+make rebuild-everything quick-test
+</pre></div>
+
+<p>Success is indicated by invariant output being written to the screen.
+</p>
+<p>[Time: 5 min]
+</p>
+
+</li><li> Commit changes back to the repository:
+
+<div class="example">
+<pre class="example">cd $DAIKONDIR
+git commit -a -m &quot;Bump version number for ongoing development.&quot;
+git push
+cd fjalar
+git commit -a -m &quot;Bump version number for ongoing development.&quot;
+git push
+</pre></div>
+
+<p>[Time: moments]
+</p>
+
+</li><li> Send mail to the &lsquo;<samp>daikon-announce</samp>&rsquo; mailing list.
+Use the suggested template below, replacing &lt;version number&gt; with
+the actual number of the release.
+
+<div class="example">
+<pre class="example">&lt;to:&gt;  daikon-announce@googlegroups.com
+&lt;subject:&gt;  Daikon version &lt;version number&gt; has been released
+
+Daikon version &lt;version number&gt; is now available.
+
+Please see the entry from the doc/CHANGES file that appears below for more details.
+
+You can download the latest version of Daikon at:
+http://plse.cs.washington.edu/daikon/download/
+
+  &lt;your name&gt;
+
+&lt;a copy of the current entry from the doc/CHANGES file, with
+paragraphs refilled (remove unnecessary line breaks that trim lines
+to 80 columns for the CHANGES file but aren't desirable in email)&gt;
+</pre></div>
+
+<p>Note that if you use Microsoft Outlook 2010 or 2013 as your mailer,
+by default it will insert hard breaks in your outgoing message. See
+<a href="http://blog.techhit.com/551102-how-to-prevent-outlook-2010-and-2013-from-adding-line-breaks-to-sent-plain-text-messages">http://blog.techhit.com/551102-how-to-prevent-outlook-2010-and-2013-from-adding-line-breaks-to-sent-plain-text-messages</a>
+for a work around.  You must quit and restart Outlook to activate
+the change.
+</p>
+</li></ol>
+
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#The-day-before-the-release" accesskey="p" rel="previous">The day before the release</a>, Up: <a href="#Distribution" accesskey="u" rel="up">Distribution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

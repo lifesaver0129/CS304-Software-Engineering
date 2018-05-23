@@ -1,0 +1,3514 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 5.1, http://www.gnu.org/software/texinfo/ -->
+<head><link rel="icon" href="../daikon-favicon.png" type="image/png"/>
+<title>The Daikon Invariant Detector User Manual: Front ends (instrumentation)</title>
+
+<meta name="description" content="The Daikon Invariant Detector User Manual: Front ends (instrumentation)">
+<meta name="keywords" content="The Daikon Invariant Detector User Manual: Front ends (instrumentation)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="General-Index.html#General-Index" rel="index" title="General Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Tools.html#Tools" rel="next" title="Tools">
+<link href="Enhancing-Daikon-output.html#Loop-invariants" rel="previous" title="Loop invariants">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.indentedblock {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smallindentedblock {margin-left: 3.2em; font-size: smaller}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style:oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space:nowrap}
+span.nolinebreak {white-space:nowrap}
+span.roman {font-family:serif; font-weight:normal}
+span.sansserif {font-family:sans-serif; font-weight:normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+<a name="Front-ends-_0028instrumentation_0029"></a>
+<div class="header">
+<p>
+Next: <a href="Tools.html#Tools" accesskey="n" rel="next">Tools</a>, Previous: <a href="Enhancing-Daikon-output.html#Enhancing-Daikon-output" accesskey="p" rel="previous">Enhancing Daikon output</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Front-ends-_0028instrumentation_0029-1"></a>
+<h2 class="chapter">7 Front ends (instrumentation)</h2>
+
+<a name="index-front-end"></a>
+<a name="index-instrumentation"></a>
+
+<p>The Daikon invariant detector is a machine learning tool that finds
+patterns (invariants) in data.  That data can come from any source, but
+Daikon is typically used to find invariants over variable values in
+running programs.  A front end is a tool that converts data from some
+other format into Daikon&rsquo;s input format.  The most common type of front
+end is an instrumenter, which causes your program to output a
+<samp>.dtrace</samp> file that Daikon can process, or that you can process
+(see <a href="../developer/Reading-dtrace-files.html#Reading-dtrace-files">Reading dtrace files</a> in <cite>Daikon Developer Manual</cite>).
+</p>
+<p>This chapter describes several front ends (instrumenters) that are part
+of Daikon.  It
+is relatively easy to build your own front end, if these do not serve
+your purpose; we are aware of a number of users who have done so.  For
+more information about building a new front end, see <a href="../developer/New-front-ends.html#New-front-ends">New front
+ends</a> in <cite>Daikon Developer Manual</cite>.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Chicory" accesskey="1">Chicory</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#DynComp-for-Java" accesskey="2">DynComp for Java</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Kvasir" accesskey="3">Kvasir</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Celeriac" accesskey="4">Celeriac</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#dfepl" accesskey="5">dfepl</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#convertcsv_002epl" accesskey="6">convertcsv.pl</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Other-front-ends" accesskey="7">Other front ends</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Chicory"></a>
+<div class="header">
+<p>
+Next: <a href="#DynComp-for-Java" accesskey="n" rel="next">DynComp for Java</a>, Up: <a href="#Front-ends-_0028instrumentation_0029" accesskey="u" rel="up">Front ends (instrumentation)</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Java-front-end-Chicory"></a>
+<h3 class="section">7.1 Java front end Chicory</h3>
+
+<a name="index-front-end-for-Java"></a>
+<a name="index-Java-front-end"></a>
+<a name="index-instrumentation_002c-of-Java-programs"></a>
+<a name="index-Chicory-_0028front-end-for-Java_0029"></a>
+
+<p>The Daikon front end for Java, named Chicory, executes Java programs,
+creates data trace (<samp>.dtrace</samp>) files, and optionally runs Daikon on
+them.  Chicory is named after the chicory plant, whose root is sometimes
+used as a coffee substitute or flavor enhancer.
+</p>
+<p>While Daikon can be run using only the Chicory front end, it is highly
+recommend that DynComp be run prior to Chicory. See <a href="#DynComp-for-Java">DynComp for Java</a>
+for more details.
+</p>
+<p>To use Chicory, run your program as you normally would, but
+replace the <code>java</code> command with <code>java daikon.Chicory</code>.  For
+instance, if you usually run
+</p><div class="example">
+<pre class="example">java mypackage.MyClass arg1 arg2 arg3
+</pre></div>
+
+<p>then instead you would run
+</p><div class="example">
+<pre class="example">java daikon.Chicory mypackage.MyClass arg1 arg2 arg3
+</pre></div>
+
+<p>This runs your program and creates file <samp>MyClass.dtrace</samp>
+in the current directory.
+Furthermore, a single command can both create a trace file and run Daikon:
+</p><div class="example">
+<pre class="example">java daikon.Chicory --daikon mypackage.MyClass arg1 arg2 arg3
+</pre></div>
+
+<p>See below for more options.
+</p>
+<p>That&rsquo;s all there is to it!  Since Chicory instruments class files
+directly as they are loaded into Java,
+you do not need to perform separate instrumentation and recompilation steps.
+However, you should compile your program with debugging information
+enabled (the <samp>-g</samp> command-line switch to <code>javac</code>);
+otherwise, Chicory uses the names <code>arg0</code>, <code>arg1</code>, &hellip; as
+the names of method arguments.
+</p>
+<p>Chicory must be run in a version 7 (or later) JVM, but it is
+backward-compatible with older versions of Java code.  Chicory can process
+class files from any version of Java.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Chicory-options" accesskey="1">Chicory options</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Static-fields-_0028global-variables_0029" accesskey="2">Static fields (global variables)</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Chicory-options"></a>
+<div class="header">
+<p>
+Next: <a href="#Static-fields-_0028global-variables_0029" accesskey="n" rel="next">Static fields (global variables)</a>, Up: <a href="#Chicory" accesskey="u" rel="up">Chicory</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Chicory-options-1"></a>
+<h4 class="subsection">7.1.1 Chicory options</h4>
+
+<p>Chicory is invoked as follows:
+</p><div class="example">
+<pre class="example">java daikon.Chicory <var>chicory-args</var> <var>classname</var> <var>args</var>
+</pre></div>
+
+<p>where
+</p><div class="example">
+<pre class="example">java <var>classname</var> <var>args</var>
+</pre></div>
+
+<p>is a valid invocation of Java.
+</p>
+<p>This section lists the optional command-line arguments to Chicory, which
+appear before the <var>classname</var> on the Chicory command line.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Program-points-in-Chicory-output" accesskey="1">Program points in Chicory output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Variables-in-Chicory-output" accesskey="2">Variables in Chicory output</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Chicory-miscellaneous-options" accesskey="3">Chicory miscellaneous options</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Program-points-in-Chicory-output"></a>
+<div class="header">
+<p>
+Next: <a href="#Variables-in-Chicory-output" accesskey="n" rel="next">Variables in Chicory output</a>, Up: <a href="#Chicory-options" accesskey="u" rel="up">Chicory options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Program-points-in-Chicory-output-1"></a>
+<h4 class="subsubsection">7.1.1.1 Program points in Chicory output</h4>
+
+
+<p>This section lists options that control which program points appear in
+Chicory&rsquo;s output.
+</p>
+
+<dl compact="compact">
+<dt><samp>--ppt-select-pattern=<var>regexp</var></samp></dt>
+<dd><p>Only produce trace output for classes/procedures/program points whose
+names match the
+given regular expression.  This option may be supplied multiple times,
+and may be used in conjunction with <samp>--ppt-omit-pattern</samp>.
+</p>
+<p>When this switch is supplied, filtering occurs in the following way:
+for each program point, Chicory checks the fully
+qualified class name, the method name, and the
+the program point name against each <var>regexp</var> that
+was supplied.  If any of these match, then the program point is included
+in the instrumentation.
+</p>
+<p>Suppose that method <code>bar</code> is defined only in class <code>C</code>.  Then to
+traces only <code>bar</code>, you could match the method name (in any class)
+with regular expression
+&lsquo;<samp>bar$</samp>&rsquo;, or you could match the program point name with &lsquo;<samp>C\.bar\(</samp>&rsquo;.
+</p>
+<div class="example">
+<pre class="example">java daikon.Chicory --ppt-select-pattern='bar$' ...
+java daikon.Chicory --ppt-select-pattern='C\.bar\(' ...
+</pre></div>
+
+
+</dd>
+<dt><samp>--ppt-omit-pattern=<var>regexp</var></samp></dt>
+<dd><p>Do not produce data trace output for classes/procedures/program points
+whose names match the given regular expression.  This
+reduces the size of the data trace file and also may make the
+instrumented program run faster, since it need not output those variables.
+</p>
+<p>This option works just like <samp>--ppt-select-pattern</samp> does, except
+that matching program points are excluded, not included.
+</p>
+<p>The <samp>--ppt-omit-pattern</samp> argument may be supplied multiple times, in
+order to specify multiple omitting criteria.  A program point is omitted
+if its fully qualified class, fully qualified procedure name, or
+complete program point name exactly matches one of the omitting criteria.
+A regular expression matches if it matches any portion of the program
+point name.  Note that currently only classes are matched, not each full
+program point name.  Thus, either all of a class&rsquo;s methods are traced,
+or none of
+them are.
+</p>
+<p>Here are examples of how to avoid detecting invariants over various
+parts of your program.
+</p>
+<ul>
+<li> omit a whole package:
+<div class="smallexample">
+<pre class="smallexample">java daikon.Chicory '--ppt-omit-pattern=^junit\.' ...
+</pre></div>
+<div class="smallexample">
+<pre class="smallexample">java daikon.Chicory '--ppt-omit-pattern=^daikon\.util\..*' ...
+</pre></div>
+
+</li><li> omit a single class:
+<div class="smallexample">
+<pre class="smallexample">java daikon.Chicory '--ppt-omit-pattern=HashSetLinear\$HslIterator' ...
+</pre></div>
+
+</li><li> omit a single method:
+<div class="smallexample">
+<pre class="smallexample">java daikon.Chicory '--ppt-omit-pattern=StackAr.topAndPop()' ...
+</pre></div>
+
+</li><li> omit a single program point:
+<div class="smallexample">
+<pre class="smallexample">java daikon.Chicory '--ppt-omit-pattern=StackAr.&lt;init&gt;(int):::EXIT33' ...
+</pre></div>
+
+</li></ul>
+
+</dd>
+<dt><samp>--sample-start=<var>sample-cnt</var></samp></dt>
+<dd><a name="index-sampling-of-program-point-executions"></a>
+<p>When this option is chosen, Chicory will record each program point until
+that program point has been executed <var>sample-cnt</var> times.  Chicory will
+then begin sampling.  Sampling starts at 10% and decreases by a factor
+of 10 each time another <var>sample-cnt</var> samples have been recorded.  If
+<var>sample-cnt</var> is 0, then all calls will be recorded.
+</p>
+</dd>
+<dt><samp>--boot-classes=<var>regex</var></samp></dt>
+<dd><p>Chicory treats classes that match the <var>regex</var> as boot classes.
+Such classes are not instrumented.
+</p>
+</dd>
+<dt><samp>--instrument-clinit</samp></dt>
+<dd><p>Causes Chicory to output empty dtrace records when static initializers are
+entered and exited.  This is useful for clients that use Chicory to trace
+method entry and exit.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="Variables-in-Chicory-output"></a>
+<div class="header">
+<p>
+Next: <a href="#Chicory-miscellaneous-options" accesskey="n" rel="next">Chicory miscellaneous options</a>, Previous: <a href="#Program-points-in-Chicory-output" accesskey="p" rel="previous">Program points in Chicory output</a>, Up: <a href="#Chicory-options" accesskey="u" rel="up">Chicory options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Variables-in-Chicory-output-1"></a>
+<h4 class="subsubsection">7.1.1.2 Variables in Chicory output</h4>
+
+
+<p>This section lists options that control which variables appear in
+Chicory&rsquo;s output.
+</p>
+
+
+<dl compact="compact">
+<dt><samp>--nesting-depth=<var>n</var></samp></dt>
+<dd><p>Depth to which to examine structure components (default 2).
+This parameter determines which variables the front end causes to be output at
+runtime.  For instance, suppose that a program contained the following
+data structures and a method <code>foo</code>:
+</p><div class="example">
+<pre class="example">class A {
+  int x;
+  B b;
+}
+class B {
+  int y;
+  int z;
+}
+
+class Link {
+  int val;
+  Link next;
+}
+
+void foo(A myA, Link myList) { ... }
+</pre></div>
+
+<p>Consider what variables would be output at the entry to method <code>foo</code>:
+</p>
+<ul>
+<li> If depth=0, only the identities (hash codes) of <code>myA</code> and
+<code>myList</code> would be examined; those variables could be determined to
+be equal or not equal to other variables.
+</li><li> If depth=1, then in addition to the above, <code>myA.x</code>, the identity of
+<code>myA.b</code>, <code>myList.val</code>, and the identity of <code>myList.next</code>
+would be examined.
+</li><li> If depth=2, then, in addition to the above, also <code>myA.b.y</code>,
+<code>myA.b.z</code>, the identity of <code>myList.next.next</code>, and
+<code>myList.next.val</code> would be examined.
+</li></ul>
+
+<p>Values whose value is undefined are not examined.  For instance, if <code>myA</code>
+is <code>null</code> on a particular execution of a program point, then
+<code>myA.b</code> is not accessed on that execution regardless of the depth
+parameter.  That variable appears in the <samp>.dtrace</samp> file, but its
+value is marked as nonsensical.
+</p>
+</dd>
+<dt><samp>--omit-var=<var>regex</var></samp></dt>
+<dd><a name="index-variables_002c-omit"></a>
+<p>Do not include variables whose name matches the regular expression.  Variables
+will be omitted from each program point in which they appear.
+</p>
+</dd>
+<dt><samp>--std-visibility</samp></dt>
+<dd><a name="index-private-variables"></a>
+<a name="index-variables_002c-private"></a>
+<p>When this switch is on, Chicory will traverse exactly those fields that are
+visible from a given program point.  For instance, only the public
+fields of class <code>pack1.B</code> will be included at a program point for
+class <code>pack2.A</code> whether or not <code>pack1.B</code> is instrumented.
+By default, Chicory outputs all fields in instrumented classes (even
+those that would not be accessible in Java code at the given program point)
+and outputs no fields from uninstrumented classes (even those that are
+accessible).  When you supply
+<samp>--std-visibility</samp>, consider also supplying <samp>--purity-file</samp> to
+enrich the set of expressions in Daikon&rsquo;s output.
+</p>
+</dd>
+<dt><samp>--purity-file=<var>pure-methods-file</var></samp></dt>
+<dd><a name="index-pure-methods"></a>
+<a name="index-observer-methods_002c-as-synonym-for-pure-methods"></a>
+<p>File <var>pure-methods-file</var> lists the pure methods (sometimes called
+observer methods; one type of observer is getter methods)
+ in a Java program.  Pure methods have no externally
+side effects, such as setting variables or producing output.  For
+example, most implementations of the <code>hashCode()</code>,
+<code>toString()</code>, and <code>equals()</code> methods are pure.
+</p>
+<p>For each variable, Chicory adds to the trace new <em>fields</em> that
+represent invoking each pure method on the variable.  (Currently,
+Chicory does so only for pure methods that take no parameters, and
+obviously this mechanism is only useful for methods that return a value:
+a pure method that returns no value does nothing!)
+</p>
+<p>Here is an example:
+</p>
+<div class="example">
+<pre class="example">class Point {
+  private int x, y;
+  public int radiusSquared() {
+    return x*x + y*y;
+  }
+}
+</pre></div>
+
+<p>If <code>radiusSquared()</code> has been specified as pure, then for each point
+<var>p</var>, Chicory will output the variables <code><var>p</var>.x</code>,
+<code><var>p</var>.y</code>, and <code><var>p</var>.radiusSquared()</code>.  Use of pure
+methods can improve the Daikon output, since they represent information
+that the programmer considered important but that is not necessarily
+stored in a variable.
+</p>
+<p>Invoking a pure method at any time in an application should not change
+the application&rsquo;s behavior.  If a non-pure method is listed in a purity
+file, then application behavior can change.  Chicory does not verify the
+purity of methods listed in the purity file.
+</p>
+<p>The purity file lists a set of methods, one per line.  The format of
+each method is given by the Sun JDK API:
+</p>
+<blockquote>
+<p>The string is formatted as the method access modifiers, if any, followed
+by the method return type, followed by a space, followed by the class
+declaring the method, followed by a period, followed by the method name,
+followed by a parenthesized, comma-separated list of the method&rsquo;s formal
+parameter types.  If the method throws checked exceptions, the parameter
+list is followed by a space, followed by the word throws followed by a
+comma-separated list of the thrown exception types.  For example:
+</p>
+<div class="example">
+<pre class="example">public boolean java.lang.Object.equals(java.lang.Object)
+</pre></div>
+
+<p>The access modifiers are placed in canonical order as specified by &quot;The
+Java Language Specification&quot;.  This is public, protected or private
+first, and then other modifiers in the following order: abstract,
+static, final, synchronized native.
+</p></blockquote>
+
+<p>By convention, <var>pure-methods-file</var> has the suffix <samp>.pure</samp>.  If
+<var>pure-methods-file</var> is specified as a relative (not absolute) file
+name, it is searched for in the configuration directory specified via
+<samp>--configs=<var>directory</var></samp>, or in the current directory if no
+configuration directory is specified.
+</p>
+<p>One way to create a <samp>.pure</samp> file is to run the Purity Analysis Kit
+(<a href="http://jppa.sourceforge.net/">http://jppa.sourceforge.net/</a>).  If you supply
+the <samp>--daikon-purity-file</samp> when running the Purity Analysis Kit,
+it writes a file that can be supplied to Chicory.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="Chicory-miscellaneous-options"></a>
+<div class="header">
+<p>
+Previous: <a href="#Variables-in-Chicory-output" accesskey="p" rel="previous">Variables in Chicory output</a>, Up: <a href="#Chicory-options" accesskey="u" rel="up">Chicory options</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Chicory-miscellaneous-options-1"></a>
+<h4 class="subsubsection">7.1.1.3 Chicory miscellaneous options</h4>
+
+<p>This section lists all other Chicory options &mdash; that is, all options
+that do not control which program points and variables appear in
+Chicory&rsquo;s output.
+</p>
+<dl compact="compact">
+<dt><samp>--help</samp></dt>
+<dd><p>Print a help message.
+</p>
+</dd>
+<dt><samp>--debug</samp></dt>
+<dd><p>Produce debugging information.  For other debugging options, run Chicory
+with the <samp>--help</samp> option.
+</p>
+</dd>
+<dt><samp>--dtrace-file=<var>filename</var></samp></dt>
+<dd><a name="index-DTRACEFILE-environment-variable"></a>
+<a name="index-environment-variable-DTRACEFILE"></a>
+<a name="index-DTRACEAPPEND-environment-variable"></a>
+<a name="index-environment-variable-DTRACEAPPEND"></a>
+<a name="index-trace-file-name"></a>
+<a name="index-dtrace-file-name"></a>
+<a name="index-file-name_002c-for-dtrace-file"></a>
+<p>Specifies the default name for the trace output (<samp>.dtrace</samp>) file.
+If this is not specified, then the value of the <code>DTRACEFILE</code>
+environment variable (at the time the instrumented program runs) is
+used.  If that environment variable is not used, then the default is
+<samp>./<var>CLASSNAME</var>.dtrace</samp>.
+</p>
+<p>If the <code>DTRACEAPPEND</code> environment
+variable is set to any value, the <samp>.dtrace</samp> file will be appended to
+instead of overwritten.  Compressed data trace files may not be appended
+to.  In some cases you may find a single large data trace file more
+convenient; in other cases, a collection of smaller data trace files may
+give you more control over which subsets of runs to invoke Daikon on.
+</p>
+</dd>
+<dt><samp>--comparability-file=<var>filename</var></samp></dt>
+<dd><p>This option specifies a declaration file
+(see <a href="../developer/Declarations.html#Declarations">Declarations</a> in <cite>Daikon Developer Manual</cite>)
+that contains comparability information.  This information will be
+incorporated in the output of Chicory.  Any variables not included in
+the comparability file will have their comparability set so that they
+are comparable to all other variables of the same type.
+The DynComp tool is a common source for such a
+file (see <a href="#DynComp-for-Java">DynComp for Java</a> and <a href="#DynComp-for-C_002fC_002b_002b">DynComp for C/C++</a>).
+</p>
+</dd>
+<dt><samp>--output-dir=<var>directory</var></samp></dt>
+<dd><p>Write the <samp>.dtrace</samp> trace output file to the specified directory.
+The default is the current directory.
+</p>
+</dd>
+<dt><samp>--config-dir=<var>directory</var></samp></dt>
+<dd><p>Chicory will use this location to search for configuration files.
+Currently, this only includes <samp>*.pure</samp> files.
+</p>
+</dd>
+<dt><samp>--daikon</samp></dt>
+<dd><p>After creating a data trace (<samp>.dtrace</samp>) file, run Daikon on it.
+To specify arguments to Daikon use the <samp>--daikon-args</samp> option.
+Also see the
+<samp>--daikon-online</samp> option.
+</p>
+<p>This option supplies Daikon with a single trace from one execution of
+your program.  By contrast to this option (and
+<samp>--daikon-online</samp>), if you invoke Daikon from the command line,
+you can supply Daikon with as many trace files as you wish.
+</p>
+<p>If the program that Chicory is tracing aborts with an error, then Chicory
+does not run Daikon, but prints a message such as &ldquo;Warning: Did not run
+Daikon because target exited with 1 status&rdquo;.
+</p>
+</dd>
+<dt><samp>--daikon-online</samp></dt>
+<dd><p>This option is like <samp>--daikon</samp>, except that no <samp>.dtrace</samp>
+data trace file is produced.  Instead, Chicory sends trace information
+over a socket to Daikon, which processes the information incrementally
+(&ldquo;online&rdquo;), as Chicory produces it.
+</p>
+<p>Just like with the <samp>--daikon</samp> option, Daikon is only given a
+single trace from one execution of your program.
+</p>
+<p>The Kvasir front end also supports online execution, via use of (normal or
+named) Linux pipes (see <a href="#Online-execution">Online execution</a>).
+</p>
+</dd>
+<dt><samp>--daikon-args=<var>arguments</var></samp></dt>
+<dd><p>Specifies arguments to be passed to Daikon if the <samp>--daikon</samp> or
+<samp>--daikon-online</samp> options are used.
+</p>
+</dd>
+<dt><samp>--premain=<var>path</var></samp></dt>
+<dd><p>Specifies the absolute pathname to the <samp>ChicoryPremain.jar</samp> file.
+Chicory requires this jar file in order to execute.  By default Chicory
+looks for the jar file in the classpath and in <samp>$DAIKONDIR/java</samp>
+(where <code>DAIKONDIR</code> is the
+complete installation of Daikon).
+</p>
+<p>Chicory can also use the <samp>daikon.jar</samp> file for this purpose.  If it
+doesn&rsquo;t find <samp>ChicoryPremain.jar</samp> above, it will use <samp>daikon.jar</samp>
+itself (if a file named <samp>daikon.jar</samp> appears in the classpath).  If
+the Daikon jar file is not named <samp>daikon.jar</samp>, you can use this
+switch to specify its name.  For example:
+</p><div class="example">
+<pre class="example">--premain=C:\lib\daikon-5.6.4.jar
+</pre></div>
+
+</dd>
+<dt><samp>--heap-size=<var>max_heap</var></samp></dt>
+<dd><p>Specifies the maximum size, in bytes, of the memory allocation pool for
+the target program.  Also applies to Daikon, if the <samp>--daikon</samp>
+command-line argument is given.
+The size is specified in the same manner as the
+<samp>--Xmx</samp> switch to <code>java</code>; for example: <samp>--heap-size=2048m</samp>.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="Static-fields-_0028global-variables_0029"></a>
+<div class="header">
+<p>
+Previous: <a href="#Chicory-options" accesskey="p" rel="previous">Chicory options</a>, Up: <a href="#Chicory" accesskey="u" rel="up">Chicory</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Static-fields-_0028global-variables_0029-1"></a>
+<h4 class="subsection">7.1.2 Static fields (global variables)</h4>
+
+<a name="index-Static-fields-_0028global-variables_0029-in-Java-programs"></a>
+
+<p>Chicory (Daikon&rsquo;s front end for Java) outputs the values of static
+fields in the current class, but not in other classes.  That means that
+Daikon cannot report properties over static fields in other classes,
+because it never sees their values.  (By contrast, Kvasir
+(see <a href="#Kvasir">Kvasir</a>) supplies the values of C/C++ global variables to
+Daikon.)
+</p>
+<p>If you need Daikon to include all static variables when processing each
+class, then ask the maintainers to add that feature to
+Chicory (or work with them to implement the enhancement).  In the
+meanwhile, here are two workarounds.
+</p>
+<ol>
+<li> Add a static field whose type is the class containing the fields of
+interest.  You don&rsquo;t have to ever assign to the new field.  A
+disadvantage of this approach is that it gives you properties over the
+global variables as observed by each class (which might be different).
+
+</li><li> At the beginning and end of each method, add a call to a dummy method
+that has access to all the globals (via adding the field mentioned above).
+This produces a single formula that is valid for all global variables at
+all times.
+</li></ol>
+
+
+
+<hr>
+<a name="DynComp-for-Java"></a>
+<div class="header">
+<p>
+Next: <a href="#Kvasir" accesskey="n" rel="next">Kvasir</a>, Previous: <a href="#Chicory" accesskey="p" rel="previous">Chicory</a>, Up: <a href="#Front-ends-_0028instrumentation_0029" accesskey="u" rel="up">Front ends (instrumentation)</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="DynComp-dynamic-comparability-_0028abstract-type_0029-analysis-for-Java"></a>
+<h3 class="section">7.2 DynComp dynamic comparability (abstract type) analysis for Java</h3>
+
+<a name="index-DynComp_002c-for-Java"></a>
+<a name="index-abstract-types_002c-for-Java"></a>
+<a name="index-comparability_002c-for-Java"></a>
+<a name="index-dynamic-comparability_002c-for-Java"></a>
+
+<p>While Daikon can be run using only the Chicory front end, it is highly
+recommend that DynComp be run prior to Chicory.
+The DynComp dynamic comparability analysis tool performs dynamic type
+inference to group variables at each program point into comparability sets
+(see <a href="../developer/Program-point-declarations.html#Program-point-declarations">Program point declarations</a> in <cite>Daikon Developer Manual</cite>
+for the file representation of these sets).  All variables in each
+comparability set belong to the same &ldquo;abstract type&rdquo; of data that the
+programmer likely intended to represent, which is a richer set of types
+than the few basic declared types (e.g., int, float) provided by the
+language.
+</p>
+<p>Without comparability information, Daikon attempts to find invariants
+over all pairs (and sometimes triples) of variables present at every
+program point.  This can lead to two negative consequences: First, it
+may take lots of time and memory to infer all of these invariants,
+especially when there are many global or derived variables present.
+Second, many of those invariants are true but meaningless because they
+relate variables which conceptually represent different types (e.g., an
+invariant such as <code>winterDays &lt; year</code> is true but meaningless
+because days and years are not comparable).
+</p>
+<p>Consider the example below:
+</p>
+<div class="example">
+<pre class="example">public class Year {
+    public static void main(String[] args) {
+        int year = 2005;
+        int winterDays = 58;
+        int summerDays = 307;
+        compute(year, winterDays, summerDays);
+    }
+
+    public static int compute(int yr, int d1, int d2) {
+        if (0 != yr % 4)
+            return d1 + d2;
+        else
+            return d1 + d2 + 1;
+    }
+}
+</pre></div>
+
+<p>The three variables in <code>main()</code> all have the same Java
+representation type, <code>int</code>, but two of them hold related quantities
+(numbers of days), as can be determined by the fact that they interact
+when the program adds them, whereas the other contains a conceptually
+distinct quantity (a year).  The abstract types &ldquo;day&rdquo; and &ldquo;year&rdquo; are
+both represented as <code>int</code>, but DynComp can differentiate them with
+its dynamic analysis.  For example, DynComp can infer that
+<code>winterDays</code> and <code>summerDays</code> are comparable (belong to the
+same abstract type) because the program adds their values together
+within the compute() function.
+</p>
+<p>Without comparability information, Daikon attempts to find invariants
+over all pairs (and sometimes triples) of variables present at every
+program point.  This can lead to two negative consequences: First, it
+may take lots of time and memory to infer all of these invariants,
+especially when there are many global or derived variables present.
+Second, many of those invariants are true but meaningless because they
+relate variables which conceptually represent different types (e.g., an
+invariant such as <code>winterDays &lt; year</code> is true but meaningless
+because days and years are not comparable).
+</p>
+<p>To use DynComp, run your program as you normally would, but replace the
+<code>java</code> command with <code>java daikon.DynComp</code>.  For instance,
+if you usually run
+</p><div class="example">
+<pre class="example">java mypackage.MyClass arg1 arg2 arg3
+</pre></div>
+
+<p>then instead you would run
+</p><div class="example">
+<pre class="example">java daikon.DynComp mypackage.MyClass arg1 arg2 arg3
+</pre></div>
+
+<p>This runs your program and creates the file <samp>MyClass.decls-DynComp</samp>
+in the current directory.  The <samp>.decls-DynComp</samp> file may be passed to
+Chicory, as described in <a href="Example-usage.html#Detecting-invariants-in-Java-programs">Detecting invariants in Java programs</a>.
+</p>
+<div class="example">
+<pre class="example">java daikon.Chicory --comparability-file=MyClass.decls-DynComp \
+     mypackage.MyClass arg1 arg2 arg3
+</pre></div>
+
+<p>See below for more options.
+</p>
+<p>Here is part of a sample <samp>.decls-DynComp</samp> file generated by running DynComp on the example above:
+</p>
+<div class="example">
+<pre class="example">DECLARE
+Year.compute(int, int, int):::ENTER
+yr
+int # isParam=true
+int
+3
+d1
+int # isParam=true
+int
+2
+d2
+int # isParam=true
+int
+2
+
+DECLARE
+Year.compute(int, int, int):::EXIT11
+yr
+int # isParam=true
+int
+3
+d1
+int # isParam=true
+int
+2
+d2
+int # isParam=true
+int
+2
+return
+int
+int
+2
+</pre></div>
+
+<p>The declaration file format is described in
+<a href="../developer/Program-point-declarations.html#Program-point-declarations">Program point declarations</a> in <cite>Daikon Developer Manual</cite>.
+</p>
+<p>You can
+cause DynComp to create two additional representations of the comparability information.
+</p>
+<p>Given the option <samp>--comparability-file=<var>filename</var></samp>,
+DynComp outputs comparability sets as sets.  The above <samp>.decls-DynComp</samp>
+output corresponds to the following comparability-file output:
+</p>
+<div class="example">
+<pre class="example">Daikon Variable sets for Year.compute(int yr, int d1, int d2) enter
+  [2] [daikon.chicory.ParameterInfo:d1] [daikon.chicory.ParameterInfo:d2]
+  [1] [daikon.chicory.ParameterInfo:yr]
+Daikon Variable sets for Year.compute(int yr, int d1, int d2) exit
+  [3] [daikon.chicory.ParameterInfo:d1, daikon.chicory.ParameterInfo:
+       d2, daikon.chicory.ReturnInfo:return]
+  [1] [daikon.chicory.ParameterInfo:yr]
+</pre></div>
+
+<p>Given the option <samp>--trace-file=<var>filename</var></samp>,
+DynComp outputs comparability sets as trees,
+structured such that each variable in the tree has interacted with its
+children.  The lack of a parent-child relationship between two variables
+in a set does not imply anything about whether they interacted.
+The above <samp>.decls-DynComp</samp> output corresponds to the following
+trace-file output:
+</p>
+<div class="example">
+<pre class="example">Daikon Traced Tree for Year.compute(int yr, int d1, int d2) enter
+daikon.chicory.ParameterInfo:d1
+--daikon.chicory.ParameterInfo:d2 ()
+
+daikon.chicory.ParameterInfo:yr
+
+
+Daikon Traced Tree for Year.compute(int yr, int d1, int d2) exit
+daikon.chicory.ParameterInfo:d1
+--daikon.chicory.ParameterInfo:d2 (Year:compute(), 11)
+--daikon.chicory.ReturnInfo:return (Year:compute(), 11)
+
+daikon.chicory.ParameterInfo yr
+</pre></div>
+
+<p>The file here shows that <code>d1</code>, <code>d2</code>, and the return value of
+the <code>compute</code> method are in the same comparability set; this is
+correct, as they are all of the abstract type &ldquo;days&rdquo;.  The variable
+<code>yr</code> is in its own comparability set; it has abstract type &ldquo;year&rdquo;,
+and so is not comparable to the other variables.  In addition, the structure
+of the <code>[d1, d2, return]</code> set shows that at some point, <code>d1</code> interacted
+with <code>d2</code>, and that <code>d2</code> interacted with <code>return</code>.  The absence of
+a <code>d1 -- return</code> edge does not imply that <code>d1</code> and <code>return</code> never
+interacted directly.
+</p>
+<p>In addition, non-root nodes in the <samp>trace</samp> trees can indicate a list of class names,
+method names, and line numbers at which values interacted, resulting in comparability
+between the preceding child node and its parent.  In the above example, <code>d1</code>
+interacted with <code>d2</code> on line 11 of the <code>compute</code> method of the <code>Year</code>
+class.
+</p>
+<p>Duplicate values in this list represent the results of separate calls to
+another method which each of the relevant variables.  For example, if we modify
+the sample to use global variables instead of locals and add an additional call
+to <code>compute</code>:
+</p>
+<div class="example">
+<pre class="example">public class Year2 {
+    static int year = 2005;
+    static int winterDays = 58;
+    static int summerDays = 307;
+    static int schoolDays = 180;
+    static int breakDays = 185;
+    public static void main(String[] args) {
+        compute(year, winterDays, summerDays);
+        compute(year, schoolDays, breakDays);
+    }
+
+    public static int compute(int yr, int d1, int d2) {
+        if (0 != yr % 4)
+            return d1 + d2;
+        else
+            return d1 + d2 + 1;
+    }
+}
+</pre></div>
+
+<p>then for <code>compute</code> we might see
+this output:
+</p>
+<div class="example">
+<pre class="example">DynComp Traced Tree for Year2.compute(int yr, int d1, int d2) exit
+daikon.chicory.FieldInfo:Year2.schoolDays
+--daikon.chicory.FieldInfo:Year2.breakDays (Year2:compute(), 14)
+--daikon.chicory.ParameterInfo:d1 (Year2:compute(), 14)
+----daikon.chicory.FieldInfo:Year2.winterDays (Year2:compute(), 14)
+------daikon.chicory.FieldInfo:Year2.summerDays (Year2:compute(), 14)
+------daikon.chicory.ParameterInfo:d2 (Year2:compute(), 14)
+------daikon.chicory.ReturnInfo:return (Year2:compute(), 14)
+</pre></div>
+
+<p>Empty lists indicate that no non-assignment interactions occurred in the series of
+interactions connecting the two variables.
+</p>
+<p>Elements of these lists are essentially parts of stack traces.  The maximum number
+of stack trace levels displayed is set by <samp>--trace-line-depth</samp>, which is equal to 1 by default.
+</p>
+<p>For these files, DynComp also has a <samp>--abridged-vars</samp> option that replaces text
+like <code>daikon.chicory.ParameterInfo:d2</code> with text like <code>Parameter d2</code> in the comparability-file
+and trace-file.  It writes <code>this</code> instead of
+<code>daikon.chicory.ThisObjInfo:this</code>; and <code>return</code> instead of
+<code>daikon.chicory.ReturnInfo:return</code>.  This option is off by default, but can be
+turned on with <samp>--abridged-vars</samp>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Instrumenting-the-JDK-with-DynComp" accesskey="1">Instrumenting the JDK with DynComp</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#DynComp-for-Java-options" accesskey="2">DynComp for Java options</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Instrumentation-of-Object-methods" accesskey="3">Instrumentation of Object methods</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Troubleshooting-DynComp-for-Java" accesskey="4">Troubleshooting DynComp for Java</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#DynComp-for-Java-known-bugs" accesskey="5">DynComp for Java known bugs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Instrumenting-the-JDK-with-DynComp"></a>
+<div class="header">
+<p>
+Next: <a href="#DynComp-for-Java-options" accesskey="n" rel="next">DynComp for Java options</a>, Up: <a href="#DynComp-for-Java" accesskey="u" rel="up">DynComp for Java</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Instrumenting-the-JDK-with-DynComp-1"></a>
+<h4 class="subsection">7.2.1 Instrumenting the JDK with DynComp</h4>
+
+<a name="index-dcomp_005frt_002ejar-file-for-DynComp"></a>
+<a name="index-instrumented-JDK_002c-for-DynComp"></a>
+<a name="index-JDK_002c-instrumented-for-DynComp"></a>
+
+<p>If you did not already do so when installing Daikon
+(see <a href="Installing-Daikon.html#Installing-Daikon">Installing Daikon</a>), follow the instructions here to build an
+instrumented copy of the JDK.  Use the following command:
+</p>
+<div class="example">
+<pre class="example">make -C $DAIKONDIR/java dcomp_rt.jar
+</pre></div>
+
+<p>Make sure the <code>JAVA_HOME</code> environment variable is set to the directory
+containing your JDK.  This command instruments the classes in the
+<samp>rt.jar</samp> file of the JDK, and creates a new file,
+<samp>dcomp_rt.jar</samp>, in the <samp>java</samp> directory.
+</p>
+<p>On MacOSX, versions of the JDK prior to 7 were not organized in a manner
+similar to the Linux versions.  Current versions of Daikon require JDK 7
+(or newer); hence, this is no longer an issue on MacOSX.
+The following example is typical for an install of Java 1.7 on MacOSX:
+</p>
+<div class="example">
+<pre class="example">export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Home
+</pre></div>
+
+<p>Building <samp>dcomp_rt</samp> requires 10-30 minutes to complete and uses 1024 MB of
+memory.  Regular progress indicators are printed to standard output.
+</p>
+<p>You can ignore warnings issued during the instrumentation process, so
+long as the make target itself completes normally.
+</p>
+<p>If there are any methods in the JDK that DynComp is
+unable to instrument, their names will be
+printed at the end of the instrumentation process.  This is not a problem unless
+your application calls one of these methods (directly or indirectly).
+If one of these methods is called, a &lsquo;<samp>NoSuchMethodException</samp>&rsquo; will
+be generated when the call is attempted. As of Java 7 runtime version 1.7.0_65
+all Java runtime methods are able to be instrumented.
+</p>
+<p>If the instrumented JDK is in a non-standard location, use the
+<samp>--rt-file</samp> switch to specify its location, or change your classpath
+to include it.
+</p>
+<p>One final note: if you update your JDK in any way (such as a OS upgrade),
+you will need to rebuild <samp>dcomp_rt.jar</samp>.
+</p>
+
+<hr>
+<a name="DynComp-for-Java-options"></a>
+<div class="header">
+<p>
+Next: <a href="#Instrumentation-of-Object-methods" accesskey="n" rel="next">Instrumentation of Object methods</a>, Previous: <a href="#Instrumenting-the-JDK-with-DynComp" accesskey="p" rel="previous">Instrumenting the JDK with DynComp</a>, Up: <a href="#DynComp-for-Java" accesskey="u" rel="up">DynComp for Java</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="DynComp-options"></a>
+<h4 class="subsection">7.2.2 DynComp options</h4>
+
+<p>DynComp is invoked as follows:
+</p><div class="example">
+<pre class="example">java daikon.DynComp <var>dyncomp-args</var> <var>classname</var> <var>args</var>
+</pre></div>
+
+<p>where
+</p><div class="example">
+<pre class="example">java <var>classname</var> <var>args</var>
+</pre></div>
+
+<p>is a valid invocation of Java.
+</p>
+<p>This section lists the optional command-line arguments to DynComp, which
+appear before the <var>classname</var> on the DynComp command line.
+</p>
+<dl compact="compact">
+<dt><samp>--verbose</samp></dt>
+<dd><p>Print information about the classes being processed.
+</p>
+</dd>
+<dt><samp>--debug</samp></dt>
+<dd><p>Dump the instrumented classes to <samp>debug/bin</samp>.
+</p>
+</dd>
+<dt><samp>--debug-dir</samp></dt>
+<dd><p>The directory in which to dump instrumented class files (only if
+<samp>--debug</samp> is specified).  Defaults to <samp>debug</samp> in the current
+working directory.
+</p>
+</dd>
+<dt><samp>--output-dir=<var>dir</var></samp></dt>
+<dd><p>The directory in which to create output files.  Defaults to the current
+working directory.
+</p>
+</dd>
+<dt><samp>--decl-file=<var>file</var></samp></dt>
+<dd><p>Output filename for <samp>.decls</samp> file suitable for input to Daikon.  Defaults to
+<samp><var>target_program</var>.decls-DynComp</samp>.
+</p>
+</dd>
+<dt><samp>--comparability-file=<var>file</var></samp></dt>
+<dd><p>Output filename for a more easily human-readable file summarizing
+comparability sets.  The file is intended primarily for debugging.
+</p>
+</dd>
+<dt><samp>--trace-file=<var>file</var></samp></dt>
+<dd><p>If specified, write a human-readable file showing some of the interactions
+that occurred.  The file is intended primarily for debugging.
+</p>
+</dd>
+<dt><samp>--trace-line-depth=<var>n</var></samp></dt>
+<dd><p>Controls size of the stack displayed in tracing the interactions that
+occurred.  Default behavior is to only display one element in the stack &mdash;
+that is, display at most the topmost function on the stack when the
+interaction occurred.  This switch has no effect if <samp>--trace-file</samp>
+is not specified, or is null.
+</p>
+</dd>
+<dt><samp>--abridged-vars</samp></dt>
+<dd><p>When this switch is on, DynComp abridges the variables printed in the files
+specified by <samp>--comparability-file</samp> and <samp>--trace-file</samp>.
+For example, DynComp will output
+&lsquo;<samp>Field foo</samp>&rsquo; instead of &lsquo;<samp>dyncomp.chicory.FieldInfo:MyClass.foo</samp>&rsquo;.
+In particular,
+it replaces &lsquo;<samp>dyncomp.chicory.ReturnInfo:return</samp>&rsquo; with &lsquo;<samp>return</samp>&rsquo; and
+&lsquo;<samp>dyncomp.chicory.ThisObjInfo:this</samp>&rsquo; with &lsquo;<samp>this</samp>&rsquo;.
+</p>
+</dd>
+<dt><samp>--ppt-select-pattern=<var>regex</var></samp></dt>
+<dd><p>Only emit program points that match <var>regex</var>.  Specifically, a
+program point is considered to match <var>regex</var> if the fully qualified
+class name, the method name, or the program point name matches
+<var>regex</var>.  The behavior of this switch is the same as in Chicory (see
+<a href="#Program-points-in-Chicory-output">Program points in Chicory output</a>).
+</p>
+<p>This option can be specified multiple times, and may be used in
+conjunction with <samp>--ppt-omit-pattern</samp>.  If a program point matches
+both a select pattern and an omit pattern, it is omitted.
+</p>
+</dd>
+<dt><samp>--ppt-omit-pattern=<var>regex</var></samp></dt>
+<dd><p>Suppress program points that match <var>regex</var>.  Specifically, a
+program point is considered to match <var>regex</var> if the fully qualified
+class name, the method name, or the program point name matches
+<var>regex</var>.  The behavior of this switch is the same as in Chicory (see
+<a href="#Program-points-in-Chicory-output">Program points in Chicory output</a>).
+</p>
+<p>This option can be specified multiple times, any may be used in
+conjunction with <samp>--ppt-select-pattern</samp>.  If a program point
+matches both a select pattern and an omit pattern, it is omitted.
+</p>
+</dd>
+<dt><samp>--no-primitives</samp></dt>
+<dd><p>Don&rsquo;t track Java primitive values (of type <code>boolean</code>, <code>int</code>,
+<code>long</code>, etc.).  When this switch is on, DynComp only tracks
+the comparability of object references; primitive values are
+ignored.  Using this switch can greatly improve DynComp&rsquo;s runtime if
+you are not interested in primitive values.
+</p>
+</dd>
+<dt><samp>--rt-file=<var>jdk-jar-file</var></samp></dt>
+<dd><p>Specifies the location of the instrumented JDK (see <a href="#Instrumenting-the-JDK-with-DynComp">Instrumenting the JDK with DynComp</a>).  This option is rarely necessary, because
+if <samp>--rt-file</samp> is not specified, DynComp
+will search for a file named <samp>dcomp_rt.jar</samp> along the classpath,
+and in <samp>$DAIKONDIR/java</samp>.  Both this file and the current classpath
+are placed on the boot classpath for DynComp&rsquo;s execution.
+</p>
+<p>If the filename is <code>NONE</code>, then
+run DynComp with an uninstrumented JDK, instead of with a
+copy of the JDK that has been instrumented with DynComp.
+This will improve runtime performance, but will
+yield less accurate results.
+</p>
+</dd>
+<dt><samp>--std-visibility</samp></dt>
+<dd><p>When this switch is on, DynComp traverses exactly those fields that are
+visible from a given program point.  For an example, see <a href="#Variables-in-Chicory-output">Variables in Chicory output</a>.
+</p>
+</dd>
+<dt><samp>--nesting-depth=<var>n</var></samp></dt>
+<dd><p>Depth to which to examine structure components (default 2).  This
+parameter determines which variables the front end causes to be output
+at runtime.  For an example, see <a href="#Variables-in-Chicory-output">Variables in Chicory output</a>.
+</p>
+</dd>
+</dl>
+
+
+<hr>
+<a name="Instrumentation-of-Object-methods"></a>
+<div class="header">
+<p>
+Next: <a href="#Troubleshooting-DynComp-for-Java" accesskey="n" rel="next">Troubleshooting DynComp for Java</a>, Previous: <a href="#DynComp-for-Java-options" accesskey="p" rel="previous">DynComp for Java options</a>, Up: <a href="#DynComp-for-Java" accesskey="u" rel="up">DynComp for Java</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Instrumentation-of-Object-methods-1"></a>
+<h4 class="subsection">7.2.3 Instrumentation of Object methods</h4>
+
+<p>DynComp is unable to directly instrument methods of the class
+<code>Object</code>, such as <code>clone</code> and <code>equals</code>.  DynComp uses a
+few tricks, described here in brief, to track comparability in these
+methods.
+</p>
+<p>Calls such as <code>o1.equals(o2)</code> are replaced with calls to a static
+method in DynComp, <code>dcomp_equals(o1, o2)</code>.  This static method
+dynamically determines whether or not <code>o1</code> is an instance of a
+class that has been instrumented by DynComp; every such class
+implements the interface <code>DCompInstrumented</code>.  If so, it attempts
+to invoke the instrumented version of the <code>equals</code> method for
+<code>o1</code>.  If not, or if <code>o1</code> has not overridden the
+<code>equals</code> method from <code>Object</code>, then no instrumented version
+exists, so the uninstrumented version is invoked.
+</p>
+<p>In either case, the references <code>o1</code> and <code>o2</code> are considered
+to be comparable.  In a future release, we will provide a command-line
+switch to customize this behavior.
+</p>
+<p>The <code>clone</code> method operates in a similar manner, choosing
+dynamically to invoke the instrumented method or the uninstrumented
+method.  In the case of <code>clone</code>, the methods are invoked via
+reflection.  In either case, the object being cloned and the resulting
+clone are made comparable to each other.  Again, we will provide a
+switch to customize this behavior in a future release.
+</p>
+
+<hr>
+<a name="Troubleshooting-DynComp-for-Java"></a>
+<div class="header">
+<p>
+Next: <a href="#DynComp-for-Java-known-bugs" accesskey="n" rel="next">DynComp for Java known bugs</a>, Previous: <a href="#Instrumentation-of-Object-methods" accesskey="p" rel="previous">Instrumentation of Object methods</a>, Up: <a href="#DynComp-for-Java" accesskey="u" rel="up">DynComp for Java</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Troubleshooting-DynComp-for-Java-1"></a>
+<h4 class="subsection">7.2.4 Troubleshooting DynComp for Java</h4>
+
+<p>If DynComp crashes the JVM, then the most likely problem is that you are
+running with a wrong version of the JDK.  Re-instrument the JDK as
+described in <a href="#Instrumenting-the-JDK-with-DynComp">Instrumenting the JDK with DynComp</a>.
+</p>
+<p>Examples of errors that you may obtain when using the wrong version of the
+JDK include the following:
+</p>
+<div class="example">
+<pre class="example">Error occurred during initialization of VM
+java.lang.UnsatisfiedLinkError:
+</pre></div>
+
+<div class="example">
+<pre class="example"># A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV
+</pre></div>
+
+
+
+<hr>
+<a name="DynComp-for-Java-known-bugs"></a>
+<div class="header">
+<p>
+Previous: <a href="#Troubleshooting-DynComp-for-Java" accesskey="p" rel="previous">Troubleshooting DynComp for Java</a>, Up: <a href="#DynComp-for-Java" accesskey="u" rel="up">DynComp for Java</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Known-bugs-and-limitations"></a>
+<h4 class="subsection">7.2.5 Known bugs and limitations</h4>
+
+<ul>
+<li> Java reflection finds the original, uninstrumented code.  DynComp will not
+observe code that is called reflectively, and so DynComp&rsquo;s output will not
+indicate interactions in such code.
+
+<p>This is relevant to frameworks such as JUnit that call code reflectively.
+If you want to run tests using JUnit, then explicitly create a Suite that
+contains the tests you want to run, rather than annotating methods with
+<code>@Test</code> and depending on JUnit to find them and call them via reflection.
+If you are generating JUnit test suites with
+<a href="https://randoop.github.io/randoop/">Randoop</a>, then supply the
+<samp>--junit-reflection-allowed=false</samp> command-line option to Randoop.
+</p></li><li> Instrumentation of the <code>clone()</code> method may fail on particular
+invocations within private classes in the JDK.
+</li></ul>
+
+
+<hr>
+<a name="Kvasir"></a>
+<div class="header">
+<p>
+Next: <a href="#Celeriac" accesskey="n" rel="next">Celeriac</a>, Previous: <a href="#DynComp-for-Java" accesskey="p" rel="previous">DynComp for Java</a>, Up: <a href="#Front-ends-_0028instrumentation_0029" accesskey="u" rel="up">Front ends (instrumentation)</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="C_002fC_002b_002b-front-end-Kvasir"></a>
+<h3 class="section">7.3 C/C++ front end Kvasir</h3>
+
+<a name="index-Kvasir-_0028binary-front-end-for-C_0029"></a>
+<a name="index-front-end-for-C_002fC_002b_002b"></a>
+<a name="index-C_002fC_002b_002b-front-end"></a>
+<a name="index-instrumentation_002c-of-C_002fC_002b_002b-programs"></a>
+
+<p>Daikon&rsquo;s front end for C and C++, named Kvasir, executes C and C++
+programs and creates
+data trace (<samp>.dtrace</samp>) files of variables and their values by
+examining the operation of the binary at
+runtime.  Kvasir is named after the Norse god of knowledge and beet juice.
+It is built upon the Fjalar dynamic analysis framework for C and C++ programs
+(available at <a href="http://pag.csail.mit.edu/fjalar/">http://pag.csail.mit.edu/fjalar/</a>, but already
+included in the Daikon distribution).
+</p>
+<p>To use Kvasir, first compile your program using the DWARF-2 debugging
+format (e.g., supply the <samp>-gdwarf-2</samp> option to <code>gcc</code>) and
+without optimizations (e.g., supply the <samp>-O0</samp> option to <code>gcc</code>).
+Also, some versions of <code>gcc</code> now output position independent code by default.
+You must add the <samp>-no-pie</samp> option to disable this feature.
+Then, prefix your command line by <code>kvasir-dtrace</code>.  For example,
+if you normally run your program with the command
+</p><div class="example">
+<pre class="example">./program -option input.file
+</pre></div>
+
+<p>then instead use the command
+</p><div class="example">
+<pre class="example">kvasir-dtrace ./program -option input.file
+</pre></div>
+
+<p>to run your program and create a data trace file
+<samp>daikon-output/program.dtrace</samp>, which can be fed as input into
+Daikon.  You can perform this step multiple times to create multiple
+data trace files for Daikon.
+You can also run Daikon without creating an intermediate data trace
+file; see <a href="#Online-execution">Online execution</a>.
+</p>
+<p>For information about installing Kvasir, see <a href="#Installing-Kvasir">Installing Kvasir</a>.
+Kvasir only works under Linux running on an x86 or x86-64 processor; for full
+details, see <a href="#Kvasir-limitations">Kvasir limitations</a>.
+For information about how to create an instrumenter for C that works on
+non-Linux or non-x86 platforms, see <a href="../developer/Instrumenting-C-programs.html#Instrumenting-C-programs">Instrumenting C
+programs</a> in <cite>Daikon Developer Manual</cite>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Using-Kvasir" accesskey="1">Using Kvasir</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Kvasir-options" accesskey="2">Kvasir options</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#DynComp-for-C_002fC_002b_002b" accesskey="3">DynComp for C/C++</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Tracing-only-part-of-a-program" accesskey="4">Tracing only part of a program</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Pointer-type-disambiguation" accesskey="5">Pointer type disambiguation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#C_002b_002b-support" accesskey="6">C++ support</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Online-execution" accesskey="7">Online execution</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Installing-Kvasir" accesskey="8">Installing Kvasir</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Kvasir-limitations" accesskey="9">Kvasir limitations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Using-Kvasir"></a>
+<div class="header">
+<p>
+Next: <a href="#Kvasir-options" accesskey="n" rel="next">Kvasir options</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Using-Kvasir-1"></a>
+<h4 class="subsection">7.3.1 Using Kvasir</h4>
+
+<p>Before using Kvasir, you must compile your program compile and link your
+program normally, with two exceptions:
+</p><ul>
+<li> Do not use optimization.  Remove
+any optimization flags, such as <samp>-O</samp> or <samp>-O2</samp>,
+and any flags that affect calling conventions, such as
+<samp>-fomit-frame-pointer</samp>.
+</li><li> Include debugging information, by supplying the <samp>-g</samp> flag.
+The debugging information must be in the DWARF-2 format.
+DWARF-2 is the default format for debugging information in <code>gcc</code> 3 and later, and
+otherwise is produced by supplying the <samp>-gdwarf-2</samp> command line option.
+</li><li> Kvasir cannot properly process position independent binaries.
+You must add the <samp>-no-pie</samp> option to disable this feature.
+</li></ul>
+
+<p>In the second step of using Kvasir, run your program as you normally
+would, but prepend the command <code>kvasir-dtrace</code> to the beginning.
+For instance, if you normally run your program with the command
+</p><div class="example">
+<pre class="example">./myprogram -option input.file
+</pre></div>
+
+<p>just say
+</p><div class="example">
+<pre class="example">kvasir-dtrace ./myprogram -option input.file
+</pre></div>
+
+<p>As well as running your program (more slowly than usual), this command
+also creates a directory <samp>daikon-output</samp> in the current
+directory containing a <samp>program.dtrace</samp> file suitable as input to Daikon.
+</p>
+<p>Kvasir&rsquo;s first argument, the program name, should be given as a
+pathname, as shown above.  If you usually just give a program name that
+is not in the current directory but is found in your path, you may need
+to modify your command to specify a pathname.  For example:
+</p><div class="example">
+<pre class="example">kvasir-dtrace `which myprogram` -option input.file
+</pre></div>
+
+<p>You may supply options to Kvasir
+before the argument that is the name of your program (see <a href="#Kvasir-options">Kvasir options</a>).
+</p>
+
+<hr>
+<a name="Kvasir-options"></a>
+<div class="header">
+<p>
+Next: <a href="#DynComp-for-C_002fC_002b_002b" accesskey="n" rel="next">DynComp for C/C++</a>, Previous: <a href="#Using-Kvasir" accesskey="p" rel="previous">Using Kvasir</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Kvasir-options-1"></a>
+<h4 class="subsection">7.3.2 Kvasir options</h4>
+
+<p>To see a complete list of options, run this command: <code>kvasir-dtrace --help</code>
+</p>
+<p>Output file format:
+</p>
+<dl compact="compact">
+<dt><samp>--decls-file=<var>filename</var></samp></dt>
+<dd>
+<p>Write the <samp>.decls</samp> file listing the names of functions and
+variables (called declarations) to the specified file name.  This forces
+Kvasir to generate separate
+<samp>.decls</samp> and <samp>.dtrace</samp> files instead of outputting everything to the
+<samp>.dtrace</samp> file, which is the default behavior.  If only a <samp>.dtrace</samp> file is
+created (default behavior), then it contains both variable declarations and a trace of
+values.  If separate <samp>.decls</samp> and <samp>.dtrace</samp> files are created,
+then the <samp>.decls</samp> file contains declarations and the <samp>.dtrace</samp>
+file contains the trace of values.
+</p>
+</dd>
+<dt><samp>--decls-only</samp></dt>
+<dd>
+<p>Exit after writing the <samp>.decls</samp> file; don&rsquo;t run the program or
+generate trace information.  Since the <samp>.decls</samp> file is the same for
+any run of a program, it can be generated once and then reused on later
+runs, as long as no new program points are added and each program point
+has the same set of variables.
+</p>
+</dd>
+<dt><samp>--dtrace-file=<var>filename</var></samp></dt>
+<dd>
+<p>Write the <samp>.dtrace</samp> trace file to the specified file name.  The default is
+<samp>daikon-output/<var>programname</var>.dtrace</samp>, where <var>programname</var>
+is the name of the program.  A filename of <samp>-</samp> may be used to
+specify the standard output; in this case, the regular standard output
+of the program will be redirected back to the terminal (<samp>/dev/tty</samp>), to avoid
+intermixing it with the trace output.  If the given filename ends in
+<samp>.gz</samp>, then <samp>--dtrace-gzip</samp> is enabled and the
+<samp>.dtrace</samp> file will be compressed.
+</p>
+</dd>
+<dt><samp>--dtrace-no-decls</samp></dt>
+<dd>
+<p>By default, the <samp>.dtrace</samp> file contains both a list of variable
+declarations followed by a trace of variable values
+(see <a href="../developer/File-formats.html#File-formats">File formats</a> in <cite>Daikon Developer Manual</cite>).
+If this option is used, then variable declarations are not
+outputted in the <samp>.dtrace</samp> file.  This option is equivalent to
+<samp>--decls-file=/dev/null</samp>, except that it runs faster.  This is
+useful when you want to generate one copy of the declarations in the
+<samp>.decls</samp> file using <samp>--decls-only</samp>, generate many
+<samp>.dtrace</samp> files from different program runs, and then feed 1
+<samp>.decls</samp> and several <samp>.dtrace</samp> files into Daikon.
+</p>
+</dd>
+<dt><samp>--dtrace-append</samp></dt>
+<dd>
+<p>Append new trace information to the end of an existing <samp>.dtrace</samp>
+file.  The default is to overwrite a preexisting <samp>.dtrace</samp> file.
+When this option is used, no declaration information is written because
+it is assumed that the existing <samp>.dtrace</samp> file already contains all
+declarations (Daikon does not accept duplicate declarations).
+</p>
+</dd>
+<dt><samp>--dtrace-gzip</samp></dt>
+<dd>
+<p>Compress trace information with the <code>gzip</code> program before writing
+it to the <samp>.dtrace</samp> file.  You must have the <code>gzip</code> program
+available.
+</p>
+</dd>
+<dt><samp>--output-fifo</samp></dt>
+<dd>
+<p>Create the output <samp>.dtrace</samp> file as a FIFO (also
+known as a <em>named pipe</em>).  Kvasir will then open first the <samp>.decls</samp>
+FIFO and then the <samp>.dtrace</samp> FIFO, blocking until another program
+(such as Daikon) reads from them.  Using FIFO files for the output of Kvasir
+avoids the need for large trace files, but FIFO files are not supported by
+some file systems, including the Andrew File System (AFS).
+</p>
+</dd>
+<dt><samp>--program-stdout=<var>filename</var></samp></dt>
+<dt><samp>--program-stderr=<var>filename</var></samp></dt>
+<dd>
+<p>Redirect the standard output (respectively, standard error) stream of the
+program being traced to the specified path.  By default, the standard
+output and standard error streams will be left pointing to the same
+locations specified by the shell, except that if <samp>--dtrace-file=-</samp>
+is specified, then the default behavior is as if
+<samp>--program-stdout=/dev/tty</samp> were specified, since mixing the
+program&rsquo;s output and Kvasir&rsquo;s trace output is not advisable.
+If the same filename is given for both options, the streams will be
+interleaved in the same way as if by the Bourne shell construction
+<code>2&gt;&amp;1</code>.
+</p>
+<p>Also, as in the shell, <var>filename</var> can be an ampersand followed by an
+integer, to redirect to a numbered file descriptor.  For instance, to
+redirect the program&rsquo;s standard output and error, and Kvasir&rsquo;s standard
+error, to a single file, you can say <samp>--program-stdout='&amp;2'
+--program-stderr='&amp;2' 2&gt;<var>filename</var></samp>.
+</p>
+</dd>
+</dl>
+
+<p>Selective program point and variable tracing:
+</p>
+<dl compact="compact">
+<dt><samp>--ppt-list-file=<var>filename</var></samp></dt>
+<dt><samp>--var-list-file=<var>filename</var></samp></dt>
+<dd>
+<p>Trace only the program points (respectively, variables) listed in the
+given file.  Other program points (respectively variables) will be
+omitted from the <samp>.decls</samp> and <samp>.dtrace</samp> files.  A convenient
+way to produce such files is by editing the output produced by the
+<samp>--dump-ppt-file</samp> (respectively, <samp>--dump-var-file</samp>) option
+described below (see <a href="#Tracing-only-part-of-a-program">Tracing only part of a program</a>).
+</p>
+</dd>
+<dt><samp>--dump-ppt-file=<var>filename</var></samp></dt>
+<dt><samp>--dump-var-file=<var>filename</var></samp></dt>
+<dd>
+<p>Print a list of all the program points (respectively all the variables)
+in the program to the specified file.  An edited version of this file can
+then be used with the <samp>--ppt-list-file</samp> (respectively
+<samp>--var-list-file</samp>) option
+(see <a href="#Tracing-only-part-of-a-program">Tracing only part of a program</a>).
+Note: You must use these options with the
+<samp>--no-dyncomp</samp> option because otherwise, the behavior is undefined.
+Running Kvasir with these
+options will initialize but not actually execute the target program, so
+the dynamic comparability analysis cannot be performed in the first
+place.
+</p>
+</dd>
+<dt><samp>--ignore-globals</samp></dt>
+<dd>
+<p>Omit any global or static variables from the <samp>.decls</samp> and
+<samp>.dtrace</samp> files.  Leaving these out can significantly improve Kvasir
+and Daikon&rsquo;s performance, at the expense of missing properties involving
+them.  The default is to generate trace information for
+global and static variables.
+</p>
+</dd>
+<dt><samp>--ignore-static-vars</samp></dt>
+<dd>
+<p>Omit any static variables but generate trace information for
+global variables in the <samp>.decls</samp> and <samp>.dtrace</samp> files.
+</p>
+</dd>
+<dt><samp>--all-static-vars</samp></dt>
+<dd>
+<p>Output all static variables at all program points in the <samp>.decls</samp> and
+<samp>.dtrace</samp> files.  By default, file-static variables are only outputted at
+program points for functions that are defined in the same file (compilation unit)
+as the
+variable, and static variables declared within a particular function are
+only outputted at program points for that function.  These heuristics decrease
+clutter in the output without greatly reducing precision because functions
+have no easy way of modifying variables that are not in-scope, so it is often
+not useful to output those variables.  This option turns off these heuristics
+and always outputs static variables at all program points.
+</p>
+</dd>
+</dl>
+
+<p>Other options affecting the amount of output Kvasir produces:
+</p>
+<dl compact="compact">
+<dt><samp>--object-ppts</samp></dt>
+<dd><p>Enables printing of object program points for C/C++ structs and C++
+classes. See <a href="Daikon-output.html#Program-points">Program points</a> for more information.
+</p>
+</dd>
+<dt><samp>--flatten-arrays</samp></dt>
+<dd><p>This option forces the flattening of statically-sized arrays into
+separate variables, one for each element.  For example, an array
+<code>foo</code> of size 3 would be flattened into 3 variables: <code>foo[0]</code>,
+<code>foo[1]</code>, <code>foo[2]</code>.  By default, Kvasir flattens
+statically-sized arrays only after it has already exhausted the one
+level of sequences that Daikon allows in the <samp>.dtrace</samp> output format
+(e.g. an array of structs where each struct contains a statically-sized
+array).
+</p>
+</dd>
+<dt><samp>--array-length-limit=<var>N</var></samp></dt>
+<dd><p>Only visit at most the first <var>N</var> elements of all arrays.  This can
+improve performance at the expense of losing coverage; it is often
+useful for tracing selected parts of programs that use extremely large
+arrays or memory buffers.
+</p>
+</dd>
+<dt><samp>--output-struct-vars</samp></dt>
+<dd><p>This option forces Kvasir to output <samp>.decls</samp> and <samp>.dtrace</samp> entries for
+struct variables.  By default, Kvasir ignores struct variables because
+there is really no value that can be meaningfully associated with these
+variables.  However, some tools require struct variables to be
+outputted, so we have included this option.  Struct variables are
+denoted by a &lsquo;<samp># isStruct=true</samp>&rsquo; annotation in their declarations.
+</p>
+</dd>
+<dt><samp>--nesting-depth=<var>N</var></samp></dt>
+<dd>
+<p>For recursively-defined structures (structs or classes with members that
+are structs or classes or pointers to structs or classes of <em>any</em> type),
+<var>N</var> (an integer between 0 and 100) specifies approximately how many levels
+of pointers to dereference.  This is useful for controlling the output
+of complex data structures with many references to other structures.
+The default is 2.
+</p>
+</dd>
+<dt><samp>--struct-depth=<var>N</var></samp></dt>
+<dd>
+<p>For recursively-defined structures (structs or classes with members that
+are pointers to the <em>same</em> type of struct or class),
+<var>N</var> (an integer between
+0 and 100) specifies approximately how many levels of pointers to dereference.
+This is useful for controlling the output of linked lists and trees.
+The default is 4.  If you are trying to traverse deep into data
+structures, try adjusting the <samp>--struct-depth</samp> and
+<samp>--total-depth</samp> options until Kvasir traverses deep enough to
+reach the desired variables.
+</p>
+</dd>
+</dl>
+
+<a name="Pointer-type-disambiguation-command_002dline-arguments"></a><p><a href="#Pointer-type-disambiguation">Pointer type disambiguation</a>:
+</p>
+<dl compact="compact">
+<dt><samp>--disambig-file=<var>filename</var></samp></dt>
+<dd><p>Specifies the name of the pointer type disambiguation file
+(see <a href="#Pointer-type-disambiguation">Pointer type disambiguation</a>).
+If this file exists, Kvasir uses it to make decisions about how
+to output the referents of pointer variables.  If the file does not exist,
+then Kvasir creates it.  This file may then be edited and used on
+subsequent runs.  This option initializes but does not fully execute the
+target program (unless it is run with the <samp>--smart-disambig</samp>
+option).
+</p>
+</dd>
+<dt><samp>--disambig</samp></dt>
+<dd><p>Tells Kvasir to create or read pointer type disambiguation
+(see <a href="#Pointer-type-disambiguation">Pointer type disambiguation</a>) with the default filename,
+which is <samp><var>myprog</var>.disambig</samp> in the same
+directory as the target program, where <var>myprog</var> is the name of the
+target program.  This is equivalent to
+<samp>--disambig-file=<samp><var>myprog</var>.disambig</samp></samp>.
+</p>
+</dd>
+<dt><samp>--smart-disambig</samp></dt>
+<dd><p>This option should be used in addition to either the <samp>--disambig</samp>
+or <samp>--disambig-file</samp> options (it does nothing by itself).  If the
+<samp>.disambig</samp> file specified by the option does not exist, then Kvasir
+executes the target program, observes whether each pointer refers to
+either one element or an array of elements, and creates a disambiguation
+file that contains suggestions for the disambiguation types of each
+pointer variable.  This potentially provides more accuracy than using
+either the <samp>--disambig</samp> or <samp>--disambig-file</samp> options alone,
+but at the expense of a longer run time.  (If the <samp>.disambig</samp> file already
+exists, then this option provides no extra functionality.)
+</p>
+</dd>
+<dt><samp>--func-disambig-ptrs</samp></dt>
+<dd><p>By default, Kvasir treats all pointers as arrays when outputting their
+contents.  This option forces Kvasir to treat function parameters and
+return values that are pointers as pointing to single values.  However,
+all pointers nested inside of data structures pointed-to by parameters
+and return values are still treated as arrays.  This is useful for
+outputting richer data information for functions that pass parameters or
+return values via pointers, which happens often in practice.
+</p>
+</dd>
+<dt><samp>--disambig-ptrs</samp></dt>
+<dd><p>By default, Kvasir treats all pointers as arrays when outputting their
+contents.  This option forces Kvasir to treat all pointers as pointing to
+single values.  This is useful when tracing nested structures with lots
+of pointer fields which all refer to one element.
+</p>
+</dd>
+</dl>
+
+<p><a href="#DynComp-for-C_002fC_002b_002b">DynComp for C/C++</a>:
+</p>
+<dl compact="compact">
+<dt><samp>--dyncomp</samp></dt>
+<dd>
+<p>Run Kvasir with the DynComp dynamic
+comparability analysis tool to determine which variables have the same
+abstract type.  (This is the default behavior for Kvasir and it is not
+necessary to specify this option.)
+Variable comparability information
+improves the performance of Daikon and
+improves Daikon&rsquo;s output by filtering out irrelevant invariants.
+Because it is not available until the end of execution, comparability
+information is always written to a separate <samp>.decls</samp> file (in the
+format specified in the
+<a href="../developer/Program-point-declarations.html#Program-point-declarations">Program point declarations</a> in <cite>Daikon Developer Manual</cite>),
+as if the <samp>--decls-file</samp> option had been specified
+(<samp>--decls-file</samp> can still be used to control the name of the
+file).
+This file must be provided to Daikon along with the <samp>.dtrace</samp>
+file.
+This option may also be used with <samp>--decls-only</samp> to only generate
+a <samp>.decls</samp> file without a <samp>.dtrace</samp>.
+</p>
+<p>Note that if you are running multiple runs (executions) of your
+test program and you are certain that the comparability information
+will not vary from run to run, you may use <samp>--no-dyncomp</samp> on the second and
+subsequent runs to reduce the time required to generate the <samp>.trace</samp>
+file(s).
+</p>
+</dd>
+<dt><samp>--dyncomp-interactions=all</samp></dt>
+<dt><samp>--dyncomp-interactions=units</samp></dt>
+<dt><samp>--dyncomp-interactions=comparisons</samp></dt>
+<dt><samp>--dyncomp-interactions=none</samp></dt>
+<dd>
+<p>By default, DynComp considers any binary operation as an interaction
+between its two operands. (<samp>=all</samp>)
+</p>
+<p>You may restrict this such that the only binary operations that
+qualify as interactions are comparisons, addition, subtraction.
+This ensures that the variables that DynComp groups together into one
+set all have the same units (e.g., physics units). (<samp>=units</samp>)
+</p>
+<p>A tighter restriction is to stipulate that the only binary operations that
+qualify as interactions are comparisons between values (e.g., <code>x &lt;=
+y</code> or <code>x != y</code>). (<samp>=comparisons</samp>)
+</p>
+<p>Finally, you may specify that no binary operations qualify as
+interactions between values.  Thus, DynComp only tracks dataflow. (<samp>=none</samp>)
+</p>
+</dd>
+<dt><samp>--dyncomp-approximate-literals</samp></dt>
+<dd>
+<p>This option applies an approximation for handling literal values which
+greatly speeds up the performance of DynComp and drastically lowers its
+memory usage, but at the expense of a slight loss in precision of the
+generated comparability sets.  If you cannot get DynComp to successfully
+run on a large program, even after tweaking <samp>--dyncomp-gc-num-tags</samp>, try
+turning on this option.
+</p>
+</dd>
+<dt><samp>--dyncomp-detailed-mode</samp></dt>
+<dd>
+<p>This option runs a more detailed (but more time- and space-intensive)
+algorithm for tracking variable comparability.  It takes O(n^2) time and
+space, whereas the default algorithm takes roughly O(n) time and space.
+However, it can produce more precise results.  Despite its name, this
+mode can be used together with <samp>--dyncomp-fast-mode</samp> to run the
+more precise algorithm but still use an approximation for handling
+literal values.  (This mode is still experimental and not well-tested
+yet.)
+</p>
+</dd>
+<dt><samp>--dyncomp-separate-entry-exit</samp></dt>
+<dd>
+<p>The default behavior for DynComp is to generate the same comparability
+numbers for Daikon variables at each pair of function entrance and exit
+program points.  If this option is used, then DynComp keeps track of
+comparability separately for function entrances and exits, which can
+lead to more accurate results, but sometimes generates output <samp>.decls</samp>
+files that Daikon cannot accept.
+</p>
+</dd>
+<dt><samp>--dyncomp-gc-num-tags=<var>N</var></samp></dt>
+<dd>
+<p>By default, DynComp runs a garbage collector for the tag metadata
+once after every 10,000,000 tags have
+been assigned.  This option tells the garbage collector to run once
+after every <var>N</var> tags have been assigned.  Making the value of
+<var>N</var> larger allows your program to run faster (because the garbage
+collector runs less frequently), but may cause your program to run out
+of memory as well.  Making the value of <var>N</var> too small may cause your
+program to never terminate if <var>N</var> is smaller than the total number
+of tags that your program uses in steady state.  You will probably need
+to experiment with tweaking this value in order to get DynComp to work
+properly.
+</p>
+<p>Making the value of <var>N</var> equal to 0 turns off the garbage collector.
+This may reduce your program&rsquo;s execution time; however, it is not
+recommended for long program runs, because without the garbage
+collector, it will likely run out of memory.
+</p>
+</dd>
+</dl>
+
+<p>Debugging:
+</p>
+<dl compact="compact">
+<dt><samp>--xml-output-file=<var>filename</var></samp></dt>
+<dd>
+<p>Outputs a representation of data structures, functions, and variables in
+the target program to an XML file in order to aid in debugging.  These
+are all the entities that Kvasir tracks for a particular run of a target
+program, so if you do not see an entity in this XML file, then you
+should either adjust command-line options or contact us with a bug
+report.
+</p>
+</dd>
+<dt><samp>--with-gdb</samp></dt>
+<dd>
+<p>This pauses the program&rsquo;s execution in an infinite loop during
+initialization.  You can attach a debugger such as <code>gdb</code> to the
+running process by running <code>gdb</code> on <samp>inst/lib/valgrind/x86-linux/fjalar</samp> under
+the Kvasir directory and using the <code>attach</code> command.
+</p>
+</dd>
+<dt><samp>--kvasir-debug</samp></dt>
+<dt><samp>--fjalar-debug</samp></dt>
+<dt><samp>--dyncomp-debug</samp></dt>
+<dd>
+<p>Enable progress messages meant for debugging problems with Kvasir, Fjalar, or
+DynComp.  By default, they are disabled.  This option is intended mainly
+for Kvasir&rsquo;s developers.
+</p>
+</dd>
+<dt><samp>--dyncomp-trace</samp></dt>
+<dt><samp>--dyncomp-trace-merge</samp></dt>
+<dt><samp>--dyncomp-print-inc</samp></dt>
+<dd>
+<p>Enables trace messages to be output to <code>stderr</code>. These are disabled by
+default. These options are intended mainly for DynComp developers.
+</p>
+
+</dd>
+</dl>
+
+<hr>
+<a name="DynComp-for-C_002fC_002b_002b"></a>
+<div class="header">
+<p>
+Next: <a href="#Tracing-only-part-of-a-program" accesskey="n" rel="next">Tracing only part of a program</a>, Previous: <a href="#Kvasir-options" accesskey="p" rel="previous">Kvasir options</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="DynComp-dynamic-comparability-_0028abstract-type_0029-analysis-for-C_002fC_002b_002b"></a>
+<h4 class="subsection">7.3.3 DynComp dynamic comparability (abstract type) analysis for C/C++</h4>
+
+<a name="index-DynComp_002c-for-C_002fC_002b_002b"></a>
+<a name="index-abstract-types_002c-for-C_002fC_002b_002b"></a>
+<a name="index-comparability_002c-for-C_002fC_002b_002b"></a>
+<a name="index-dynamic-comparability_002c-for-C_002fC_002b_002b"></a>
+
+<p>By default, Kvasir outputs both a <samp>.dtrace</samp> file that contains value
+traces, and a <samp>.decls</samp> file with variable comparability information
+that was produced by the DynComp tool.  You can run Daikon on just the
+<samp>.dtrace</samp> file without the DynComp variable comparability information,
+but doing so is strongly discouraged.
+</p>
+<p>The DynComp dynamic comparability analysis tool
+performs dynamic type inference to group variables at each program point
+into comparability sets.
+(See <a href="../developer/Program-point-declarations.html#Program-point-declarations">Program point declarations</a> in <cite>Daikon Developer Manual</cite>,
+for the
+file representation format of these sets.)  All variables in each
+comparability set belong to the same &ldquo;abstract type&rdquo; of data that the
+programmer likely intended to represent, which is a richer set of types
+than the few basic declared types (e.g., int, float) provided by the
+language.  Consider the example below:
+</p>
+<div class="example">
+<pre class="example">int main() {
+  int year = 2005;
+  int winterDays = 58;
+  int summerDays = 307;
+  compute(year, winterDays, summerDays);
+}
+
+int compute(int yr, int d1, int d2) {
+  if (yr % 4)
+    return d1 + d2;
+  else
+    return d1 + d2 + 1;
+}
+</pre></div>
+
+<p>The three variables in <code>main()</code> all have the same C representation
+type, <code>int</code>, but two of them hold related quantities (numbers of
+days), as can be determined by the fact that they interact when the
+program adds them, whereas the other contains a conceptually distinct
+quantity (a year).  The abstract types &ldquo;day&rdquo; and &ldquo;year&rdquo; are both
+represented as <code>int</code>, but DynComp can differentiate them with its
+dynamic analysis.  For example, DynComp can infer that <code>winterDays</code>
+and <code>summerDays</code> are comparable (belong to the same abstract type)
+because the program adds their values together within the
+<code>compute()</code> function.
+</p>
+<p>Without comparability information, Daikon attempts to find invariants
+over all pairs (and sometimes triples) of variables present at every
+program point.  This can lead to two negative consequences: First, it
+may take lots of time and memory to infer all of these invariants,
+especially when there are many global or derived variables present.
+Second, many of those invariants are true but meaningless because they
+relate variables which conceptually represent different types (e.g., an
+invariant such as <code>winterDays &lt; year</code> is true but meaningless
+because days and years are not comparable).
+</p>
+<p>By default, Kvasir runs with DynComp to
+generate a <samp>.decls</samp> file with comparability information along with
+the usual value trace in the <samp>.dtrace</samp> file.  Using
+<samp>--decls-only</samp> will only generate the <samp>.decls</samp> file without
+the extra slowdown of writing the <samp>.dtrace</samp> file to disk (however,
+because DynComp must execute the entire program to perform its analysis,
+the only time saved is I/O time).
+Other DynComp options are listed in the <a href="#Kvasir-options">Kvasir options</a> section.
+Running Kvasir with DynComp takes
+more memory and longer time than Kvasir without DynComp, but Daikon will
+run faster and produce better output.  Furthermore, it is possible to run
+DynComp only once to generate a <samp>.decls</samp> file with
+comparability information, and pass that one file into Daikon along
+with many different <samp>.dtrace</samp> files generated during subsequent
+Kvasir runs without DynComp. You may wish to verify that your <samp>.decls</samp>
+file information does not vary from run to run if you choose to use
+this approach. The <samp>.decls-DynComp</samp> files should be identical.
+</p>
+<p>Here is part of the <samp>.decls</samp> file generated by running Kvasir with
+DynComp on the above example:
+</p>
+<div class="smallexample">
+<pre class="smallexample">ppt ..compute():::ENTER
+  ppt-type enter
+  variable yr
+    var-kind variable
+    rep-type int
+    dec-type int
+    flags is_param
+    comparability 1
+  variable d1
+    var-kind variable
+    rep-type int
+    dec-type int
+    flags is_param
+    comparability 2
+  variable d2
+    var-kind variable
+    rep-type int
+    dec-type int
+    flags is_param
+    comparability 2
+
+ppt ..compute():::EXIT0
+  ppt-type subexit
+  variable yr
+    var-kind variable
+    rep-type int
+    dec-type int
+    flags is_param
+    comparability 1
+  variable d1
+    var-kind variable
+    rep-type int
+    dec-type int
+    flags is_param
+    comparability 2
+  variable d2
+    var-kind variable
+    rep-type int
+    dec-type int
+    flags is_param
+    comparability 2
+  variable return
+    var-kind variable
+    rep-type int
+    dec-type int
+    comparability 2
+</pre></div>
+
+<p>The abstract type of &ldquo;year&rdquo; (and its corresponding comparability set) is
+represented by the number 1 while the abstract type of &ldquo;day&rdquo; is
+represented by the number 2.  DynComp places two variables in the same
+comparability set when their values interact via program operations such
+as arithmetic or assignment.  Because the parameters <code>d1</code> and
+<code>d2</code> were added together, DynComp inferred that those variables
+were somehow related and put them in the same comparability set.  The
+return value is also related to <code>d1</code> and <code>d2</code> because it is
+the result of the addition operation.  Notice that <code>yr</code> never
+interacts with any other variables, so DynComp places it into its own
+comparability set.  With this comparability information, Daikon will
+never attempt to find invariants between <code>yr</code> and
+<code>d1</code>/<code>d2</code>, which both saves time and memory and eliminates
+meaningless invariants (the savings are minuscule in this trivial
+example, but they can be rather dramatic in larger examples).
+</p>
+<hr>
+<a name="Tracing-only-part-of-a-program"></a>
+<div class="header">
+<p>
+Next: <a href="#Pointer-type-disambiguation" accesskey="n" rel="next">Pointer type disambiguation</a>, Previous: <a href="#DynComp-for-C_002fC_002b_002b" accesskey="p" rel="previous">DynComp for C/C++</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Tracing-only-part-of-a-program-1"></a>
+<h4 class="subsection">7.3.4 Tracing only part of a program</h4>
+
+<p>When Kvasir is run on a target program of significant size, often times
+too much output is generated, which causes an enormous performance
+slowdown of both Kvasir outputting the trace file and also Daikon trying
+to process the trace file.  It is often desirable to only trace a
+specific portion of the target program, program points and variables
+that are of interest for a particular invariant detection application.
+For instance, one may only be interested in tracking changes in a
+particular global data structure during calls to a specific set of
+functions (program points), and thus have no need for information about
+any other program points or variables in the trace file.  The
+<samp>--ppt-list-file</samp> and <samp>--var-list-file</samp> options can be
+used to achieve such selective tracing.
+</p>
+<p>The program point list file (abbreviated as <samp>ppt-list-file</samp>)
+consists of a newline-separated list of names of functions that the
+user wants Kvasir to trace.  Every name corresponds to both the entrance
+(<code>:::ENTER</code>) and exit (<code>:::EXIT</code>) program points for that function
+and is printed out in the exact same format that Kvasir
+uses for that function in the trace file. (See <a href="#Using-Kvasir">Using Kvasir</a>,
+for the program point naming scheme.)  Here is an
+example of a <samp>ppt-list-file</samp>:
+</p>
+<div class="example">
+<pre class="example">FunctionNamesTest.cpp.staticFoo(int, int)
+..firstFileFunction(int)
+..main()
+second_file.cpp.staticFoo(int, int)
+..secondFileFunction()
+</pre></div>
+
+<p>It is very important to follow this format in the <samp>ppt-list-file</samp>
+because Kvasir performs string comparisons to determine which program
+points to trace.  Thus, it is often easier to have Kvasir generate a
+<samp>ppt-list-file</samp> file that contains a list of all program points in a
+target program by using the <samp>--dump-ppt-file</samp> option, and then
+either comment out (by using the &lsquo;<samp>#</samp>&rsquo; comment character at the
+beginning of the line) or delete lines in that file for program points
+not to be traced or create a new <samp>ppt-list-file</samp> using the names in
+the Kvasir-generated file.  This prevents typos and the tedium of
+manually typing up program point names.  In fact, the <samp>ppt-list-file</samp>
+presented in the above example was generated from a C++ test program named
+<code>FunctionNamesTest</code> by using the following command:
+</p>
+<div class="example">
+<pre class="example">kvasir-dtrace --dump-ppt-file=FunctionNamesTest.ppts \
+              ./FunctionNamesTest
+</pre></div>
+
+<p>That file represents all the program points that Kvasir would
+normally trace.  If the user wanted to only trace the <code>main()</code>
+function, he could comment out all other lines by placing a single
+&lsquo;<samp>#</samp>&rsquo; character at the beginning of each line to be commented out,
+as demonstrated here:
+</p>
+<div class="example">
+<pre class="example">#FunctionNamesTest.cpp.staticFoo(int, int)
+#..firstFileFunction(int)
+..main()
+#second_file.cpp.staticFoo(int, int)
+#..secondFileFunction()
+</pre></div>
+
+<p>When running Kvasir with the <samp>--ppt-list-file</samp> option using this
+as the <samp>ppt-list-file</samp>, Kvasir only stops the execution of the target program at the
+entrance and exit of <code>main()</code> in order to output values to the
+<samp>.dtrace</samp> file.  In order to reduce the file size, when running Kvasir
+with the <samp>--ppt-list-file</samp> option, the <samp>.decls</samp> file only contains
+program point declarations for those listed in the <samp>ppt-list-file</samp>
+(<code>..main():::ENTER</code> and <code>..main():::EXIT</code> in this case) because
+no other declarations are necessary.
+</p>
+<p>The variable list file (abbreviated as <samp>var-list-file</samp>) contains
+all of the variables that the user wants Kvasir to output.  There is one
+section for global variables and a section for variables associated with
+each function (formal parameters and return values).  Again, the best way to
+create a <samp>var-list-file</samp> is to have Kvasir generate a file with all
+variables using the <samp>--dump-var-file</samp> option and then modifying
+that file for one&rsquo;s particular needs by either deleting or
+commenting out lines (again using the &lsquo;<samp>#</samp>&rsquo; comment character).  For example,
+executing
+</p>
+<div class="example">
+<pre class="example">kvasir-dtrace --dump-var-file=FunctionNamesTest.vars \
+              ./FunctionNamesTest
+</pre></div>
+
+<p>will generate the following <samp>var-list-file</samp> named
+<code>FunctionNamesTest.vars</code>:
+</p>
+<div class="example">
+<pre class="example">----SECTION----
+globals
+/globalIntArray
+/globalIntArray[]
+/anotherGlobalIntArray
+/anotherGlobalIntArray[]
+
+
+----SECTION----
+FunctionNamesTest.cpp.staticFoo()
+x
+y
+
+
+----SECTION----
+..firstFileFunction(int)
+blah
+
+
+----SECTION----
+..main()
+argc
+argv
+argv[]
+return
+
+
+----SECTION----
+second_file.cpp.staticFoo()
+x
+y
+
+
+----SECTION----
+..secondFileFunction()
+</pre></div>
+
+<p>The file format is straightforward.  Each section is marked by a
+special string &lsquo;<samp>----SECTION----</samp>&rsquo; on a line by itself followed
+immediately by a line that either denotes the program point name
+(formatted like how it appears in the <samp>.decls</samp> and <samp>.dtrace</samp> files) or the
+special string &lsquo;<samp>globals</samp>&rsquo;.  This is followed by a
+newline-delimited list of all variables to be outputted for that
+particular program point.  Global variables listed in the
+<code>globals</code> section are outputted for all program points. Additional global
+variables to be outputted for a particular program point can be specified
+in the corresponding section entry. For clarity, one or more blank lines
+should separate neighboring sections, although the &lsquo;<samp>----SECTION----</samp>&rsquo;
+string literal on a line by itself is the only required delimiter.
+If an entire section is missing, then no variables for that program point
+(or no global variables, if it is the special globals section) are traced.
+</p>
+<p>The variables listed in this file are written exactly as they appear in
+the <samp>.decls</samp> and <samp>.dtrace</samp> file. (See <a href="#Using-Kvasir">Using Kvasir</a>,
+for the variable naming scheme.)  In the program that generated the
+output for the above example, <code>int*
+globalIntArray</code> is a global integer pointer variable.  For that
+variable, Kvasir generates two Daikon variables: <code>/globalIntArray</code>
+to represent the hashcode pointer value, and <code>/globalIntArray[]</code> to
+represent the array of integers referred-to by that pointer.  The
+latter is a derived-variable that can be thought of as the child of
+<code>/globalIntArray</code>.  If the entry for <code>/globalIntArray</code> is
+commented-out or missing, then Kvasir will not output any values for
+<code>/globalIntArray</code> or for any of its children, which in this case is
+<code>/globalIntArray[]</code>.  If a struct or struct pointer variable is
+commented-out or missing, then none of its members are traced.  Thus, a
+general rule about variable entries in the <samp>var-list-file</samp> is that
+if a parent variable is not present, then neither it nor its children
+are traced.
+</p>
+<div class="example">
+<pre class="example">
+record
+record-&gt;entries[1]
+record-&gt;entries[1]-&gt;list
+record-&gt;entries[1]-&gt;list-&gt;head
+record-&gt;entries[1]-&gt;list-&gt;head-&gt;magic
+
+</pre></div>
+
+<p>For example, if you wanted to trace the value of the <code>magic</code> field
+nested deep within several layers of structs and arrays, it would not be
+enough to merely list this variable in the <samp>var-list-file</samp>.  You
+would need to list all variables that are the parents of this one, as
+indicated by their names.  This can be easily accomplished by creating a
+file with <samp>--dump-var-file</samp> and cutting out variable entries,
+taking care to not cut out entries that are the parents of entries that
+you want to trace.
+</p>
+<p>In order to limit both the number of program points traced as well as
+the variables traced at those program points, the user can run Kvasir
+with both the <samp>--ppt-list-file</samp> and <samp>--var-list-file</samp>
+options with the appropriate <samp>ppt-list-file</samp> and
+<samp>var-list-file</samp>, respectively.  The <samp>var-list-file</samp> only needs
+to contain a section for global variables and sections for all program
+points to be traced because variable listings for program points not to
+be traced are irrelevant (their presence in the <samp>var-list-file</samp>
+does not affect correctness but does cause an unnecessary
+performance and memory inefficiency).
+</p>
+<p>If the <samp>--dump-var-file</samp> option is used in conjunction with the
+<samp>--ppt-list-file</samp> option, then the only sections generated in the
+<samp>var-list-file</samp> will be the global section and sections for all
+program points explicitly mentioned in the <samp>ppt-list-file</samp>.  This
+is helpful for generating a smaller <samp>var-list-file</samp> for use with an
+already-existent <samp>ppt-list-file</samp>.
+</p>
+<hr>
+<a name="Pointer-type-disambiguation"></a>
+<div class="header">
+<p>
+Next: <a href="#C_002b_002b-support" accesskey="n" rel="next">C++ support</a>, Previous: <a href="#Tracing-only-part-of-a-program" accesskey="p" rel="previous">Tracing only part of a program</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Pointer-type-disambiguation-1"></a>
+<h4 class="subsection">7.3.5 Pointer type disambiguation</h4>
+
+<a name="index-pointer-type-disambiguation"></a>
+<a name="index-disambiguation-of-pointer-types"></a>
+<a name="index-array-type-disambiguation"></a>
+<a name="index-disambiguation-of-array-types"></a>
+
+<p>Kvasir permits users (or external analyses) to specify whether pointers
+refer to arrays or to single values, and optionally, to specify the type
+of a pointer (see <a href="#Pointer-type-coercion">Pointer type coercion</a>).  For example, in
+</p><div class="example">
+<pre class="example">void sum(int* array, int* result) { ... }  // definition of &quot;sum&quot;
+...
+int a[40];
+int total;
+...
+sum(a, &amp;total);        // use of &quot;sum&quot;
+</pre></div>
+
+<p>the first pointer parameter refers to an array while the second refers to
+a single value.  Kvasir (and Daikon) should treat these values
+differently.  For instance, <code>*array</code> is better printed as <code>array[]</code>,
+an array of integers, and <code>result[]</code> isn&rsquo;t a sensible array
+at all, even though in C <code>result[0]</code> is semantically identical to
+<code>*result</code>.
+By default, Kvasir treats all pointers as referencing arrays.  For
+instance, it would print <code>result[]</code> rather than <code>result[0]</code>
+and would indicate that the length of array <code>result[]</code> is always 1.
+In order to improve the formatting of Daikon&rsquo;s output (and to speed it
+up), you can indicate to Kvasir that certain pointers refer to single
+elements rather than to arrays.
+For an example, see <a href="#Pointer-type-disambiguation-example">Pointer type disambiguation example</a>.
+For a list of command-line options that are related to pointer type
+disambiguation, see <a href="#Pointer-type-disambiguation-command_002dline-arguments">Pointer type disambiguation command-line arguments</a>.
+</p>
+<p>Information about whether each pointer refers to an array or a single
+element can be specified in a <em>.disambig file</em> that resides in the
+same directory as the target program (by default).  The <samp>--disambig</samp>
+option instructs Kvasir to read this file if it exists.  (If it does not exist,
+Kvasir produces the file automatically and, if invoked along with the
+<samp>--smart-disambig</samp> option, heuristically infers whether each
+pointer variable refers to single or multiple elements.  Thus, users can
+edit this file for use on subsequent runs rather than having to create it
+from scratch.)  The <samp>.disambig</samp> file lists all the program points and user-defined
+types, and under each, lists certain types of variables along with their
+custom disambiguation types as shown below.
+The list of disambiguation options is:
+</p>
+<ol>
+<li> For variables of type <code>char</code> and <code>unsigned char</code>:
+<ol>
+<li> <tt>'I'</tt>: an integer, signed for <code>char</code> and unsigned for <code>unsigned char</code>. (Default)
+</li><li> <tt>'C'</tt>: a single character, output as a string.
+</li></ol>
+</li><li> For pointers to (or arrays of) <code>char</code> and <code>unsigned char</code>:
+<ol>
+<li> <tt>'S'</tt>: a string, possibly zero-terminated. (Default)
+</li><li> <tt>'C'</tt>: a single character, output as a string.
+</li><li> <tt>'A'</tt>: an array of integers.
+</li><li> <tt>'P'</tt>: a single integer.
+</li></ol>
+</li><li> For pointers to (or arrays of) all other variable types (if invoked
+along with <samp>--smart-disambig</samp>, Kvasir automatically infers a
+default <tt>'A'</tt> or <tt>'P'</tt> for each variable during the generation
+of a <samp>.disambig</samp> file):
+<ol>
+<li> <tt>'A'</tt>: an array.  (Default) (For an array of structs, an array will
+be output for each scalar field of the struct.  Aggregate children
+(arrays, other structs) will not be output.)
+</li><li> <tt>'P'</tt>: a pointer to a single element.  (For a pointer to a struct, each
+field will be output as a single instance, and child aggregate types
+will be output recursively.  This extra information obtained from struct
+pointers is a powerful consequence of pointer type disambiguation.  This
+will be the default if the <samp>--disambig-ptrs</samp> option is used.)
+</li></ol>
+</li></ol>
+
+<p>The <samp>.disambig</samp> file that Kvasir creates contains a section for each
+function, which can be used to disambiguate parameter variables visible
+at that function&rsquo;s entrance program point and parameter and return
+value variables visible at that function&rsquo;s exit program point.  It also contains
+a section for every user-defined
+struct/class, which can be used to disambiguate member variables of
+that struct/class.  Disambiguation information entered here will apply to all
+instances of a struct/class of that type, at all program points.
+There is also a section called &ldquo;globals&rdquo;, which disambiguates global
+variables which are output at every program point.  The entries in the
+<samp>.disambig</samp> file may appear in any order, and whole entries or individual
+variables within a section may be omitted.  In this case, Kvasir will
+retain their default values.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Pointer-type-coercion" accesskey="1">Pointer type coercion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Pointer-type-disambiguation-example" accesskey="2">Pointer type disambiguation example</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Using-pointer-type-disambiguation-with-partial-program-tracing" accesskey="3">Using pointer type disambiguation with partial program tracing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Pointer-type-coercion"></a>
+<div class="header">
+<p>
+Next: <a href="#Pointer-type-disambiguation-example" accesskey="n" rel="next">Pointer type disambiguation example</a>, Up: <a href="#Pointer-type-disambiguation" accesskey="u" rel="up">Pointer type disambiguation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Pointer-type-coercion-1"></a>
+<h4 class="subsubsection">7.3.5.1 Pointer type coercion</h4>
+
+<p>In addition to specifying whether a particular pointer refers to one
+element or to an array of elements, the user can also specify what type
+of data a pointer refers to.  This type coercion acts like an explicit
+type cast in C, except that it only works on struct/class types and not
+on primitive types.  This feature is useful for traversing inside of
+data structures with generic <code>void*</code> pointer fields.  Another use
+is to cast a pointer from one that refers to a &ldquo;super class&rdquo; to one that
+refers to a &ldquo;sub class&rdquo;.  This structural equivalence pattern is often
+found in C programs that emulate object orientation.  To coerce a
+pointer to a particular type, simply write the name of the struct type
+after the disambiguation letter (e.g., A, P, S, C, I) in the
+<samp>.disambig</samp> file:
+</p>
+<div class="example">
+<pre class="example">----SECTION----
+function: ..view_foo_and_bar()
+f
+P foo
+b
+P bar
+</pre></div>
+
+<p>Without the type coercion, Kvasir cannot print out anything except for a
+hashcode for the two <code>void*</code> parameters of this function:
+</p>
+<div class="example">
+<pre class="example">void view_foo_and_bar(void* f, void* b);
+</pre></div>
+
+<p>With type coercion, though, Kvasir treats <code>f</code> as a <code>foo*</code> and
+<code>b</code> as <code>bar*</code> and can traverse inside of them.  Of course, if
+those are not the true runtime types of the variables, then Kvasir&rsquo;s
+output will be meaningless.
+</p>
+<p>Due to the use of <code>typedefs</code>, there may be more than one name for a
+particular struct type.  The exact name that you need to write in the
+<samp>.disambig</samp> file is the one that appears in that file after the
+<code>usertype</code> prefix.  Note that if a struct does not have any pointer
+fields, then there will be no <code>usertype</code> section for it in the
+<samp>.disambig</samp> file.  In that case, try different names for the struct
+if necessary until Kvasir accepts the name (names are all one word long;
+you will never have to write <code>struct foo</code>).  There should only be
+at most a few choices to make.  If the coercion if successful, Kvasir
+prints out a message in the following form while it is processing the
+<samp>.disambig</samp> file:
+</p>
+<div class="example">
+<pre class="example">.disambig: Coerced variable f into type 'foo'
+.disambig: Coerced variable b into type 'bar'
+</pre></div>
+
+<p>One more caveat about type coercion is that you can currently only
+coerce pointers into types that at least one variable in the program
+(e.g., globals, function parameters, struct fields) belongs to.  It is
+not enough to merely declare a struct type in your source code; you must
+have a variable of that type somewhere in your program.  This is a
+limitation of the current implementation, but it should not matter most
+of the time because programs rarely have struct declarations with no
+variables that belong to that type.  If you encounter this problem, you
+can simply create a global variable of a certain type to make type
+coercion work.
+</p>
+<hr>
+<a name="Pointer-type-disambiguation-example"></a>
+<div class="header">
+<p>
+Next: <a href="#Using-pointer-type-disambiguation-with-partial-program-tracing" accesskey="n" rel="next">Using pointer type disambiguation with partial program tracing</a>, Previous: <a href="#Pointer-type-coercion" accesskey="p" rel="previous">Pointer type coercion</a>, Up: <a href="#Pointer-type-disambiguation" accesskey="u" rel="up">Pointer type disambiguation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Pointer-type-disambiguation-example-1"></a>
+<h4 class="subsubsection">7.3.5.2 Pointer type disambiguation example</h4>
+
+<p>This example demonstrates the power of pointer type disambiguation in creating
+more accurate Daikon output.  Consider this file:
+</p>
+<div class="smallexample">
+<pre class="smallexample">struct record {
+  char* name;     // Initialize to: &quot;Daikon User&quot;
+  int numbers[5]; // Initialize to: {5, 4, 3, 2, 1}
+};
+
+void foo(struct record* bar) {
+  int i;
+  for (i = 0; i &lt; 5; i++) {
+    bar-&gt;numbers[i] = (5 - i);
+  }
+}
+
+int main() {
+  char* myName = &quot;Daikon User&quot;;
+  struct record baz;
+  baz.name = myName;
+  foo(&amp;baz);
+}
+</pre></div>
+
+<p>In <code>foo()</code>, <code>bar</code> is a pointer to a <code>record</code> struct.  By inspection, it is
+evident that in this program, <code>bar</code> only refers to one element: <code>&amp;baz</code>
+within <code>main</code>.  However, by default, Kvasir assumes that <code>bar</code> is an
+array of <code>record</code> structs since a C pointer contains no information about
+how many elements it refers to.  Because Kvasir must output <code>bar</code> as an
+array and <code><span class="nolinebreak">bar-&gt;numbers</span></code><!-- /@w --> is an array of integers, it &ldquo;flattens&rdquo;
+<code><span class="nolinebreak">bar-&gt;numbers</span></code><!-- /@w --> into 5 separate arrays named <code><span class="nolinebreak">bar-&gt;numbers[0]</span></code><!-- /@w -->
+through <code><span class="nolinebreak">bar-&gt;numbers[4]</span></code><!-- /@w -->
+and creates fairly verbose output.  This is a direct
+consequence of the fact that Daikon can only handle one layer of sequences
+(it cannot handle arrays within arrays, i.e., multidimensional arrays).
+</p>
+<p>Here is part of the Daikon output for this program:
+</p>
+<div class="smallexample">
+<pre class="smallexample">======================================================================
+..foo():::ENTER
+bar has only one value
+bar[].name == [Daikon User]
+bar[].name elements == &quot;Daikon User&quot;
+======================================================================
+..foo():::EXIT
+size(bar[]).numbers[0] == size(bar[]).numbers[0][0]
+size(bar[]).numbers[0] == size(bar[]).numbers[1]
+size(bar[]).numbers[0] == size(bar[]).numbers[1][0]
+size(bar[]).numbers[0] == size(bar[]).numbers[2]
+size(bar[]).numbers[0] == size(bar[]).numbers[2][0]
+size(bar[]).numbers[0] == size(bar[]).numbers[3]
+size(bar[]).numbers[0] == size(bar[]).numbers[3][0]
+size(bar[]).numbers[0] == size(bar[]).numbers[4]
+size(bar[]).numbers[0] == size(bar[]).numbers[4][0]
+bar[].name == [Daikon User]
+bar[].name elements == &quot;Daikon User&quot;
+bar[].numbers[0] contains no nulls and has only one value, of length 1
+bar[].numbers[0] elements has only one value
+bar[].numbers[0][0] == [5]
+bar[].numbers[0][0] elements == 5
+bar[].numbers[1] contains no nulls and has only one value, of length 1
+bar[].numbers[1] elements has only one value
+bar[].numbers[1][0] == [4]
+bar[].numbers[1][0] elements == 4
+bar[].numbers[2] contains no nulls and has only one value, of length 1
+bar[].numbers[2] elements has only one value
+bar[].numbers[2][0] == [3]
+bar[].numbers[2][0] elements == 3
+bar[].numbers[3] contains no nulls and has only one value, of length 1
+bar[].numbers[3] elements has only one value
+bar[].numbers[3][0] == [2]
+bar[].numbers[3][0] elements == 2
+bar[].numbers[4] contains no nulls and has only one value, of length 1
+bar[].numbers[4] elements has only one value
+bar[].numbers[4][0] == [1]
+bar[].numbers[4][0] elements == 1
+size(bar[]).numbers[0] == 1
+bar[].numbers[4][0] elements == size(bar[]).numbers[0]
+size(bar[]).numbers[0] in bar[].numbers[4][0]
+</pre></div>
+
+<p>This is a bit verbose due to the fact that Kvasir treats <code>bar</code> like an array
+by default when it actually only points to one element.  However, by running
+Kvasir with the <samp>--disambig</samp> option, we create the
+<samp><var>myprog</var>.disambig</samp> file, which we can then edit and feed back to
+Kvasir to change how the pointer is treated.  (We run Kvasir twice on the same
+program, but we edit the <samp>.disambig</samp> file in between the runs.)
+</p><div class="example">
+<pre class="example">kvasir-dtrace <var>...options...</var> --disambig --smart-disambig <var>myprog</var>
+</pre></div>
+
+<p>This creates the <samp><var>myprog</var>.disambig</samp> file.  It contains, at the top:
+</p>
+<div class="smallexample">
+<pre class="smallexample">----SECTION----
+function: ..foo()
+bar
+P
+</pre></div>
+
+<p>This means that at the program points corresponding to the entry and
+exit of <code>foo()</code>, the variable <code>bar</code> is treated as a
+&lsquo;<samp>Pointer</samp>&rsquo; type.
+Since we have used the <samp>--smart-disambig</samp> option,
+Kvasir automatically inferred Pointer instead of Array for <code>bar</code>
+because it observed that <code>bar</code> only pointed to one element during the
+execution of the target program which generated the <samp>.disambig</samp> file.
+This heuristic allows users to use
+<samp>.disambig</samp> files more effectively with less manual editing.
+Without <samp>--smart-disambig</samp>, Kvasir does not execute the program
+to make such inferences, which allows <samp>.disambig</samp> files to be generated
+faster, but leaves the default disambiguation types for all entries (in
+this case, <code>bar</code> would have the default array type of
+<code>'A'</code>).
+</p>
+<p>Then, running Kvasir again with the <samp>--disambig</samp>
+option causes Kvasir to open the existing
+<samp><var>myprog</var>.disambig</samp> file, read the definitions, and alter
+the output accordingly:
+</p><div class="example">
+<pre class="example">kvasir-dtrace <var>...options...</var> --disambig <var>myprog</var>
+</pre></div>
+
+<p>This tells Kvasir to output <code>bar</code> as a &lsquo;<samp>Pointer</samp>&rsquo; to a single
+element, which in turn causes Daikon to generate a much more concise
+set of invariants.  Notice that <code><span class="nolinebreak">bar-&gt;numbers</span></code><!-- /@w --> no longer has to be
+&ldquo;flattened&rdquo; because <code>bar</code> is now a pointer to one struct, so
+Daikon can recognize <code><span class="nolinebreak">bar-&gt;numbers</span></code><!-- /@w --> as a single-dimensional
+array (Daikon uses a Java-like syntax, replacing the arrow &lsquo;<samp>-&gt;</samp>&rsquo; symbol
+with a dot, so it actually outputs <code>bar.numbers</code>).
+</p>
+<div class="smallexample">
+<pre class="smallexample">======================================================================
+..foo():::ENTER
+bar has only one value
+bar.name == &quot;Daikon User&quot;
+======================================================================
+..foo():::EXIT
+bar.name == &quot;Daikon User&quot;
+bar.numbers has only one value
+bar.numbers[] == [5, 4, 3, 2, 1]
+size(bar.numbers[]) == 5
+bar.name == orig(bar.name)
+size(bar.numbers[]) in bar.numbers[]
+size(bar.numbers[])-1 in bar.numbers[]
+</pre></div>
+
+
+<hr>
+<a name="Using-pointer-type-disambiguation-with-partial-program-tracing"></a>
+<div class="header">
+<p>
+Previous: <a href="#Pointer-type-disambiguation-example" accesskey="p" rel="previous">Pointer type disambiguation example</a>, Up: <a href="#Pointer-type-disambiguation" accesskey="u" rel="up">Pointer type disambiguation</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Using-pointer-type-disambiguation-with-partial-program-tracing-1"></a>
+<h4 class="subsubsection">7.3.5.3 Using pointer type disambiguation with partial program tracing</h4>
+
+<p>It is possible to use pointer type disambiguation while only tracing
+selected program points and/or variables in a target program, combining
+the functionality described in the <a href="#Pointer-type-disambiguation">Pointer type disambiguation</a> and
+<a href="#Tracing-only-part-of-a-program">Tracing only part of a program</a> sections.  This section describes
+the interaction of the <samp>ppt-list-file</samp>, <samp>var-list-file</samp>, and
+<samp>.disambig</samp> files.
+</p>
+<p>The interaction between selective program point tracing (via
+the <samp>ppt-list-file</samp>) and pointer type disambiguation is fairly
+straightforward:  If the user creates a <samp>.disambig</samp> file while running
+Kvasir with a <samp>ppt-list-file</samp> that only specifies certain program
+points, the generated <samp>.disambig</samp> file will only contain sections for
+those program points (as well as the global section and sections for
+each struct type).  If the user reads in a <samp>.disambig</samp> file while running
+Kvasir with a <samp>ppt-list-file</samp>, then disambiguation information is
+applied for all variables at the program points to be traced.  This can
+be much faster and generate a much smaller disambiguation file, one that
+only contains information about the program points of interest.
+</p>
+<p>The interaction between selective variable tracing (via the
+<samp>var-list-file</samp>) and pointer type disambiguation is a bit more
+complicated.  This is because the <samp>var-list-file</samp> lists variables
+as they appear in the <samp>.decls</samp> and <samp>.dtrace</samp> files, but using a <samp>.disambig</samp>
+file can actually change the way that variable names are printed out in
+the <samp>.decls</samp> and <samp>.dtrace</samp> files.  For example, consider the test program
+from the <a href="#Pointer-type-disambiguation-example">Pointer type disambiguation example</a>.  The <code>struct
+record* bar</code> parameter of <code>foo()</code> is treated like an array by
+default.  Hence, the <samp>.decls</samp>, <samp>.dtrace</samp>, and <samp>var-list-file</samp> will list
+the following variables derived from this parameter:
+</p>
+<div class="example">
+<pre class="example">----SECTION----
+..foo()
+bar
+bar[].name
+bar[].numbers[0]
+bar[].numbers[0][0]
+bar[].numbers[1]
+bar[].numbers[1][0]
+bar[].numbers[2]
+bar[].numbers[2][0]
+bar[].numbers[3]
+bar[].numbers[3][0]
+bar[].numbers[4]
+bar[].numbers[4][0]
+</pre></div>
+
+<p>However, if we use a disambiguation file to denote <code>bar</code> as a
+pointer to a single element, then the <samp>.decls</samp> and <samp>.dtrace</samp> files will
+instead list the following variables:
+</p>
+<div class="example">
+<pre class="example">----SECTION----
+..foo()
+bar
+bar-&gt;name
+bar-&gt;numbers
+bar-&gt;numbers[]
+</pre></div>
+
+<p>Notice how the latter variable list is more compact and reflects the
+fact that <code>bar</code> is a pointer to a single struct.  Thus, the
+flattening of the <code>numbers[5]</code> static array member variable is no
+longer necessary (it was necessary without disambiguation because Daikon
+does not support nested arrays of arrays, which can occur if <code>bar</code>
+were itself an array since <code>numbers[5]</code> is already an array).
+</p>
+<p>Notice that, with the exception of the base variable <code>bar</code>, all
+other variable names differ when running without and with
+disambiguation.  Thus, if you used a <samp>var-list-file</samp> generated on a
+run without the disambiguation information while running Kvasir with the
+disambiguation information, the names will not match up at all, and you
+will not get the proper selective variable tracing behavior.
+</p>
+<p>The suggested way to use selective variable tracing with pointer type
+disambiguation is as follows:
+</p>
+<ol>
+<li> First create the proper <samp>.disambig</samp> file by using either
+<samp>--disambig</samp> or <samp>--disambig-file</samp>.
+You can use <samp>--ppt-list-file</samp> as well to only create the
+<samp>.disambig</samp> file for certain program points, but do NOT use
+<samp>--var-list-file</samp> to try to create a <samp>.disambig</samp> only for certain
+variables; this feature does not work yet.
+Modify the variable
+entries in the Kvasir-generated <samp>.disambig</samp> file to suit your needs.
+</li><li> Now create a <samp>var-list-file</samp> by using
+<samp>--dump-var-file</samp> while running Kvasir with the <samp>.disambig</samp> file
+that you have just created.  This ensures that the variables listed in
+<samp>var-list-file</samp> will have the proper names for use with that
+particular <samp>.disambig</samp> file.  Modify the Kvasir-generated
+<samp>var-list-file</samp> to suit your needs.
+</li><li> Finally, run Kvasir with the <samp>--var-list-file</samp> option using
+the <samp>var-list-file</samp> that you have just created and either the
+<samp>--disambig</samp> or <samp>--disambig-file</samp> option with the proper
+<samp>.disambig</samp> file.  This will perform the desired function: selective
+variable tracing along with disambiguation for all of the traced
+variables.
+</li></ol>
+
+<p>For maximum control of the output, you can use selective program point
+tracing, variable tracing, and disambiguation together all at once.
+</p>
+<hr>
+<a name="C_002b_002b-support"></a>
+<div class="header">
+<p>
+Next: <a href="#Online-execution" accesskey="n" rel="next">Online execution</a>, Previous: <a href="#Pointer-type-disambiguation" accesskey="p" rel="previous">Pointer type disambiguation</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="C_002b_002b-support-1"></a>
+<h4 class="subsection">7.3.6 C++ support</h4>
+
+<p>Kvasir supports C++, but Kvasir has been tested more on C programs than
+on C++ programs, so Kvasir&rsquo;s C++ support is not as mature as its C support.
+Here is a partial list of C++ features that Kvasir currently supports:
+</p>
+<ul>
+<li> Class member functions are traced just like regular functions, except
+that their first parameter is a pointer (called <code>this</code>) to a single
+instance of the class.  They are printed with the class name as the
+prefix, followed by a period and then the full function signature.  For
+example, a <code>push()</code> function of a <code>Stack</code> class might be named
+<code>Stack.push(char*)</code>.
+
+</li><li> OBJECT program points (see <a href="Daikon-output.html#Program-points">Program points</a>) are printed out in the
+<samp>.decls</samp> file for each class with at least 1 member variable and 1 member
+function.  No extra information besides member function traces are
+required in the <samp>.dtrace</samp> file; Daikon can link together class and
+function names to determine when a particular function is a member
+function and generate object invariants for that class by observing the
+values of the <code>this</code> parameter.
+
+</li><li> Static member variables are currently treated just like global
+variables, because they actually have static global locations.  Another
+(not yet implemented) possibility is to only print them at program
+points of member functions belonging to the respective variable&rsquo;s own
+class.
+
+</li><li> Inheritance is handled correctly because whenever Kvasir traverses
+inside of a class to print out its member variables, it also recursively
+traverses inside all superclasses (and inside their superclasses,
+etc...) to print out inherited member variables.  The superclass class
+names are appended onto the variable names to make them unique.  For
+example, if <code>this</code> is an instance of a class that inherits from
+another class called <code>fooClass</code> which has a member variable
+<code>fooVar</code>, then Kvasir prints out <code>fooVar</code> as
+<code>this-&gt;fooClass.fooVar</code>.  This correctly handles the case of
+multiple inheritance as well as several layers of inheritance.  Thus,
+object invariants capture properties of a class&rsquo;s own member variables
+as well as those of its superclasses&rsquo; member variables.
+
+</li><li> Inheritance-based polymorphism is handled correctly without any extra
+effort because when a function entrance or exit is encountered at run
+time, the version that is called has already been resolved.
+
+</li><li> Overloaded functions are handled correctly because Kvasir prints out the
+full function signature as its name in order to prevent conflicts.  For
+example, two overloaded versions of a function <code>foo()</code> will be
+disambiguated by their signatures, such as <code>foo(int, int)</code> and
+<code>foo(double, double)</code>.
+
+</li><li> Kvasir handles functions that pass parameters by reference as well as
+those that pass parameters by value.
+
+</li></ul>
+
+<p>One current C++ limitation is that Kvasir cannot print out the contents
+of classes which are defined in external libraries rather than in the
+user&rsquo;s program (e.g., it can properly output a C-string represented as
+<code>char*</code> but not the contents of the C++ <code>string</code> class).  If
+further support for specific C++ features are important to you, please
+send email to <a href="mailto:daikon-developers@googlegroups.com">daikon-developers@googlegroups.com</a>, so that we
+can increase its priority on our to-do list.
+</p>
+<hr>
+<a name="Online-execution"></a>
+<div class="header">
+<p>
+Next: <a href="#Installing-Kvasir" accesskey="n" rel="next">Installing Kvasir</a>, Previous: <a href="#C_002b_002b-support" accesskey="p" rel="previous">C++ support</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Online-execution-1"></a>
+<h4 class="subsection">7.3.7 Online execution</h4>
+
+<a name="index-online-execution_002c-for-C-programs"></a>
+<a name="index-on_002dthe_002dfly-execution_002c-for-C-programs"></a>
+
+<p>The term <em>online execution</em> refers to running Daikon at the same time
+as the target program, without writing any information to a file.  This
+can avoid some I/O overhead, prevent filling up your disk with
+files, and in the future Daikon may be able to produce partial results
+as the target program is executing.  A limitation of online execution is
+that, unless FIFO files, or named pipes (see <a href="#Online-execution-with-DynComp-for-C_002fC_002b_002b">Online execution with DynComp for C/C++</a>)
+are used, it runs Daikon over only a single execution, as opposed to
+generalizing over multiple executions as can be done when writing to files
+and supplying all the files to Daikon.
+The Chicory front end for Java also supports online execution, via its
+<samp>--daikon-online</samp> option (see <a href="#Chicory-miscellaneous-options">Chicory miscellaneous options</a>).
+</p>
+<a name="index-pipe_002c-as-data-trace-file"></a>
+
+<p>To use regular pipes in lieu of a disk file, simply use <samp>-</samp> as the
+name of the <samp>.dtrace</samp> file, and run the target program and Daikon
+in a Linux pipeline.
+When the <samp>--dtrace-file=-</samp> option is used to redirect
+the <samp>dtrace</samp> output to <code>stdout</code>, the target program&rsquo;s <code>stdout</code> is redirected
+to the terminal (<samp>/dev/tty</samp>) so that it does not intermix with the
+<samp>dtrace</samp> output.
+</p>
+<div class="example">
+<pre class="example">kvasir-dtrace --dtrace-file=- ./bzip2 --help | $DAIKON -
+</pre></div>
+
+<p>Of course, you could also replace <samp>--help</samp> with <samp>-vv1
+file.txt</samp> to compress a text file (but start with a small one first).
+</p>
+<p>(This example assumes that you have compiled the <samp>bzip2</samp> example (in
+<samp>$DAIKONDIR/examples/c-examples/bzip2</samp> of the distribution) by
+saying <code>gcc -gdwarf-2 -no-pie bzip2.c -o bzip2</code>, and that
+<code>$DAIKON</code> stands for the command that invokes Daikon, for
+instance <code>java -Xmx512m daikon.Daikon --config_option
+daikon.derive.Derivation.disable_derived_variables=true</code>.)
+</p>
+<a name="index-named-pipe_002c-as-data-trace-file"></a>
+<a name="index-FIFO_002c-as-data-trace-file"></a>
+
+<p>Instead of a regular pipe, you can use a named pipe, also known as a
+FIFO, which is a special kind of file supported by most Linux-compatible
+systems.  When one process tries to open a FIFO
+for reading, it blocks, waiting for another process to open it for
+writing (or vice-versa).  When both a reader and a writer are ready, the
+FIFO connects the reader to the writer like a regular Linux pipe.
+</p>
+<p>The <samp>--output-fifo</samp> option causes Kvasir to create its output
+<samp>.dtrace</samp> file as a named pipe.  When Kvasir is
+run with this option, Daikon needs to be run at the same time to read
+from the FIFO, such as from another terminal or using the shell&rsquo;s
+&lsquo;<samp>&amp;</samp>&rsquo; operator.
+</p>
+<p>For instance, the following two commands have the same effect as the
+pipeline above that used ordinary pipes.  The FIFO is named
+<samp>bzip2.dtrace</samp>.
+</p>
+<div class="example">
+<pre class="example">kvasir-dtrace --output-fifo ./bzip2 --help &amp;
+$DAIKON bzip2.dtrace
+</pre></div>
+
+<p>The two commands (before and after the ampersand) could also be run in
+two different terminals.
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Online-execution-with-DynComp-for-C_002fC_002b_002b" accesskey="1">Online execution with DynComp for C/C++</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="Online-execution-with-DynComp-for-C_002fC_002b_002b"></a>
+<div class="header">
+<p>
+Up: <a href="#Online-execution" accesskey="u" rel="up">Online execution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Online-execution-with-DynComp-for-C_002fC_002b_002b-1"></a>
+<h4 class="subsubsection">7.3.7.1 Online execution with DynComp for C/C++</h4>
+
+<p>When running Kvasir with DynComp (the default),
+Kvasir generates the <samp>.decls</samp> file after it generates the <samp>.dtrace</samp>
+file, so it is not possible to perform online execution using one run.
+The recommended way to perform online execution with DynComp is to run
+it once and only generate a <samp>.decls</samp> file with comparability information,
+then run Kvasir again without DynComp and pipe the <samp>.dtrace</samp> data directly
+into Daikon while using the <samp>.decls</samp> file generated from the previous run:
+</p>
+<div class="example">
+<pre class="example">kvasir-dtrace --decls-only ./foo
+</pre></div>
+
+<p>This should generate a <samp>.decls</samp> file with comparability information
+named <samp>daikon-output/foo.decls</samp>.
+</p>
+<div class="example">
+<pre class="example">kvasir-dtrace --no-dyncomp --dtrace-no-decls --dtrace-file=- \
+    ./foo | java daikon.Daikon daikon-output/foo.decls -
+</pre></div>
+
+<p>When you run Kvasir the second time, you don&rsquo;t need to run DynComp
+again since you are only interested in the <samp>.dtrace</samp> file.  Notice that
+the <samp>.dtrace</samp> output
+is directed to standard out (<samp>--dtrace-file=-</samp>) and does not
+contain any declarations (<samp>--dtrace-no-decls</samp>) because the <samp>.decls</samp>
+file already contains the declarations.  You can simply
+pipe that <samp>.dtrace</samp> output out to Daikon, which is invoked using the
+<samp>.decls</samp> file (with comparability information) generated during your
+previous run.
+</p>
+<hr>
+<a name="Installing-Kvasir"></a>
+<div class="header">
+<p>
+Next: <a href="#Kvasir-limitations" accesskey="n" rel="next">Kvasir limitations</a>, Previous: <a href="#Online-execution" accesskey="p" rel="previous">Online execution</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Installing-Kvasir-1"></a>
+<h4 class="subsection">7.3.8 Installing Kvasir</h4>
+
+<a name="index-installing-Kvasir"></a>
+<a name="index-Kvasir-installation"></a>
+
+<p>There are two scenarios for building the Kvasir
+tool:
+</p>
+<ul>
+<li> You have downloaded a packaged release of Daikon from our website and
+have followed the installation steps in <a href="Installing-Daikon.html#Installing-Daikon">Installing Daikon</a>.  If so,
+Kvasir is already built and available for use.
+</li><li> You wish to customize or extend Daikon and are (or will be) working
+with a clone of the Daikon repository. The remainder of this section
+describes this case.
+</li></ul>
+
+<p>We assume you are already familiar with the <cite>Daikon Developer Manual</cite>,
+in particular <a href="../developer/Compiling-Daikon.html#Compiling-Daikon">Compiling Daikon</a> in <cite>Daikon Developer Manual</cite>.
+If that is not the case, you should read that section first.
+</p>
+<p>You will need to make a clone of Fjalar&rsquo;s version control repository, named
+<samp>fjalar</samp>, as a sibling of your Daikon clone.
+</p>
+<div class="example">
+<pre class="example">cd $DAIKONDIR
+cd ..
+git clone https://github.com/codespecs/fjalar.git
+</pre></div>
+
+<p>You may now build Fjalar (which includes Kvasir).  The following commands build
+Fjalar, install it locally, and make a symbolic
+link to it in your Daikon tree.
+</p>
+<div class="example">
+<pre class="example">cd $DAIKONDIR
+make kvasir
+</pre></div>
+
+<p>You may see warnings during this process.  You can ignore these.
+</p>
+<p>If you receive an error of the form:
+</p>
+<div class="example">
+<pre class="example">readelf.c:53:17: fatal error: bfd.h: No such file or directory
+#include &quot;bfd.h&quot;
+          ^
+compilation terminated.
+</pre></div>
+
+<p>then install the package <samp>binutils-dev</samp>.
+</p>
+<p>If you receive an error of the form:
+</p>
+<div class="example">
+<pre class="example">readelf.c:72:10: fatal error: zlib.h: No such file or directory
+ #include &lt;zlib.h&gt;
+          ^~~~~~~~
+compilation terminated.
+</pre></div>
+
+<p>then install the package <samp>zlib1g-dev</samp>.
+</p>
+<p>Once Kvasir has been installed, it can be used via the
+<samp>kvasir-dtrace</samp> script in the <samp>$DAIKONDIR/scripts</samp> directory.  If
+you have set up the Daikon environment according to the instructions
+above, it should already be in your <code>PATH</code>.  For instructions on using
+Kvasir, see <a href="#Kvasir">Kvasir</a>.
+</p>
+
+<hr>
+<a name="Kvasir-limitations"></a>
+<div class="header">
+<p>
+Previous: <a href="#Installing-Kvasir" accesskey="p" rel="previous">Installing Kvasir</a>, Up: <a href="#Kvasir" accesskey="u" rel="up">Kvasir</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Kvasir-implementation-and-limitations"></a>
+<h4 class="subsection">7.3.9 Kvasir implementation and limitations</h4>
+
+<p>Kvasir is based on the Valgrind dynamic program supervision framework
+(which is best known for its memory error detection tool).  Using
+Valgrind allows Kvasir to interrupt your program&rsquo;s execution, read its
+variables, and examine its memory usage, all transparently to the
+program.  Also, rather than using your program&rsquo;s source code to find
+the names and types of functions and variables, Kvasir obtains them
+from debugging information included in the executable in a standard
+format (DWARF-2).
+</p>
+<a name="index-AMD64-architecture_002c-and-Kvasir"></a>
+<a name="index-Intel-64-architecture_002c-and-Kvasir"></a>
+<a name="index-IA_002d32e-architecture_002c-and-Kvasir"></a>
+<a name="index-EM64T-architecture_002c-and-Kvasir"></a>
+<a name="index-64_002dbit-AMD64-architecture_002c-and-Kvasir"></a>
+
+<p>However, Kvasir has some limitations of its own.  Because Kvasir uses
+Valgrind, it shares Valgrind&rsquo;s processor and operating system limitations.
+Furthermore, of the platforms supported by Valgrind, the only one
+currently supported by Kvasir is <var>amd64-linux</var>.
+Valgrind support for <var>x86-linux</var> is now in maintenance mode and Kvasir
+no longer supports this platform.
+<var>x86-linux</var> refers to Intel 386-compatible processors
+(the so-called IA-32 architecture) such as the Intel Pentium and the
+AMD Athlon, running Linux.
+<var>amd64-linux</var> refers to the 64-bit extension of the x86
+architecture found in many newer Intel and AMD processors, also
+variously referred to as x86-64, IA-32e, EM64T, and Intel 64, when
+running under a Linux kernel in 64-bit mode.
+The Itanium or IA-64 architecture is not supported.
+</p>
+<p>Kvasir requires that your program have debugging
+information available in the DWARF-2 format, as produced by <code>gcc</code> version
+3 and later.  For the best results, the programs used by Kvasir should be
+compiled without optimization.
+</p>
+<p>This subsection lists some of the known limitations of the
+current Kvasir release; if you encounter any problems other than listed
+here, please report them as bugs (see <a href="Troubleshooting.html#Reporting-problems">Reporting problems</a>).  The
+limitations are listed roughly in decreasing order of severity.
+</p>
+<ul>
+<li> Kvasir-traced programs take a while to start (often a good fraction of a
+second).  When tracing short-lived programs, this overhead can
+dominate Kvasir&rsquo;s per-instruction runtime overhead.  In order to make Kvasir
+run faster, try the <samp>--ignore-globals</samp>
+option in order to limit the amount of generated output.
+However, please keep in mind that, when running simultaneously with
+Daikon using the <samp>--output-fifo</samp> option (see <a href="#Online-execution">Online execution</a>), Kvasir can generate
+output data much faster than Daikon can process it.  Thus, it is not the
+performance bottleneck in the entire invariant detection system.
+
+</li><li> Kvasir&rsquo;s support for outputting arrays is not yet complete.
+It still does not have the functionality to print out multidimensional
+arrays with all of their elements or the option to flatten
+multidimensional arrays into multiple single-dimensional arrays.
+
+</li><li> Kvasir behaves somewhat differently with different versions of <code>gcc</code>.
+If feasible, we recommend that you use Kvasir with version 4.7 (or newer).
+Incompatibilities
+between Kvasir and the debugging information produced by older <code>gcc</code>
+versions can lead to incorrect output and, in some cases, can cause Kvasir to crash.
+
+</li><li> Kvasir with DynComp will produce different results for x86 and
+x86-64 hosts. This is due to a DynComp limitation with regards to
+handling the AMD64 ABI. The AMD64 ABI allows structs that are
+less than 8-bytes to be passed to a function via register.
+DynComp categorizes this as an interaction between all
+fields of the struct and will mark all fields of the struct as
+comparable to each other.
+
+</li><li> Kvasir is incompatible with some compiler optimizations.  It is
+definitely incompatible with the <samp>-fomit-frame-pointer</samp>
+optimization, and it may have trouble with other optimizations as
+well.  We recommend that you compile programs for Kvasir without
+optimization.
+
+</li><li> Kvasir always prints the contents of structures according to their
+compile-time type.  Programs that use generic pointers and structural
+equivalence to simulate object-orientation will have derived-class
+fields missing when a structure is passed via a base-class pointer.
+This limitation can be worked around by manually coercing a pointer to a
+particular type (see <a href="#Pointer-type-coercion">Pointer type coercion</a>).
+
+</li></ul>
+
+
+<hr>
+<a name="Celeriac"></a>
+<div class="header">
+<p>
+Next: <a href="#dfepl" accesskey="n" rel="next">dfepl</a>, Previous: <a href="#Kvasir" accesskey="p" rel="previous">Kvasir</a>, Up: <a href="#Front-ends-_0028instrumentation_0029" accesskey="u" rel="up">Front ends (instrumentation)</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="g_t_002eNET-_0028C_0023_0029-front-end-Celeriac"></a>
+<h3 class="section">7.4 .NET (C#) front end Celeriac</h3>
+
+<a name="index-Celeriac-_0028front-end-for-_002eNET_0029"></a>
+<a name="index-front-end-for-_002eNET"></a>
+<a name="index-_002eNET-front-end"></a>
+<a name="index-instrumentation_002c-of-_002eNET-programs"></a>
+<a name="index-front-end-for-C_0023"></a>
+<a name="index-C_0023-front-end"></a>
+<a name="index-instrumentation_002c-of-C_0023-programs"></a>
+<a name="index-front-end-for-F_0023"></a>
+<a name="index-F_0023-front-end"></a>
+<a name="index-instrumentation_002c-of-F_0023-programs"></a>
+<a name="index-front-end-for-Visual-Basic"></a>
+<a name="index-Visual-Basic-front-end"></a>
+<a name="index-instrumentation_002c-of-Visual-Basic-programs"></a>
+<a name="index-front-end-for-Basic"></a>
+<a name="index-Basic-front-end"></a>
+<a name="index-instrumentation_002c-of-Basic-programs"></a>
+
+<p>The Daikon front end for .NET languages, named Celeriac, is distributed
+separately; it currently supports the C#, F# and Visual Basic .NET languages.
+Celeriac runs the .NET program, creates data trace (<samp>.dtrace</samp>) files,
+and optionally runs Daikon on them.
+Celeriac is named after the celeriac plant, whose root may be
+used as an ingredient in soups or stews.
+</p>
+
+<p>To use Celeriac, run your program as you normally would, but with the
+Celeriac Launcher.
+For instance, if you usually run
+</p><div class="example">
+<pre class="example">MyProgram.exe arg1 arg2 arg3
+</pre></div>
+
+<p>then instead you would run
+</p><div class="example">
+<pre class="example">CeleriacLauncher.exe celeriacArg1 celeriacArg2 MyProgram.exe arg1 arg2 arg3
+</pre></div>
+
+<p>This runs your program and creates the <samp>MyProgram.dtrace</samp>
+in the current directory.
+Since Celeriac instruments class files directly as they are loaded into .NET,
+you do not need to perform separate instrumentation and recompilation steps.
+</p>
+<p>For more details about how to download and use Celeriac, please
+see <a href="https://github.com/codespecs/daikon-dot-net-front-end">https://github.com/codespecs/daikon-dot-net-front-end</a>.
+</p>
+<p>It should be noted that Celeriac works under Mono as well as under the
+Microsoft .NET implementation.
+</p>
+<p>To insert Daikon-inferred invariants in C# source code as Code Contracts,
+use Scout (previously called Contract Inserter):
+<a href="https://bitbucket.org/fmc3/scout">https://bitbucket.org/fmc3/scout</a>.
+</p>
+
+<hr>
+<a name="dfepl"></a>
+<div class="header">
+<p>
+Next: <a href="#convertcsv_002epl" accesskey="n" rel="next">convertcsv.pl</a>, Previous: <a href="#Celeriac" accesskey="p" rel="previous">Celeriac</a>, Up: <a href="#Front-ends-_0028instrumentation_0029" accesskey="u" rel="up">Front ends (instrumentation)</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Perl-front-end-dfepl"></a>
+<h3 class="section">7.5 Perl front end dfepl</h3>
+
+<a name="index-front-end-for-Perl"></a>
+<a name="index-Perl-front-end"></a>
+<a name="index-dfepl-_0028front-end-for-Perl_0029"></a>
+<a name="index-instrumentation_002c-of-Perl-programs"></a>
+
+<p>This section contains details about <code>dfepl</code>, the Daikon front end for
+Perl.  For a brief introduction to <code>dfepl</code>, see <a href="Example-usage.html#Perl-examples">Perl examples</a> and
+<a href="Example-usage.html#Instrumenting-Perl-programs">Instrumenting Perl programs</a>.
+</p>
+<p><code>dfepl</code> works with Perl versions 5.8 and later. (To be precise, Perl
+programs instrumented with <code>dfepl</code> can also be run with Perl 5.6, but
+the instrumentation engine, which is itself written in Perl, requires
+version 5.8).  <code>dfepl</code> reads the source code for Perl modules or
+programs, and writes out instrumented versions of that code that
+keep track of function parameters, and make calls to routines in the
+<samp>daikon_runtime</samp> package whenever an instrumented subroutine is
+entered or exited.
+</p>
+<p>The instrumentation engine recognizes parameters as those variables
+that are declared with <code>my(...)</code> or <code>local(...)</code> and, in the
+same expression, assigned to from a value related to the argument
+array <code>@_</code>, but only among the first contiguous series of such
+assignments in the body of a subroutine.  This will capture the most
+common assignment idioms, such as <code>my $self = shift;</code> (where
+<code>shift</code> is short for <code>shift @_</code>), <code>my $x = $_[0];</code>, and
+<code>my($x, $y, @a) = @_;</code>, but the arguments to subroutines which
+access them only directly through <code>@_</code>, or that perform other
+operations before reading their arguments, will not be recognized.
+</p>
+<p>If the uninstrumented code requested warnings via the <code>use
+warnings</code> pragma or by adding the <samp>-w</samp> flag on the <code>#!</code>
+line, the instrumented code will also request warnings.  In this case,
+or if <samp>-w</samp> is specified on the command line when running it, the
+instrumented code may produce warnings that the original code did
+not.  There are several situations in which the instrumented code
+produced by <code>dfepl</code>, while functionally equivalent to the original,
+generates more warnings.  The most common such problem, which arises
+from code that captures the scalar-context return value of a
+subroutine that returns a list, has been avoided in the current
+version by disabling the warning in question.  Other warnings which
+are known to be produced innocuously in this way include
+&lsquo;<samp>Ambiguous call resolved as CORE::foo(), qualify as such or use
+&amp;</samp>&rsquo; (caused by code that uses <code>CORE::</code> to distinguish a built-in
+function from a user subroutine of the same name), and &lsquo;<samp>Constant
+subroutine foo redefined</samp>&rsquo; (caused by loading both instrumented and
+uninstrumented versions of a file).  Though some such warnings
+represent deficiencies in the instrumentation engine, they can be
+safely ignored when they occur.
+</p>
+<p>Because Perl programs do not contain static type information to
+distinguish, for instance, between strings and numbers, the Perl
+front end incorporates an additional dynamic analysis to infer these
+types.  This type guessing, which occurs as a first pass before the
+program can be instrumented to produce output for Daikon, operates in
+a manner somewhat analogous to Daikon itself: watching the execution
+of a program, the runtime system chooses the most restrictive type for
+a variable that is not contradicted during that execution.  These
+types indicate, for instance, whether a scalar value always holds an
+integer, a possibly fractional numeric value, or a reference to
+another object.  It should not be necessary to examine or modify this
+type information directly, but for the curious, the syntax of the type
+information is described in comments in the <samp>Daikon::PerlType</samp>
+module.
+</p>
+<p>The safest course is to infer types for variables using exactly the
+same program executions (e.g., test cases) which will later be used to
+generate traces for Daikon, as this guarantees that the type
+information will match the actual data written to the trace file.
+However, because the type-guessing-instrumented versions of programs
+run fairly slowly in the current version, you may be tempted to use a
+subset of the input data for type guessing.  Doing so is possible, but
+it will only work correctly if the smaller tests exercise all of the
+instrumented subroutines and exit points with all the types of data
+they will later be used with.  If the trace runtime tries to output a
+data value that doesn&rsquo;t match the inferred type, the value may
+silently be converted according to Perl&rsquo;s usual conventions (for
+instance, a non-numeric string may be treated as the number zero), or
+it may cause an error during tracing (for instance, trying to
+dereference a supposed array reference that isn&rsquo;t).  Also, if a
+subroutine exit point is traced but was never encountered during type
+guessing, the generated <samp>.decls</samp> and <samp>.dtrace</samp> files will be
+incompatible in a way that will cause Daikon to abort with an error
+message of the form &lsquo;<samp>Program point foo():::EXIT22 appears in <samp>.dtrace</samp>
+file but not in any <samp>.decls</samp> file</samp>&rsquo;.
+</p>
+<div class="float"><a name="dfepl_002dflow"></a>
+<div align="center"><img src="images/dfepl-flow.jpg" alt="images/dfepl-flow">
+</div>
+<div class="float-caption"><p><strong>Figure 7.1: </strong>Workflow of instrumenting Perl code with <code>dfepl</code>.</p></div></div>
+<p><code>dfepl</code> works by reading one or more Perl programs
+or modules, and writing out new versions of those files, instrumented
+to capture information about their execution, by default to another
+directory.  <code>dfepl</code> is used in two passes: first, before type
+information is available, instrumented versions are written to a
+directory <samp>daikon-untyped</samp>.  These untyped programs, when run,
+will write
+files containing dynamically inferred type information (with the
+extension <samp>.types</samp>), by default to the <samp>daikon-instrumented</samp>
+directory.  When <code>dfepl</code> is rerun with this type information, it
+produces type-aware instrumented code in the
+<samp>daikon-instrumented</samp> directory, which when run produces
+execution traces in files with the extension <samp>.dtrace</samp> in the a
+directory <samp>daikon-output</samp>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#dfepl-options" accesskey="1">dfepl options</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr>
+<a name="dfepl-options"></a>
+<div class="header">
+<p>
+Up: <a href="#dfepl" accesskey="u" rel="up">dfepl</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="dfepl-options-1"></a>
+<h4 class="subsection">7.5.1 dfepl options</h4>
+
+<dl compact="compact">
+<dt><samp>--absolute</samp></dt>
+<dt><samp>--no-absolute</samp></dt>
+<dd><p><samp>--absolute</samp> stores the absolute path to the output directories
+(by default named <samp>daikon-untyped</samp>, <samp>daikon-instrumented</samp> or
+<samp>daikon-output</samp>) in the instrumented programs, so that no matter
+where the instrumented program is run, the output will go to a fixed
+location.  Even if these directories are given as relative paths (as is
+the default), <samp>--absolute</samp> specifies that they should always be
+taken as relative to the directory that was the working directory when
+<code>dfepl</code> was run.
+</p>
+<p><samp>--no-absolute</samp> specifies the opposite, causing the output paths
+to be interpreted relative to the current working directory each time
+the instrumented program is invoked.  The default, when neither option
+is specified, is for <samp>.types</samp> files to use an absolute path, but
+all others to use relative path, so that the <samp>.types</samp> files will
+always be in the same place as the instrumented source files that
+generated them, but the <samp>daikon-output</samp> directory will be created
+in the current directory when the program runs.
+</p>
+</dd>
+<dt><samp>--accessor-depth=<var>num</var></samp></dt>
+<dd><p>Controls the number of nested invocations of object accessor methods
+to examine.  For instance, suppose that the <code>Person</code> class has a
+method <code>mother()</code> that returns another person (and has been
+specified to <code>dfepl</code> as an accessor), and that <code>$me</code> is
+an instrumented variable.  If the accessor depth is 1, only
+<code>$me-&gt;mother()</code> will be examined.  If the depth is 2,
+<code>$me-&gt;mother()-&gt;mother()</code> will also be examined.  Specifying large
+accessor depths is generally not advisable, especially with many
+accessor methods, as the number of variables examined can be too many
+for Daikon to process efficiently.
+</p>
+<p>By default, the Daikon Perl trace runtime will examine at most a
+single level of accessors.
+</p>
+</dd>
+<dt><samp>-A</samp></dt>
+<dt><samp>--accessors-dir=<var>directory</var></samp></dt>
+<dd><p>Look for files containing accessor lists in <var>directory</var>, or the
+current directory if <var>directory</var> is omitted.  For a class
+<code>Acme::Foo</code>, accessors are methods that return information about
+an object but do not modify it.  <code>dfepl</code> cannot determine on
+its own which methods are accessors, but when a list of them is
+provided, it can call an object&rsquo;s accessors when examining a variable
+of that class to obtain more information about the object.  To tell
+<code>dfepl</code> about the accessors for <code>Acme::Foo</code>, make a file
+listing the names of each accessor method, one per line with no other
+punctuation, named <samp>Acme/Foo.accessors</samp> in the same directory as
+<samp>Acme/Foo.pm</samp>.
+</p>
+</dd>
+<dt><samp>--decls-dir=<var>directory</var></samp></dt>
+<dd><p>Put generated declaration files in <var>directory</var> and its
+subdirectories.  The default is <samp>daikon-output</samp>.
+</p>
+</dd>
+<dt><samp>--decls-style=<var>style</var></samp></dt>
+<dd><p><var>style</var> should be one of <samp>combined</samp>, <samp>flat</samp>, or
+<samp>tree</samp>.  A style of <samp>combined</samp> specifies that the
+declarations for all packages should be merged, in a file named
+<samp>prog-combined.decls</samp> where <samp>prog</samp> is the name of the
+program.  A style of <samp>flat</samp> specifies that the declarations for
+each package should be in a separate file named after the package, but
+that these files should go in a single directory; for instance, the
+declarations for <code>Acme::Trampoline</code> and
+<code>Acme::Skates::Rocket</code> would go in files named
+<samp>Acme::Trampoline.decls</samp> and <samp>Acme::Skates::Rocket.decls</samp>.  A
+style of <samp>tree</samp> specifies that each package should have its own
+declarations file, and that those files should be arranged in
+directories whose structure matches the structure of their package
+names; in the example above, the files would be
+<samp>Acme/Trampoline.decls</samp> and <samp>Acme/Skates/Rocket.decls</samp>.
+</p>
+<p>The default is <samp>tree</samp>.  Note that <samp>--decls-style</samp> and
+<samp>--types-style</samp> are currently constrained to be the same; if
+one is specified, the other will use the same value.
+</p>
+</dd>
+<dt><samp>--dtrace-append</samp></dt>
+<dt><samp>--no-dtrace-append</samp></dt>
+<dd><p>When <samp>--dtrace-append</samp> is specified, the instrumented program
+will append trace information to the appropriate
+<samp>.dtrace</samp> file each time it runs.  When
+<samp>--no-dtrace-append</samp> is specified, it will overwrite the file
+instead.
+</p>
+<p>The default behavior is to overwrite.  This choice can also be
+overridden, when the program is run, to always append by setting the
+environment variable <code>DTRACEAPPEND</code> to 1.
+</p>
+<p>When appending to a <samp>.dtrace</samp> file, no declaration information is
+ever produced, because it would be redundant to do so and Daikon does
+not permit re-declarations of program points.
+</p>
+</dd>
+<dt><samp>--dtrace-dir=<var>directory</var></samp></dt>
+<dd><p>Put generated trace files in <var>directory</var> and its
+subdirectories.  The default is <samp>daikon-output</samp>.
+</p>
+</dd>
+<dt><samp>--dtrace-style=<var>style</var></samp></dt>
+<dd><p><var>style</var> should be one of <samp>combined</samp>, <samp>flat</samp>, or
+<samp>tree</samp>.  A style of <samp>combined</samp> specifies that the traces
+for all packages should be merged, in a file named
+<samp>prog-combined.dtrace</samp>, where <samp>prog</samp> is the name of the
+program.  A style of <samp>flat</samp> specifies that the
+traces for each package should be in a separate file named after the
+package, but that these files should go in a single directory; for
+instance, the declarations for <code>Acme::Trampoline</code> and
+<code>Acme::Skates::Rocket</code> would go in files named
+<samp>Acme::Trampoline.dtrace</samp> and
+<samp>Acme::Skates::Rocket.dtrace</samp>.  A style of <samp>tree</samp> specifies
+that each package should have its own trace file, and that
+those files should be arranged in directories whose structure matches
+the structure of their package names; in the example above, the files
+would be <samp>Acme/Trampoline.dtrace</samp> and
+<samp>Acme/Skates/Rocket.dtrace</samp>.
+</p>
+<p>The default is <samp>combined</samp>.
+</p>
+</dd>
+<dt><samp>--help</samp></dt>
+<dd><p>Print a short options summary.
+</p>
+</dd>
+<dt><samp>--instr-dir=<var>directory</var></samp></dt>
+<dt><samp>--instrsourcedir=<var>directory</var></samp></dt>
+<dd><p>Put instrumented source files in <var>directory</var> and its
+subdirectories.  The default is <samp>daikon-untyped</samp>, or
+<samp>daikon-instrumented</samp> if type information is available.
+</p>
+</dd>
+<dt><samp>--list-depth=<var>DEPTH</var></samp></dt>
+<dd><p>Consider as many as <var>DEPTH</var> of the first elements of a list to be
+distinct entities, for the purpose of guessing their types.  When
+subroutines return a list of values, each value may have a distinct
+meaning, or the list may be homogeneous.  When trying to assign types
+to the elements of a list, the Daikon Perl trace runtime will try
+making separate guesses about the types of the elements of a short
+list, but it would be inefficient to make retain this distinction for
+many elements.  This parameter controls how many elements of a list
+will be examined individually; all the others will be treated
+uniformly.
+</p>
+<p>The default is 3.
+</p>
+</dd>
+<dt><samp>--output-dir=<var>directory</var></samp></dt>
+<dd><p>Put all of the files that are the output of the tracing process (and
+therefore input to the Daikon invariant detection engine) in
+<var>directory</var> and its subdirectories.  This option is a shorthand
+equivalent to setting both <samp>--decls-dir</samp> and
+<samp>--dtrace-dir</samp> to the same value.
+</p>
+<p>The default behavior is as if <samp>--output-dir=daikon-output</samp> had
+been specified.
+</p>
+</dd>
+<dt><samp>--perl=<var>path</var></samp></dt>
+<dd><p>Use <var>path</var> as the location of Perl when calling the annotation
+back end (a module named <code>B::DeparseDaikon</code>), rather than the
+version of Perl under which <code>dfepl</code> itself is running, which
+is probably the first <code>perl</code> that occurs on your path.  For
+instance, if the first version of <code>perl</code> on your path isn&rsquo;t
+version 5.8 or later, you should this option to specify another
+<code>perl</code> program that is.
+</p>
+</dd>
+<dt><samp>--nesting-depth=<var>num</var></samp></dt>
+<dd><p>When examining nested data structures, traverse as many as <var>num</var>
+nested references.  For instance, suppose that <code>@a</code> is the array
+</p>
+<div class="example">
+<pre class="example">@a = ({1 =&gt; [2, 3]}, {5 =&gt; [4, 2]})
+</pre></div>
+
+<p>If the depth is 0, then when examining <code>@a</code>, Daikon&rsquo;s Perl trace
+runtime will consider it to be an array whose elements are references,
+but it won&rsquo;t examine what those references point to.  If the depth is
+1, it will consider it to be an array of references to hashes whose
+keys are integers and whose values are references, but it won&rsquo;t
+examine what <em>those</em> references point to.  Finally, if the depth
+is 2 or more, it will consider <code>@a</code> to be an array of references
+to hashes whose keys are integers and whose values are references to
+arrays of integers.
+</p>
+<p>The default nesting depth is 3.
+</p>
+<p>When referenced objects have accessor methods, or when accessors
+return references, the <samp>--accessor-depth</samp> and
+<samp>--nesting-depth</samp> options interact.  Specifically, if these
+depths are A and R, the behavior is as if the runtime has a budget of
+1 unit, which it can use either on accessors which cost 1/A or
+references which cost 1/R.  It may thus sometimes be useful to specify
+fractional values for <samp>--accessor-depth</samp> and
+<samp>--nesting-depth</samp>; in fact, the default accessor depth is
+1.5.
+</p>
+</dd>
+<dt><samp>--types-append</samp></dt>
+<dt><samp>--no-types-append</samp></dt>
+<dd><p>When <samp>--types-append</samp> is specified, the instrumented program
+will append type information to the appropriate
+<samp>.types</samp> file each time it runs.  When
+<samp>--no-types-append</samp> is specified, it will overwrite the file
+instead.
+</p>
+<p>The default behavior is to append.  If <samp>--no-types-append</samp> is
+specified, however, this choice can also be overridden, when the
+program is run, to append by setting the environment variable
+<code>TYPESAPPEND</code> to 1.  There is no way to use environment variables
+to force the runtime to overwrite a types file, but an equivalent
+effect can be obtained by simply removing the previous types file
+before each run.
+</p>
+</dd>
+<dt><samp>-T</samp></dt>
+<dt><samp>--types-dir=<var>directory</var></samp></dt>
+<dd><p>Look for <samp>.types</samp> files in <var>directory</var>, or
+<samp>daikon-instrumented</samp> if <var>directory</var> is omitted.  When
+instrumenting a module <code>Acme::Trampoline</code>, used in a program
+<samp>coyote.pl</samp>,  <code>dfepl</code> will look for
+files named <samp>coyote-combined.types</samp>, <samp>Acme::Trampoline.types</samp>, and
+<samp>Acme/Trampoline.types</samp>, corresponding to the possible choices of
+<samp>--types-style</samp>.  Once discovered, the files are used in the
+same way as for <samp>-t</samp>.
+</p>
+</dd>
+<dt><samp>--types-file=<var>file</var></samp></dt>
+<dt><samp>-t <var>file</var></samp></dt>
+<dd><p>Include type information from <var>file</var> when instrumenting programs
+or modules.  Since Daikon needs to know the types of variables when
+they are declared, useful <samp>.decls</samp> and <samp>.dtrace</samp> files can
+only be produced by source code instrumented with type
+information.  Since Perl programs don&rsquo;t include this information to
+begin with, and it would be cumbersome to produce by hand, type
+information must usually be produced by running a version of the
+program that has itself been annotated, but without type
+information.  The Daikon Perl trace runtime will automatically decide
+whether to output types, or declarations and traces, depending on
+whether the source was instrumented without or with types.  This option
+may occur multiple times, to read information from multiple types
+files (irrelevant type information will be ignored).
+</p>
+</dd>
+<dt><samp>--types-basedir=<var>directory</var></samp></dt>
+<dd><p>Put files containing type information in <var>directory</var> and its
+subdirectories.  By default, this is whatever <samp>--instr-dir</samp>
+is, usually <samp>daikon-instrumented</samp>.
+</p>
+</dd>
+<dt><samp>--types-style=<var>style</var></samp></dt>
+<dd><p><var>style</var> should be one of <samp>combined</samp>, <samp>flat</samp>, or
+<samp>tree</samp>.  A style of <samp>combined</samp> specifies that the types
+for all packages should be merged, in a file named
+<samp>prog-combined.types</samp>, where <samp>prog</samp> is the name of the
+program.  A style of <samp>flat</samp> specifies that the
+types for each package should be in a separate file named after the
+package, but that these files should go in a single directory; for
+instance, the declarations for <code>Acme::Trampoline</code> and
+<code>Acme::Skates::Rocket</code> would go in files named
+<samp>Acme::Trampoline.types</samp> and
+<samp>Acme::Skates::Rocket.types</samp>.  A style of <samp>tree</samp> specifies
+that each package should have its own trace file, and that
+those files should be arranged in directories whose structure matches
+the structure of their package names; in the example above, the files
+would be <samp>Acme/Trampoline.types</samp> and
+<samp>Acme/Skates/Rocket.types</samp>.
+</p>
+<p>The default is <samp>tree</samp>.  Note that <samp>--types-style</samp> and
+<samp>--decls-style</samp> are currently constrained to be the same; if
+one is specified, the other will use the same value.
+</p>
+</dd>
+<dt><samp>--verbose</samp></dt>
+<dt><samp>-v</samp></dt>
+<dd><p>Print additional information about what <code>dfepl</code> is doing,
+including external commands invoked.
+</p></dd>
+</dl>
+
+
+<hr>
+<a name="convertcsv_002epl"></a>
+<div class="header">
+<p>
+Next: <a href="#Other-front-ends" accesskey="n" rel="next">Other front ends</a>, Previous: <a href="#dfepl" accesskey="p" rel="previous">dfepl</a>, Up: <a href="#Front-ends-_0028instrumentation_0029" accesskey="u" rel="up">Front ends (instrumentation)</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Comma_002dseparated_002dvalue-front-end-convertcsv_002epl"></a>
+<h3 class="section">7.6 Comma-separated-value front end convertcsv.pl</h3>
+
+<a name="index-csv-files"></a>
+<a name="index-comma_002ddelimited-files"></a>
+<a name="index-comma_002dseparated_002dvalue-files"></a>
+<a name="index-tab_002dseparated-files"></a>
+<a name="index-Excel-files"></a>
+<a name="index-spreadsheet-files"></a>
+
+<p>Daikon can process data from spreadsheets such as Excel.  In order to
+use such files, first save them in
+<a href="https://en.wikipedia.org/wiki/Comma-separated_values">comma-separated-value format</a>,
+also known as <em>csv</em> or comma-delimited or comma-separated-list, format.
+Then, convert the <samp>.csv</samp> file into a <samp>.dtrace</samp> file (and a
+<samp>.decls</samp> file) to be used by Daikon by running the
+<code>convertcsv.pl</code> program found in the <samp>$DAIKONDIR/scripts</samp>
+directory.  For example,
+</p><div class="example">
+<pre class="example">convertcsv.pl myfile.csv
+</pre></div>
+
+<p>produces files <samp>myfile.decls</samp> and <samp>myfile.dtrace</samp>.
+</p>
+<p>Important:  run <code>convertcsv.pl</code> without any arguments in order
+to see a usage message.
+</p>
+<p>In order to ensure all data is processed, use Daikon with the
+<samp>--nohierarchy</samp> option, as follows:
+</p><div class="example">
+<pre class="example">java daikon.Daikon --nohierarchy myfile.decls myfile.dtrace
+</pre></div>
+
+<p>In a future release, the <samp>--nohierarchy</samp> option may not be necessary,
+but it should always be safe to use this option.
+</p>
+<p>Before running <code>convertcsv.pl</code>, you may need to install
+<code>Text::CSV</code>, a Perl package that <code>convertcsv.pl</code> uses.
+You also need the
+<a href="https://raw.githubusercontent.com/mernst/plume-lib/master/bin/checkargs.pm"><samp>checkargs.pm</samp></a> file, which is part of the plume-lib library
+(<a href="https://github.com/mernst/plume-lib">https://github.com/mernst/plume-lib</a>).
+</p>
+
+<hr>
+<a name="Other-front-ends"></a>
+<div class="header">
+<p>
+Previous: <a href="#convertcsv_002epl" accesskey="p" rel="previous">convertcsv.pl</a>, Up: <a href="#Front-ends-_0028instrumentation_0029" accesskey="u" rel="up">Front ends (instrumentation)</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Other-front-ends-1"></a>
+<h3 class="section">7.7 Other front ends</h3>
+
+<p>It is relatively easy to create a Daikon front end for another language
+or run-time system.  For example, people have done this without any help
+at all from the Daikon developers.  For more information about building
+a new front end,
+see <a href="../developer/New-front-ends.html#New-front-ends">New front ends</a> in <cite>Daikon Developer Manual</cite>.
+</p>
+<a name="index-Udon-front-end-for-LLVM"></a>
+<a name="index-front-end-for-LLVM"></a>
+<a name="index-LLVM-front-end"></a>
+<a name="index-instrumentation_002c-of-LLVM-programs"></a>
+
+<p>A front end for LLVM, named Udon, is distributed
+separately; see <a href="https://github.com/markus-kusano/udon">https://github.com/markus-kusano/udon</a>.
+It can be used on any programming language that can be compiled to LLVM.
+</p>
+<a name="index-Takuan-front-end-for-WS_002dBPEL"></a>
+<a name="index-front-end-for-WS_002dBPEL"></a>
+<a name="index-WS_002dBPEL-front-end"></a>
+<a name="index-instrumentation_002c-of-WS_002dBPEL-process-definitions"></a>
+
+<p>A front end for WS-BPEL process definitions, named Takuan,
+is distributed
+separately; see <a href="https://neptuno.uca.es/redmine/projects/takuan-website">https://neptuno.uca.es/redmine/projects/takuan-website</a>.
+</p>
+<a name="index-CITADEL-front-end-for-Eiffel"></a>
+<a name="index-front-end-for-Eiffel"></a>
+<a name="index-Eiffel-front-end"></a>
+<a name="index-instrumentation_002c-of-Eiffel-programs"></a>
+
+<p>A front end for the Eiffel programming language, named CITADEL, is distributed
+separately; see <a href="http://se.inf.ethz.ch/people/polikarpova/citadel/">http://se.inf.ethz.ch/people/polikarpova/citadel/</a>.
+</p>
+<a name="index-Hynger-front-end-for-Simulink_002fStateflow-_0028SLSF_0029-block-diagrams"></a>
+<a name="index-front-end-for-Simulink_002fStateflow-_0028SLSF_0029-block-diagrams"></a>
+<a name="index-Simulink_002fStateflow-_0028SLSF_0029-front-end"></a>
+<a name="index-instrumentation_002c-of-Simulink_002fStateflow-_0028SLSF_0029-block-diagrams"></a>
+
+<p>A front end for the Simulink/Stateflow (SLSF) programming language, named
+Hynger, is distributed separately; see
+<a href="https://bitbucket.org/verivital/hynger">https://bitbucket.org/verivital/hynger</a>.
+</p>
+<a name="index-front-end-for-IOA"></a>
+<a name="index-front-end-for-Input_002fOutput-Automata"></a>
+<a name="index-IOA-front-end"></a>
+<a name="index-Input_002fOutput-Automata-front-end"></a>
+<a name="index-instrumentation_002c-of-IOA-programs"></a>
+<a name="index-instrumentation_002c-of-Input_002fOutput-Automata-programs"></a>
+
+<p>A front end for the IOA (Input/Output Automata) programming language is distributed separately;
+see <a href="http://groups.csail.mit.edu/tds/ioa.html">http://groups.csail.mit.edu/tds/ioa.html</a>.
+</p>
+<a name="index-front-end-for-Lisp"></a>
+<a name="index-Lisp-front-end"></a>
+<a name="index-instrumentation_002c-of-Lisp-programs"></a>
+
+<p>An earlier version of Daikon included a Lisp front end, but it is no
+longer supported.
+</p>
+<p>An earlier version of Daikon provided a source-based front end for Java
+named <code>dfej</code>.  It has been superseded by Chicory (see <a href="#Chicory">Chicory</a>).
+</p>
+<p>An earlier version of Daikon provided a source-based front end for C
+named <code>dfec</code>.  It has been superseded by Kvasir (binary-based, for
+Linux/x86; see <a href="#Kvasir">Kvasir</a>).
+</p>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="#convertcsv_002epl" accesskey="p" rel="previous">convertcsv.pl</a>, Up: <a href="#Front-ends-_0028instrumentation_0029" accesskey="u" rel="up">Front ends (instrumentation)</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="General-Index.html#General-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

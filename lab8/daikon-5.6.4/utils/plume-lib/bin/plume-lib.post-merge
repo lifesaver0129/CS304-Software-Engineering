@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# This file will be used as .git/hooks/post-merge.
+# However, it should be edited as bin/plume-lib.post-merge.
+
+# Fail if any command fails
+set -e
+
+make all-but-emacs
