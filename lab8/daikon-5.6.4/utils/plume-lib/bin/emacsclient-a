@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# If the Emacsclient daemon doesn't exist already, start it and connect to it.
-# The name comes from the fact that the implementation is just "emacsclient -a".
-
-/usr/bin/emacsclient -a "" -- "$@"
-
