@@ -1,0 +1,26 @@
+public class SootTest extends java.lang.Object
+{
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] args;
+
+        args := @parameter0: java.lang.String[];
+
+        goto label1;
+
+     label1:
+        return;
+    }
+
+    public void <init>()
+    {
+        SootTest this;
+
+        this := @this: SootTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}
