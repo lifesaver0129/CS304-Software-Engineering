@@ -1,8 +1,4 @@
-# Software Engineering Lab#11
-
-### 11510225 Yuxing Hu
-
----
+# Git-Lab
 
 ## All my bash commands
 
@@ -119,7 +115,7 @@ Date:   Mon May 28 10:34:01 2018 +0800
 
 ## Comments
 
-*How do you solve conflicts on second merge?*
+> How do you solve conflicts on second merge?
 
 The conflict actually happens when it comes to rebase, and there are 3 ways of dealing with it:
 
@@ -128,8 +124,4 @@ The conflict actually happens when it comes to rebase, and there are 3 ways of d
 * We can fix the conflict.
 
 So after dealing with this rebase conflict, there will not be any conflict when it comes to merge.
-
-## GitHub Link
-
-https://github.com/lifesaver0129/Git-Lab
 
