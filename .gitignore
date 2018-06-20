@@ -6,9 +6,5 @@
 .idea
 *.jpeg
 daikon
-
-/pitestByAnt
-
+*.key
 lab03
-lab10/pitestByAnt
-CS30x-A-web-platform-for-data-labelling
