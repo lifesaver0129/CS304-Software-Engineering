@@ -27,6 +27,10 @@
 
 ## Project
 
-[Project SkyCat](https://github.com/lifesaver0129/Sky-Cat-Labeling): a next generation data labeling platform. Team up with 、@yanxiangyi
+[Project SkyCat](https://github.com/lifesaver0129/Sky-Cat-Labeling)
+
+A next generation data labeling platform. 
+
+Team up with @yanxiangyi @Tiankai-Jiang @DNXie @XuCH1997
 
 
