@@ -29,7 +29,7 @@
 
 [Project SkyCat](https://github.com/lifesaver0129/Sky-Cat-Labeling)
 
-A next generation data labeling platform. 
+Next generation data labeling platform. 
 
 Team up with Xiangyi Yan [@yanxiangyi](https://github.com/yanxiangyi), Tiankai Jiang [@Tiankai-Jiang](https://github.com/Tiankai-Jiang), Danning Xie [@DNXie](https://github.com/DNXie) and Chenhao Xu [@XuCH1997](https://github.com/XuCH1997).
 
