@@ -36,7 +36,7 @@
   - Associated with system design
 - The Requirements Risks should be understood and avoided.
 
-#### Business Requirements 
+#### Business (functional) Requirements 
 
 * Also called Functional Requirements 
 * Business Requirements govern the system behavior
@@ -276,13 +276,15 @@
 
   <img src="img/6.png" width="500px">
 
-* Scenario Timeline represent a good way to key scenarios. 
+* Scenario Timeline represent a good way to key scenarios
+
+<img src="img/16.png" width="500px">
 
 * Task Analysis aims to describe the breadth, granularity and details of system capabilities (functionality). 
 
   * Acquisition Purpose 
 
-    - Understandthedecompositionofhighleveltasks(identifiedinthescenario) 
+    - Understand the decomposition of high level tasks (identified in the scenario) 
 
       into constituent subtasks 
 
@@ -304,11 +306,16 @@
   * Challenge: insuring the appropriate level of abstraction both in terms of the breath of tasks and the layers (level or granularity) of decomposition 
   * Domain Task Decomposition describe the aggregation of implementation-independent tasks. 
 
-* Temporal Analysis describe the Functional Timing and order (sequence) of a process to be executed by the system
+<img src="img/17.png" width="500px">
 
+* Temporal Analysis describe the Functional Timing and order (sequence) of a process to be executed by the system
 * Temporal Sequence Diagram
 
+<img src="img/18.png" width="300px">
+
 * IDEF Diagram of a Task(ina Process) is a compact representation of the Task Template, describe the process sequenceof task execution. 
+
+<img src="img/19.png" width="400px">
 
 ### Summary
 
@@ -409,7 +416,7 @@
 
 #### Integration Model 
 
-* Set of constraints and dependencies between components. 
+* Set of constraints and dependencies between components
 
 ### BB Derivation
 
@@ -611,7 +618,7 @@
 
 ### PageRank-based Fault 
 
-* For each method, not only consider how many tests cover it, but also who cover it
+* For each **method**, not only consider how many tests cover it, but also who cover it
   * If a failing test covers few program entities, it has a small scope to infer faulty entities and should have high weight 
   * If its covered entities are more likely to be faulty, it in turn also should get a higher weight 
 * Phase-1: Transistion Matrix Construction  
@@ -632,3 +639,147 @@
 * Deployment phase: 
   * takes as input a set of test cases, a faulty program 
   * uses the learned model to rank a list of methods corresponding to the failing test cases 
+
+## Mutation Testing
+
+* Mutation testing injects changes to statements of programs to generate artificial bugs
+
+### Steps
+
+1. Applies artificial changes based on mutation operators to generate mutant 
+2. Execute the test suite against each mutant
+3. Compute the mutation score (e.g., the ratio of killed mutants), the higher the better 
+
+### Operations
+
+* ABS(Absolute Value Insertion): x = abs(y); 
+* ROR(Relational Operator Replacement): >, >=, <, <=, ==, !=
+* COR(Conditional Operator Replacement): &&, ||, false, true
+* SOR(Shift Operator Replacement): >>, <<, >>>
+* LOR(Logical Operator Replacement): &, |, ^
+* UOI(Unary Operator Insertion): x%y, x%(++y), x%(--y)
+* SVR(Scalar Variable Replacement): tmp = x%y, tmp = x%x, x=x%y
+
+### Types
+
+<img src="img/11.png" width="500px">
+
+* A mutant M of program P is considered killed (or distinguished) by a test t in test suite T, iff: P(t)!=M(t)
+* A mutant M is considered to be equivalent mutant, iff: P(t)=M(t) for any t
+
+## Control Flow Graph 
+
+### Steps 
+
+1. From the source code, create a graph describing the flow of control 
+2. Design test cases to cover certain elements of this graph 
+
+### Elements
+
+* Basic Block : A sequence of statements such that if the first statement is executed, all statements will be (no branches) 
+
+* Nodes : Statements or sequences of statements (basic blocks)
+
+  * Statement nodes: represent single-entry-single-exit 
+
+    sequences of statements 
+
+  * Predicate nodes: represent conditions for branching (if, while) 
+
+  * Auxiliary nodes: for easier understanding of the CFG (e.g., “join points” for IF, etc.)  
+
+* Edges : Transfers of control (branch) 
+
+* CFGs are sometimes annotated with extra information
+
+### Control Flow TRs and Test Paths 
+
+<img src="img/12.png" width="200px">
+
+* Test Paths: [ 1, 2, 3, 4, 3, 5, 6, 7, 6, 8 ]
+
+* Node Coverage
+  * A. [ 1 ] B. [ 2 ] C. [ 3 ] D. [ 4 ] E. [ 5 ] F. [ 6 ] G. [ 7 ] H. [ 8 ]
+* Edge Coverage
+  * A. [ 1, 2 ] B. [ 2, 3 ] C. [ 3, 4 ] D. [ 3, 5 ] E. [ 4, 3 ] F. [ 5, 6 ] G. [ 6, 7 ] H. [ 6, 8 ] I. [ 7, 6 ]
+* Edge-Pair Coverage
+  * A. [ 1, 2, 3 ] B. [ 2, 3, 4 ] C. [ 2, 3, 5 ] D. [ 3, 4, 3 ] E. [ 3, 5, 6 ] F. [ 4, 3, 5 ] G. [ 5, 6, 7 ] H. [ 5, 6, 8 ] I. [ 6, 7, 6 ] J. [ 7, 6, 8 ] K. [ 4, 3, 4 ] L. [ 7, 6, 7 ]
+  * TRs toured: A, B, D, E, F, G, I, J, C, H
+  * Sidetrips: C, H
+* Prime Path Coverage
+  * Simple path: a path p is simple if it has no repetitions of nodes other than (possibly) the first and last node. So a simple path p has no internal loops, but may itself be a loop
+  * Prime path: maximal simple path
+  * A. [ 3, 4, 3 ] B. [ 4, 3, 4 ] C. [ 7, 6, 7 ] D. [ 7, 6, 8 ] E. [ 6, 7, 6 ] F. [ 1, 2, 3, 4 ] G. [ 4, 3, 5, 6, 7 ] H. [ 4, 3, 5, 6, 8 ] I. [ 1, 2, 3, 5, 6, 7 ] J. [ 1, 2, 3, 5, 6, 8 ]
+  * TRs toured: A, D, E, F, G
+  * Sidetrips: H, I, J
+
+## Data flow models
+
+### Def-Use Pairs 
+
+* Associates a point in a program where a value is produced with a point where it is used 
+* Definition: where a variable gets a value
+  * Variable declaration 
+  * Variable initialization
+  * Assignment
+  * Values received by a parameter
+* Use: extraction of a value from a variable
+  * Expressions 
+  * Conditional statements
+  * Parameter passing 
+  * Returns 
+* Definition-clear path
+  * A definition-clear path is a path along the CFG from a definition to a use of the same variable without another definition of the variable between 
+* **Data flow coverage** 
+  * use every def (all-defs coverage) 
+  * get to every use (all-uses coverage)
+  * follow all du-paths (all-du-paths coverage) 
+* Calculating
+  * If node p can assign a value to variable v (e.g. v=5), then the definition vp reaches n. We say the definition vp is generated at p. 
+  * If a definition vp reaches node n, and if v is not redefined at node n (in which case we say the vp is not killed at that point), then the definition is propagated on from p to n. 
+* Dominators
+  * Dominators: node A (pre-)dominates node B if every path from the root to B passes through A: you must pass through A to get B. 
+  * Post-dominators: calculated in the reverse of the control flow graph, using a special 􏰁exit􏰄 node as the root
+* Control dependence
+  * C has at least two successors in the control flow graph
+  * C is not post-dominated by N 
+  * There is a successor of C in the control flow graph that is post-dominated by N
+
+## Symbolic Execution 
+
+* Creates a functional representation of an executable component 
+* Symbolic names: the input values 
+* For a path Pi 
+  * path condition PC: describes the domain of the path and is the conjunction of the interpreted branch conditions 
+  * path value PV: describes the value of that variable in terms of those symbolic names 
+  * interpreted branch condition or interpreted predicate: represented as an inequality or equality condition 
+  * D[Pi]: domain for path Pi, the set of input values that satisfy the PC for the path 
+  * C[Pi]: the computation for path Pi 
+
+![](img/14.png)
+
+### Features 
+
+* Simplification 
+  * Reduces path condition to a canonical form
+* Path Condition Consistency
+  * solve a system of constraints 
+* Fault Detection
+  * Implicit fault conditions
+  * Division by zero assert (divisor 1, 0)
+  * Determine consistency (error possible)
+  * assertions can be inserted as executable instructions and checked during execution 
+  * use symbolic evaluation to evaluate consistency 
+* Comparing Fault Detection Approaches
+  * assertions can be inserted as executable instructions and checked during execution 
+  * use symbolic evaluation to evaluate consistency 
+* Path Selection 
+  * Can be used in conjunction with other static analysis techniques to determine path feasibility 
+
+![](img/15.png)
+
+* Test Data Generation
+  * Error based test data selection
+  * PV.X = a * (b + 2); 
+    * a = 1 combined with min and max values of b 
+    * b = -1 combined with min and max values for a 
