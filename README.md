@@ -31,6 +31,6 @@
 
 A next generation data labeling platform. 
 
-Team up with @yanxiangyi @Tiankai-Jiang @DNXie @XuCH1997
+Team up with Xiang Yi[@yanxiangyi](https://github.com/yanxiangyi), Tiankai Jiang [@Tiankai-Jiang](https://github.com/Tiankai-Jiang), Danning Xie[@DNXie](https://github.com/DNXie) and Chenhao Xu [@XuCH1997](https://github.com/XuCH1997).
 
 
